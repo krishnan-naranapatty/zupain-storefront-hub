@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
@@ -14,6 +15,7 @@ import {
   PenTool,
   HelpCircle
 } from 'lucide-react';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -21,6 +23,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
+  const { currentPalette } = useTheme();
+  
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/', isActive: true },
     { icon: ShoppingCart, label: 'Orders', path: '/orders' },
@@ -37,11 +41,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   ];
 
   return (
-    <div className={`bg-slate-900 text-white transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'} min-h-screen flex flex-col`}>
+    <div className={`${currentPalette.sidebar} ${currentPalette.sidebarText} transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'} min-h-screen flex flex-col`}>
       {/* Logo Section */}
       <div className="p-4 border-b border-slate-700">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+          <div className={`w-10 h-10 ${currentPalette.accent} rounded-lg flex items-center justify-center`}>
             <Store className="w-6 h-6 text-white" />
           </div>
           {!isCollapsed && (
@@ -63,7 +67,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
                 className={({ isActive }) =>
                   `flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
                     isActive
-                      ? 'bg-blue-600 text-white'
+                      ? `${currentPalette.primary} text-white`
                       : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                   }`
                 }

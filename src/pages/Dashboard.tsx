@@ -5,16 +5,18 @@ import Header from '@/components/Header';
 import WelcomeSection from '@/components/WelcomeSection';
 import DashboardStats from '@/components/DashboardStats';
 import StoreSetupProgress from '@/components/StoreSetupProgress';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const Dashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { currentPalette } = useTheme();
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className={`flex min-h-screen ${currentPalette.background}`}>
       <Sidebar isCollapsed={sidebarCollapsed} onToggle={toggleSidebar} />
       
       <div className="flex-1 flex flex-col">

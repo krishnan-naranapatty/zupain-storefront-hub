@@ -3,6 +3,7 @@ import React from 'react';
 import { Menu, Bell, Search, User, Globe, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import ThemeSettings from './ThemeSettings';
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -45,6 +46,8 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
           <Button variant="outline" size="sm" className="space-x-2">
             <span>Visit My Store</span>
           </Button>
+
+          <ThemeSettings />
 
           <Button variant="ghost" size="sm" className="p-2">
             <Bell className="w-5 h-5" />
