@@ -29,6 +29,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
     { icon: LayoutDashboard, label: 'Dashboard', path: '/', isActive: true },
     { icon: ShoppingCart, label: 'Orders', path: '/orders' },
     { icon: Package, label: 'Products', path: '/products' },
+    { icon: Package, label: 'Inventory', path: '/inventory' },
     { icon: Store, label: 'Stores', path: '/stores' },
     { icon: Users, label: 'Customers', path: '/customers' },
     { icon: Tag, label: 'Categories', path: '/categories' },

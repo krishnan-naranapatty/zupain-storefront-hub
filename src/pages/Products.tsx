@@ -1,28 +1,31 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
-import { useState } from 'react';
+import ProductsHeader from '@/components/ProductsHeader';
+import ProductsFilters from '@/components/ProductsFilters';
+import ProductsTable from '@/components/ProductsTable';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const Products = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { currentPalette } = useTheme();
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className={`flex min-h-screen ${currentPalette.background}`}>
       <Sidebar isCollapsed={sidebarCollapsed} onToggle={toggleSidebar} />
       
       <div className="flex-1 flex flex-col">
         <Header onToggleSidebar={toggleSidebar} />
         
-        <main className="flex-1 p-6">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Products</h1>
-            <p className="text-gray-600">Product management coming soon...</p>
-          </div>
+        <main className="flex-1 p-6 space-y-6">
+          <ProductsHeader />
+          <ProductsFilters />
+          <ProductsTable />
         </main>
       </div>
     </div>
