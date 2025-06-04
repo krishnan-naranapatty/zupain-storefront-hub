@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
-  Dashboard, 
+  LayoutDashboard, 
   ShoppingCart, 
   Package, 
   Store, 
@@ -23,7 +22,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const menuItems = [
-    { icon: Dashboard, label: 'Dashboard', path: '/', isActive: true },
+    { icon: LayoutDashboard, label: 'Dashboard', path: '/', isActive: true },
     { icon: ShoppingCart, label: 'Orders', path: '/orders' },
     { icon: Package, label: 'Products', path: '/products' },
     { icon: Store, label: 'Stores', path: '/stores' },
