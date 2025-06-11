@@ -1,9 +1,11 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const CustomersFilters = () => {
   const [activeTab, setActiveTab] = useState('all');
+  const { currentPalette } = useTheme();
 
   const tabs = [
     { id: 'all', label: 'All Customers' },
@@ -21,8 +23,8 @@ const CustomersFilters = () => {
           variant={activeTab === tab.id ? "default" : "outline"}
           className={`${
             activeTab === tab.id 
-              ? "bg-blue-600 text-white" 
-              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+              ? `${currentPalette.primary} text-white hover:${currentPalette.primary}/90` 
+              : `${currentPalette.cardBg} text-gray-700 border-gray-300 hover:${currentPalette.secondary}`
           }`}
           onClick={() => setActiveTab(tab.id)}
         >
