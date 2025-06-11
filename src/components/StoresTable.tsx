@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { MoreHorizontal, Edit, Eye, MapPin, Phone, Toggle } from 'lucide-react';
+import { MoreHorizontal, Edit, Eye, MapPin, Phone, Power } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card } from '@/components/ui/card';
@@ -117,7 +116,7 @@ const StoresTable = () => {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center space-x-2">
-                    <Toggle className="w-4 h-4 text-gray-400" />
+                    <Power className="w-4 h-4 text-gray-400" />
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                       store.status === 'Active' 
                         ? 'bg-green-100 text-green-800' 
