@@ -7,10 +7,10 @@ const CustomersFilters = () => {
 
   const tabs = [
     { id: 'all', label: 'All Customers' },
-    { id: 'new-not-signed', label: 'New Customers (Not Signed IN)' },
-    { id: 'new-signed', label: 'New Customers (Signed IN)' },
-    { id: 'repeated', label: 'Repeated Customer' },
-    { id: 'abandoned', label: 'Abandoned cart' }
+    { id: 'new-not-signed', label: 'New Customers (Not Signed In)' },
+    { id: 'new-signed', label: 'New Customers (Signed In)' },
+    { id: 'repeated', label: 'Returning Customers' },
+    { id: 'abandoned', label: 'Abandoned Cart' }
   ];
 
   return (
