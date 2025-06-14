@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Edit, Eye, Trash2 } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import EditCategoryDrawer from './EditCategoryDrawer';
 
@@ -59,7 +61,7 @@ const CategoriesTable = () => {
   };
 
   return (
-    <>
+    <TooltipProvider>
       <div className={`${currentPalette.cardBg} rounded-lg shadow-sm border`}>
         <Table>
           <TableHeader>
@@ -93,21 +95,52 @@ const CategoriesTable = () => {
                 </TableCell>
                 <TableCell className="w-20">{category.products}</TableCell>
                 <TableCell className="w-32 text-right">
-                  <div className="flex items-center justify-end space-x-2">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-green-600 hover:text-green-700"
-                      onClick={() => handleEditClick(category)}
-                    >
-                      ✏️
-                    </Button>
-                    <Button variant="ghost" size="sm" className="text-yellow-600 hover:text-yellow-700">
-                      👁️
-                    </Button>
-                    <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
-                      🗑️
-                    </Button>
+                  <div className="flex items-center justify-end space-x-1">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-50 transition-colors duration-200"
+                          onClick={() => handleEditClick(category)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Edit category</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition-colors duration-200"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>View category</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors duration-200"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Delete category</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 </TableCell>
               </TableRow>
@@ -138,7 +171,7 @@ const CategoriesTable = () => {
         category={selectedCategory}
         onSave={handleSaveCategory}
       />
-    </>
+    </TooltipProvider>
   );
 };
 
