@@ -5,9 +5,11 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 const PlansHeader = () => {
   const { currentPalette } = useTheme();
+  const navigate = useNavigate();
 
   return (
     <div className="space-y-6">
@@ -45,7 +47,10 @@ const PlansHeader = () => {
                   Payment method: manual
                 </div>
                 
-                <Button className={`${currentPalette.primary} text-white hover:opacity-90`}>
+                <Button 
+                  className={`${currentPalette.primary} text-white hover:opacity-90`}
+                  onClick={() => navigate('/change-plan')}
+                >
                   Change Plan
                 </Button>
               </CardContent>
