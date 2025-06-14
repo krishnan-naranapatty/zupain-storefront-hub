@@ -65,34 +65,34 @@ const CategoriesTable = () => {
           <TableHeader>
             <TableRow>
               <TableHead className="w-12"></TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Products</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="min-w-[120px]">Category</TableHead>
+              <TableHead className="min-w-[140px]">Status</TableHead>
+              <TableHead className="w-20">Products</TableHead>
+              <TableHead className="w-32 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {categories.map((category) => (
               <TableRow key={category.id}>
-                <TableCell>
+                <TableCell className="w-12">
                   <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
                     <span className="text-sm">{category.image}</span>
                   </div>
                 </TableCell>
-                <TableCell className="font-medium">{category.name}</TableCell>
-                <TableCell>
+                <TableCell className="font-medium min-w-[120px]">{category.name}</TableCell>
+                <TableCell className="min-w-[140px]">
                   <div className="flex items-center space-x-2">
                     <Switch
                       checked={category.status}
                       onCheckedChange={() => handleStatusToggle(category.id)}
                     />
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-gray-600 w-14">
                       {category.status ? 'Active' : 'Inactive'}
                     </span>
                   </div>
                 </TableCell>
-                <TableCell>{category.products}</TableCell>
-                <TableCell className="text-right">
+                <TableCell className="w-20">{category.products}</TableCell>
+                <TableCell className="w-32 text-right">
                   <div className="flex items-center justify-end space-x-2">
                     <Button 
                       variant="ghost" 
