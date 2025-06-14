@@ -3,28 +3,37 @@ import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { useTheme } from '@/contexts/ThemeContext';
 
 const CategoriesTable = () => {
   const { currentPalette } = useTheme();
   
-  const categories = [
+  const [categories, setCategories] = useState([
     {
       id: 1,
       name: 'Serum',
-      status: 'active',
+      status: true,
       products: 3,
       image: '👤'
     },
     {
       id: 2,
       name: 'Sunscreen',
-      status: 'active',
+      status: true,
       products: 1,
       image: '👤'
     }
-  ];
+  ]);
+
+  const handleStatusToggle = (id: number) => {
+    setCategories(categories.map(category => 
+      category.id === id 
+        ? { ...category, status: !category.status }
+        : category
+    ));
+  };
 
   return (
     <div className={`${currentPalette.cardBg} rounded-lg shadow-sm border`}>
@@ -49,9 +58,12 @@ const CategoriesTable = () => {
               <TableCell className="font-medium">{category.name}</TableCell>
               <TableCell>
                 <div className="flex items-center space-x-2">
-                  <div className={`w-3 h-3 rounded-full ${category.status === 'active' ? 'bg-blue-500' : 'bg-gray-400'}`}></div>
+                  <Switch
+                    checked={category.status}
+                    onCheckedChange={() => handleStatusToggle(category.id)}
+                  />
                   <span className="text-sm text-gray-600">
-                    {category.status === 'active' ? 'Active' : 'Inactive'}
+                    {category.status ? 'Active' : 'Inactive'}
                   </span>
                 </div>
               </TableCell>
