@@ -92,12 +92,12 @@ const CouponsTable: React.FC<CouponsTableProps> = ({ onEditCoupon }) => {
               {mockCoupons.map((coupon) => (
                 <tr key={coupon.id} className="border-b hover:bg-gray-50">
                   <td className="p-4">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-2">
                       <span className="font-medium">{coupon.code}</span>
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-6 w-6 p-0"
+                        className="h-6 w-6 p-0 flex items-center justify-center"
                         onClick={() => navigator.clipboard.writeText(coupon.code)}
                       >
                         <Copy className="w-3 h-3" />
