@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,7 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Card, CardContent } from '@/components/ui/card';
-import { X, Calendar as CalendarIcon, Upload } from 'lucide-react';
+import { Upload, Calendar as CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -70,21 +71,14 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
     onClose();
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex">
-      <div className="ml-auto h-full w-full max-w-2xl bg-white shadow-xl flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-xl font-semibold">Edit order discount coupon</h2>
-          <Button variant="ghost" size="sm" onClick={onClose}>
-            <X className="w-4 h-4" />
-          </Button>
-        </div>
+    <Sheet open={isOpen} onOpenChange={onClose}>
+      <SheetContent className="w-[800px] sm:max-w-[800px] overflow-y-auto">
+        <SheetHeader className="mb-6">
+          <SheetTitle className="text-xl font-semibold">Edit order discount coupon</SheetTitle>
+        </SheetHeader>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="space-y-6">
           {/* Image Upload */}
           <div>
             <Card className="border-2 border-dashed border-gray-300 p-8">
@@ -253,7 +247,6 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
                     selected={formData.startDate}
                     onSelect={(date) => handleInputChange('startDate', date)}
                     initialFocus
-                    className="pointer-events-auto"
                   />
                 </PopoverContent>
               </Popover>
@@ -280,25 +273,24 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
                     selected={formData.endDate}
                     onSelect={(date) => handleInputChange('endDate', date)}
                     initialFocus
-                    className="pointer-events-auto"
                   />
                 </PopoverContent>
               </Popover>
             </div>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-end space-x-4 p-6 border-t">
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button onClick={handleSave} className={`${currentPalette.primary} text-white hover:opacity-90`}>
-            Save
-          </Button>
+          {/* Footer */}
+          <div className="flex items-center justify-end space-x-4 pt-6 border-t">
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave} className={`${currentPalette.primary} text-white hover:opacity-90`}>
+              Save
+            </Button>
+          </div>
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   );
 };
 
