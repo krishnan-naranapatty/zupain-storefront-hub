@@ -12,6 +12,7 @@ import Inventory from "./pages/Inventory";
 import Stores from "./pages/Stores";
 import Customers from "./pages/Customers";
 import Categories from "./pages/Categories";
+import Plans from "./pages/Plans";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
