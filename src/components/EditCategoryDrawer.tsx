@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Upload, ChevronRight, ChevronDown } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Upload, ChevronRight, ChevronDown, Plus, Trash2 } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
 interface Category {
@@ -23,12 +24,30 @@ interface EditCategoryDrawerProps {
   onSave: (category: Category) => void;
 }
 
+interface Attribute {
+  id: string;
+  name: string;
+  dataType: string;
+}
+
 const EditCategoryDrawer = ({ isOpen, onClose, category, onSave }: EditCategoryDrawerProps) => {
   const { currentPalette } = useTheme();
   const [categoryName, setCategoryName] = useState(category?.name || '');
   const [isBannerExpanded, setIsBannerExpanded] = useState(false);
   const [bannerTitle, setBannerTitle] = useState('');
   const [bannerDescription, setBannerDescription] = useState('');
+  const [isAttributesExpanded, setIsAttributesExpanded] = useState(false);
+  const [isSEOExpanded, setIsSEOExpanded] = useState(false);
+  
+  // Attributes state
+  const [attributes, setAttributes] = useState<Attribute[]>([]);
+  const [newAttributeName, setNewAttributeName] = useState('');
+  const [newAttributeDataType, setNewAttributeDataType] = useState('');
+  
+  // SEO state
+  const [seoPageTitle, setSeoPageTitle] = useState('');
+  const [seoMetaDescription, setSeoMetaDescription] = useState('');
+  const [seoCategoryUrlHandle, setSeoCategoryUrlHandle] = useState('');
 
   React.useEffect(() => {
     if (category) {
@@ -51,7 +70,32 @@ const EditCategoryDrawer = ({ isOpen, onClose, category, onSave }: EditCategoryD
     setBannerTitle('');
     setBannerDescription('');
     setIsBannerExpanded(false);
+    setIsAttributesExpanded(false);
+    setIsSEOExpanded(false);
+    setAttributes([]);
+    setNewAttributeName('');
+    setNewAttributeDataType('');
+    setSeoPageTitle('');
+    setSeoMetaDescription('');
+    setSeoCategoryUrlHandle('');
     onClose();
+  };
+
+  const handleAddAttribute = () => {
+    if (newAttributeName && newAttributeDataType) {
+      const newAttribute: Attribute = {
+        id: Date.now().toString(),
+        name: newAttributeName,
+        dataType: newAttributeDataType
+      };
+      setAttributes([...attributes, newAttribute]);
+      setNewAttributeName('');
+      setNewAttributeDataType('');
+    }
+  };
+
+  const handleRemoveAttribute = (id: string) => {
+    setAttributes(attributes.filter(attr => attr.id !== id));
   };
 
   return (
@@ -159,14 +203,165 @@ const EditCategoryDrawer = ({ isOpen, onClose, category, onSave }: EditCategoryD
               )}
             </div>
             
-            <div className="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-              <span className="font-medium">Add Attributes</span>
-              <ChevronRight className="w-4 h-4" />
+            {/* Add Attributes - Expandable */}
+            <div className="border rounded-lg">
+              <div 
+                className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50"
+                onClick={() => setIsAttributesExpanded(!isAttributesExpanded)}
+              >
+                <span className="font-medium">Add Attributes</span>
+                {isAttributesExpanded ? (
+                  <ChevronDown className="w-4 h-4" />
+                ) : (
+                  <ChevronRight className="w-4 h-4" />
+                )}
+              </div>
+              
+              {isAttributesExpanded && (
+                <div className="border-t p-4 space-y-4">
+                  {/* Add Attribute Form */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label className="text-sm font-medium text-gray-600 mb-1 block">
+                        * Add Attributes
+                      </Label>
+                      <Input
+                        placeholder="Enter Attributes"
+                        value={newAttributeName}
+                        onChange={(e) => setNewAttributeName(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium text-gray-600 mb-1 block">
+                        Data Type
+                      </Label>
+                      <Select value={newAttributeDataType} onValueChange={setNewAttributeDataType}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="text">Text</SelectItem>
+                          <SelectItem value="number">Number</SelectItem>
+                          <SelectItem value="boolean">Boolean</SelectItem>
+                          <SelectItem value="date">Date</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    onClick={handleAddAttribute}
+                    className={`${currentPalette.primary} text-white hover:${currentPalette.primary}/90`}
+                    size="sm"
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    Add
+                  </Button>
+
+                  {/* Attributes Table */}
+                  {attributes.length > 0 && (
+                    <div className="mt-4">
+                      <div className="grid grid-cols-3 gap-4 text-sm font-medium text-gray-700 mb-2 pb-2 border-b">
+                        <span>Attributes</span>
+                        <span>Data Type</span>
+                        <span>Actions</span>
+                      </div>
+                      <div className="space-y-2">
+                        {attributes.map((attribute) => (
+                          <div key={attribute.id} className="grid grid-cols-3 gap-4 text-sm items-center">
+                            <span>{attribute.name}</span>
+                            <span className="capitalize">{attribute.dataType}</span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleRemoveAttribute(attribute.id)}
+                              className="text-red-600 hover:text-red-700 p-1 h-auto"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {attributes.length === 0 && (
+                    <div className="text-center py-8 text-gray-500">
+                      <div className="text-4xl mb-2">📊</div>
+                      <p className="text-sm">No data</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             
-            <div className="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-              <span className="font-medium">SEO</span>
-              <ChevronRight className="w-4 h-4" />
+            {/* SEO - Expandable */}
+            <div className="border rounded-lg">
+              <div 
+                className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50"
+                onClick={() => setIsSEOExpanded(!isSEOExpanded)}
+              >
+                <span className="font-medium">SEO</span>
+                {isSEOExpanded ? (
+                  <ChevronDown className="w-4 h-4" />
+                ) : (
+                  <ChevronRight className="w-4 h-4" />
+                )}
+              </div>
+              
+              {isSEOExpanded && (
+                <div className="border-t p-4 space-y-4">
+                  {/* Page Title */}
+                  <div>
+                    <Label htmlFor="seo-page-title" className="text-sm font-medium text-gray-700 mb-1 block">
+                      Page Title
+                    </Label>
+                    <div className="text-xs text-blue-600 mb-2">
+                      https://blameless.zupain.com/product-list?categoryId=57891c0a-c815-4607-b075-0db138c5beba
+                    </div>
+                    <div className="text-xs text-gray-600 mb-1">Meta Description</div>
+                    <Input
+                      id="seo-page-title"
+                      placeholder="Page Title"
+                      value={seoPageTitle}
+                      onChange={(e) => setSeoPageTitle(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Meta Description */}
+                  <div>
+                    <Label htmlFor="seo-meta-description" className="text-sm font-medium text-gray-600 mb-1 block">
+                      Meta Description
+                    </Label>
+                    <Textarea
+                      id="seo-meta-description"
+                      placeholder="Meta Description"
+                      value={seoMetaDescription}
+                      onChange={(e) => setSeoMetaDescription(e.target.value)}
+                      className="min-h-[100px]"
+                    />
+                  </div>
+
+                  {/* Category URL Handle */}
+                  <div>
+                    <Label htmlFor="seo-url-handle" className="text-sm font-medium text-gray-600 mb-1 block">
+                      Category Url Handle
+                    </Label>
+                    <div className="flex">
+                      <span className="inline-flex items-center px-3 text-sm text-blue-600 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md">
+                        https://blameless.zupain.com/product-list?categoryId=
+                      </span>
+                      <Input
+                        id="seo-url-handle"
+                        placeholder="Url Handle"
+                        value={seoCategoryUrlHandle}
+                        onChange={(e) => setSeoCategoryUrlHandle(e.target.value)}
+                        className="rounded-l-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
