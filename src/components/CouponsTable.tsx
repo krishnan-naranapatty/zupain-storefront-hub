@@ -97,7 +97,7 @@ const CouponsTable: React.FC<CouponsTableProps> = ({ onEditCoupon }) => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-6 w-6 p-0 flex items-center justify-center"
+                        className="h-6 w-6 p-0"
                         onClick={() => navigator.clipboard.writeText(coupon.code)}
                       >
                         <Copy className="w-3 h-3" />

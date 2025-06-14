@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -23,6 +22,7 @@ interface EditCouponDrawerProps {
 
 const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, coupon }) => {
   const { currentPalette } = useTheme();
+  
   const [formData, setFormData] = useState({
     code: '',
     description: '',
@@ -73,7 +73,7 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-[800px] sm:max-w-[800px] overflow-y-auto">
+      <SheetContent className="w-[800px] sm:max-w-[800px] overflow-y-auto" hideCloseButton={true}>
         <SheetHeader className="mb-6">
           <SheetTitle className="text-xl font-semibold">Edit order discount coupon</SheetTitle>
         </SheetHeader>
