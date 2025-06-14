@@ -4,7 +4,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Upload, ChevronRight } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Upload, ChevronRight, ChevronDown } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
 interface Category {
@@ -25,6 +26,9 @@ interface EditCategoryDrawerProps {
 const EditCategoryDrawer = ({ isOpen, onClose, category, onSave }: EditCategoryDrawerProps) => {
   const { currentPalette } = useTheme();
   const [categoryName, setCategoryName] = useState(category?.name || '');
+  const [isBannerExpanded, setIsBannerExpanded] = useState(false);
+  const [bannerTitle, setBannerTitle] = useState('');
+  const [bannerDescription, setBannerDescription] = useState('');
 
   React.useEffect(() => {
     if (category) {
@@ -44,6 +48,9 @@ const EditCategoryDrawer = ({ isOpen, onClose, category, onSave }: EditCategoryD
 
   const handleCancel = () => {
     setCategoryName(category?.name || '');
+    setBannerTitle('');
+    setBannerDescription('');
+    setIsBannerExpanded(false);
     onClose();
   };
 
@@ -91,9 +98,65 @@ const EditCategoryDrawer = ({ isOpen, onClose, category, onSave }: EditCategoryD
 
           {/* Expandable sections */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-              <span className="font-medium">Add Banner</span>
-              <ChevronRight className="w-4 h-4" />
+            {/* Add Banner - Expandable */}
+            <div className="border rounded-lg">
+              <div 
+                className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50"
+                onClick={() => setIsBannerExpanded(!isBannerExpanded)}
+              >
+                <span className="font-medium">Add Banner</span>
+                {isBannerExpanded ? (
+                  <ChevronDown className="w-4 h-4" />
+                ) : (
+                  <ChevronRight className="w-4 h-4" />
+                )}
+              </div>
+              
+              {isBannerExpanded && (
+                <div className="border-t p-4 space-y-4">
+                  {/* Banner Image */}
+                  <div>
+                    <Label className="text-sm font-medium text-gray-600 mb-2 block">
+                      Banner Image
+                    </Label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                      <Upload className="w-6 h-6 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm text-gray-600 mb-1">Drag & drop files or Browse</p>
+                      <p className="text-xs text-gray-500">1920 x 1080</p>
+                      <p className="text-xs text-blue-500">Image aspect ratio for better fit</p>
+                      <p className="text-xs text-red-500">Max file size: Image 2MB</p>
+                    </div>
+                  </div>
+
+                  {/* Banner Title */}
+                  <div>
+                    <Label htmlFor="banner-title" className="text-sm font-medium text-gray-600">
+                      Banner Title
+                    </Label>
+                    <Input
+                      id="banner-title"
+                      placeholder="Enter Banner Title"
+                      value={bannerTitle}
+                      onChange={(e) => setBannerTitle(e.target.value)}
+                      className="mt-1"
+                    />
+                  </div>
+
+                  {/* Banner Description */}
+                  <div>
+                    <Label htmlFor="banner-description" className="text-sm font-medium text-gray-600">
+                      Banner Description
+                    </Label>
+                    <Textarea
+                      id="banner-description"
+                      placeholder="Enter Banner Description"
+                      value={bannerDescription}
+                      onChange={(e) => setBannerDescription(e.target.value)}
+                      className="mt-1 min-h-[100px]"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
             
             <div className="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
