@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RefreshCw } from 'lucide-react';
@@ -16,41 +16,32 @@ const WhatsAppMessages: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-start">
-        {/* Left side - Tabs */}
-        <div className="flex space-x-1">
+      {/* Header with Actions */}
+      <div className="flex justify-between items-center">
+        <div className="flex space-x-2">
           <Button
-            variant={activeTab === 'messages' ? 'default' : 'ghost'}
+            variant={activeTab === 'messages' ? 'default' : 'outline'}
             onClick={() => setActiveTab('messages')}
-            className={`px-4 py-2 rounded-md ${
-              activeTab === 'messages' 
-                ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
+            className="px-4 py-2"
           >
-            Whatsapp Messages
+            WhatsApp Messages
           </Button>
           <Button
-            variant={activeTab === 'refresh' ? 'default' : 'ghost'}
+            variant="outline"
             onClick={() => setActiveTab('refresh')}
-            className={`px-4 py-2 rounded-md ${
-              activeTab === 'refresh' 
-                ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
+            className="px-4 py-2"
           >
             <RefreshCw className="w-4 h-4 mr-2" />
             Refresh
           </Button>
         </div>
 
-        {/* Right side - Account Selector */}
         <div className="w-80">
           <Select value={selectedAccount} onValueChange={setSelectedAccount}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Choose a account" />
             </SelectTrigger>
-            <SelectContent className="bg-white border shadow-lg">
+            <SelectContent className="bg-white border shadow-lg z-50">
               <SelectItem value="8939347493" className="hover:bg-gray-50">
                 8939347493
               </SelectItem>
@@ -63,7 +54,10 @@ const WhatsAppMessages: React.FC = () => {
       </div>
 
       {/* Messages Table */}
-      <Card className="bg-white shadow-sm">
+      <Card>
+        <CardHeader>
+          <CardTitle>Message Campaigns</CardTitle>
+        </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -72,7 +66,7 @@ const WhatsAppMessages: React.FC = () => {
                   <th className="text-left p-4 font-medium text-gray-900">Job ID</th>
                   <th className="text-left p-4 font-medium text-gray-900">Campaign Name</th>
                   <th className="text-left p-4 font-medium text-gray-900">Status</th>
-                  <th className="text-left p-4 font-medium text-gray-900">created At</th>
+                  <th className="text-left p-4 font-medium text-gray-900">Created At</th>
                 </tr>
               </thead>
               <tbody>

@@ -38,9 +38,13 @@ const WhatsAppCompose: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Create WhatsApp Campaign</h2>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-gray-900">Create WhatsApp Campaign</h2>
+          <p className="text-sm text-gray-600 mt-1">Compose and send WhatsApp messages to your audience</p>
+        </div>
         <Button 
           onClick={handleSendMessage} 
           className="bg-green-600 hover:bg-green-700 text-white px-6"
@@ -52,9 +56,9 @@ const WhatsAppCompose: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Step 1: Campaign Details */}
+        {/* Campaign Details */}
         <Card className="lg:col-span-2">
-          <CardHeader className="pb-4">
+          <CardHeader>
             <CardTitle className="text-lg flex items-center">
               <MessageSquare className="w-5 h-5 mr-2 text-blue-600" />
               Campaign Details
@@ -90,9 +94,9 @@ const WhatsAppCompose: React.FC = () => {
           </CardContent>
         </Card>
 
-        {/* Step 2: Account Selection */}
+        {/* Send From */}
         <Card>
-          <CardHeader className="pb-4">
+          <CardHeader>
             <CardTitle className="text-lg flex items-center">
               <Users className="w-5 h-5 mr-2 text-green-600" />
               Send From
@@ -142,9 +146,9 @@ const WhatsAppCompose: React.FC = () => {
         </Card>
       </div>
 
-      {/* Step 3: Audience Selection */}
+      {/* Audience Selection */}
       <Card>
-        <CardHeader className="pb-4">
+        <CardHeader>
           <CardTitle className="text-lg flex items-center">
             <Users className="w-5 h-5 mr-2 text-purple-600" />
             Select Audience
@@ -223,7 +227,7 @@ const WhatsAppCompose: React.FC = () => {
       {/* Campaign Summary */}
       {(campaignName || message || selectedAccount) && (
         <Card className="bg-blue-50 border-blue-200">
-          <CardHeader className="pb-3">
+          <CardHeader>
             <CardTitle className="text-lg text-blue-800">Campaign Summary</CardTitle>
           </CardHeader>
           <CardContent className="text-sm space-y-2">
