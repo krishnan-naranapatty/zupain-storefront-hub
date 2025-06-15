@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import ImageUploadSection from '@/components/coupon-form/ImageUploadSection';
 import CouponDetailsSection from '@/components/coupon-form/CouponDetailsSection';
@@ -65,11 +66,20 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
     onClose();
   };
 
+  const handleCancel = () => {
+    onClose();
+  };
+
+  const isNewCoupon = !coupon?.id;
+
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="w-[800px] sm:max-w-[800px] overflow-y-auto" hideCloseButton={true}>
-        <SheetHeader className="mb-6">
-          <SheetTitle className="text-xl font-semibold">Edit order discount coupon</SheetTitle>
+        <SheetHeader className="mb-6 border-b pb-4">
+          <SheetTitle className="flex items-center text-lg font-medium">
+            <ArrowLeft className="w-5 h-5 mr-2 cursor-pointer" onClick={onClose} />
+            {isNewCoupon ? 'Add order discount coupon' : 'Edit order discount coupon'}
+          </SheetTitle>
         </SheetHeader>
 
         <div className="space-y-6">
@@ -92,7 +102,7 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
 
           {/* Footer */}
           <div className="flex items-center justify-end space-x-4 pt-6 border-t">
-            <Button variant="outline" onClick={onClose}>
+            <Button variant="outline" onClick={handleCancel}>
               Cancel
             </Button>
             <Button onClick={handleSave} className={`${currentPalette.primary} text-white hover:opacity-90`}>

@@ -20,7 +20,7 @@ const DateRangeSection: React.FC<DateRangeSectionProps> = ({ formData, onInputCh
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <Label>Start date & time *</Label>
+        <Label className="text-sm font-medium text-red-500">* Start date & time</Label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -31,7 +31,7 @@ const DateRangeSection: React.FC<DateRangeSectionProps> = ({ formData, onInputCh
               )}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {formData.startDate ? format(formData.startDate, "yyyy-MM-dd HH:mm:ss") : "Select date"}
+              {formData.startDate ? format(formData.startDate, "dd/MM/yyyy") : "Select start date & time"}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -40,13 +40,14 @@ const DateRangeSection: React.FC<DateRangeSectionProps> = ({ formData, onInputCh
               selected={formData.startDate}
               onSelect={(date) => onInputChange('startDate', date)}
               initialFocus
+              className="pointer-events-auto"
             />
           </PopoverContent>
         </Popover>
       </div>
 
       <div>
-        <Label>End date & time *</Label>
+        <Label className="text-sm font-medium text-red-500">* End date & time</Label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -57,7 +58,7 @@ const DateRangeSection: React.FC<DateRangeSectionProps> = ({ formData, onInputCh
               )}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {formData.endDate ? format(formData.endDate, "yyyy-MM-dd HH:mm:ss") : "Select date"}
+              {formData.endDate ? format(formData.endDate, "dd/MM/yyyy") : "Select End date & time"}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
@@ -66,6 +67,7 @@ const DateRangeSection: React.FC<DateRangeSectionProps> = ({ formData, onInputCh
               selected={formData.endDate}
               onSelect={(date) => onInputChange('endDate', date)}
               initialFocus
+              className="pointer-events-auto"
             />
           </PopoverContent>
         </Popover>
