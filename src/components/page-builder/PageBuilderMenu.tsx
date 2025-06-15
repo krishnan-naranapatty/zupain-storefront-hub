@@ -90,6 +90,13 @@ const PageBuilderMenu: React.FC = () => {
             </Button>
           </div>
 
+          {/* Collection Description */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <p className="text-blue-800 text-sm leading-relaxed">
+              <strong>What is a Collection?</strong> Collections allow you to group products together based on a specific theme or purpose, regardless of their individual categories. For example, while products like pants, shirts, and t-shirts each belong to different categories, you can create a "Casual Men's Clothing" collection that brings them together for shoppers looking for that particular style.
+            </p>
+          </div>
+
           {/* Search - Aligned to match Menu tab */}
           <div className="flex items-center justify-end">
             <div className="relative w-80">
