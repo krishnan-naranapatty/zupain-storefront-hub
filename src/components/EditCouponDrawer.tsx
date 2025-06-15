@@ -9,6 +9,7 @@ import CouponDetailsSection from '@/components/coupon-form/CouponDetailsSection'
 import DiscountSettingsSection from '@/components/coupon-form/DiscountSettingsSection';
 import DateRangeSection from '@/components/coupon-form/DateRangeSection';
 import ProductSelectionSection from '@/components/coupon-form/ProductSelectionSection';
+import FreeShippingSection from '@/components/coupon-form/FreeShippingSection';
 
 interface EditCouponDrawerProps {
   isOpen: boolean;
@@ -84,6 +85,7 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
   const isProductOrCategoryCoupon = currentCouponType === 'product-category' || 
                                     currentCouponType === 'Product' || 
                                     currentCouponType === 'Category';
+  const isFreeShippingCoupon = currentCouponType === 'free-shipping';
 
   const getDrawerTitle = () => {
     if (isNewCoupon) {
@@ -91,7 +93,7 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
         case 'product-category':
           return 'Create Product/Category Coupon';
         case 'free-shipping':
-          return 'Create Free Shipping Coupon';
+          return 'Free shipping coupon';
         case 'order-discount':
         default:
           return 'Create Order Discount Coupon';
@@ -103,7 +105,7 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
         case 'Category':
           return 'Edit Product/Category Coupon';
         case 'free-shipping':
-          return 'Edit Free Shipping Coupon';
+          return 'Free shipping coupon';
         case 'order-discount':
         default:
           return 'Edit Order Discount Coupon';
@@ -129,29 +131,41 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
         </SheetHeader>
 
         <div className="space-y-6">
-          <ImageUploadSection />
-          
-          <CouponDetailsSection 
-            formData={formData} 
-            onInputChange={handleInputChange} 
-          />
+          {isFreeShippingCoupon ? (
+            <>
+              <ImageUploadSection />
+              <FreeShippingSection 
+                formData={formData} 
+                onInputChange={handleInputChange} 
+              />
+            </>
+          ) : (
+            <>
+              <ImageUploadSection />
+              
+              <CouponDetailsSection 
+                formData={formData} 
+                onInputChange={handleInputChange} 
+              />
 
-          {isProductOrCategoryCoupon && (
-            <ProductSelectionSection 
-              formData={formData} 
-              onInputChange={handleInputChange} 
-            />
+              {isProductOrCategoryCoupon && (
+                <ProductSelectionSection 
+                  formData={formData} 
+                  onInputChange={handleInputChange} 
+                />
+              )}
+
+              <DiscountSettingsSection 
+                formData={formData} 
+                onInputChange={handleInputChange} 
+              />
+
+              <DateRangeSection 
+                formData={formData} 
+                onInputChange={handleInputChange} 
+              />
+            </>
           )}
-
-          <DiscountSettingsSection 
-            formData={formData} 
-            onInputChange={handleInputChange} 
-          />
-
-          <DateRangeSection 
-            formData={formData} 
-            onInputChange={handleInputChange} 
-          />
 
           {/* Footer */}
           <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 -mx-6 -mb-6 flex items-center justify-end space-x-3">
@@ -167,7 +181,7 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
               className="px-6 py-2 bg-blue-600 text-white hover:bg-blue-700 flex items-center"
             >
               <Save className="w-4 h-4 mr-2" />
-              {isNewCoupon ? 'Create Coupon' : 'Save Changes'}
+              {isNewCoupon ? 'Save' : 'Save Changes'}
             </Button>
           </div>
         </div>
