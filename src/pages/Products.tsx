@@ -10,7 +10,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 
 const Products = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const { currentPalette } = useTheme();
 
   const toggleSidebar = () => {
