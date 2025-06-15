@@ -33,6 +33,27 @@ const Coupons = () => {
     setSelectedCoupon(null);
   };
 
+  const handleAddCoupon = (type: string) => {
+    console.log('Creating new coupon of type:', type);
+    // Create a new coupon object based on the type
+    const newCoupon = {
+      id: null, // Indicates this is a new coupon
+      code: '',
+      description: '',
+      type: type,
+      value: 0,
+      usageLimit: 100,
+      used: 0,
+      minPurchase: 0,
+      status: 'Draft',
+      startDate: new Date().toISOString().split('T')[0],
+      endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] // 30 days from now
+    };
+    
+    setSelectedCoupon(newCoupon);
+    setEditDrawerOpen(true);
+  };
+
   return (
     <div className={`flex min-h-screen ${currentPalette.background}`}>
       <Sidebar isCollapsed={sidebarCollapsed} onToggle={toggleSidebar} />
@@ -41,7 +62,11 @@ const Coupons = () => {
         <Header onToggleSidebar={toggleSidebar} />
         
         <main className="flex-1 p-6 space-y-6">
-          <CouponsHeader viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+          <CouponsHeader 
+            viewMode={viewMode} 
+            onViewModeChange={handleViewModeChange}
+            onAddCoupon={handleAddCoupon}
+          />
           {viewMode === 'list' ? 
             <CouponsTable onEditCoupon={handleEditCoupon} /> : 
             <CouponsGrid onEditCoupon={handleEditCoupon} />
