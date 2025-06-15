@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Edit, MoreHorizontal, Eye, Copy, Archive } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,7 +6,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
-const ProductsTable = () => {
+interface ProductsTableProps {
+  className?: string;
+}
+
+const ProductsTable = ({ className }: ProductsTableProps) => {
   const products = [
     {
       id: 1,
@@ -79,7 +82,7 @@ const ProductsTable = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 ${className || ''}`}>
       <div className="bg-white rounded-lg border overflow-hidden">
         <Table>
           <TableHeader>

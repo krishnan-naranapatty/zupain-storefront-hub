@@ -7,13 +7,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ProductsHeader from '@/components/ProductsHeader';
 import ProductsFilters from '@/components/ProductsFilters';
 import ProductsTable from '@/components/ProductsTable';
+import ProductsGrid from '@/components/ProductsGrid';
 
 const Inventory = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
   const { currentPalette } = useTheme();
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  const handleViewModeChange = (mode: 'grid' | 'list') => {
+    setViewMode(mode);
   };
 
   return (
@@ -33,8 +39,8 @@ const Inventory = () => {
               
               <TabsContent value="products" className="mt-6 space-y-6">
                 <ProductsHeader />
-                <ProductsFilters />
-                <ProductsTable />
+                <ProductsFilters viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+                {viewMode === 'list' ? <ProductsTable /> : <ProductsGrid />}
               </TabsContent>
               
               <TabsContent value="inventory" className="mt-6">
