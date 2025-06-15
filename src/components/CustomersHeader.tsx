@@ -1,15 +1,45 @@
 
-import React from 'react';
-import { Search, Download, Upload } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, Download, Upload, Users, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { useTheme } from '@/contexts/ThemeContext';
+import CustomersFilters from '@/components/CustomersFilters';
+import CustomersTable from '@/components/CustomersTable';
 
 const CustomersHeader = () => {
-  return (
+  const { currentPalette } = useTheme();
+  const [activeTab, setActiveTab] = useState('customers');
+
+  const navigationTabs = [
+    { 
+      id: 'customers', 
+      label: 'Customers', 
+      icon: Users
+    },
+    { 
+      id: 'segments', 
+      label: 'Segments', 
+      icon: UserPlus
+    }
+  ];
+
+  const renderCustomersContent = () => (
     <div className="space-y-6">
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold">Customer Management</h2>
+        <p className="text-sm text-gray-600">View and manage your customer database</p>
+      </div>
+
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
+        <div className="flex-1 max-w-md">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search customers..."
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
         </div>
         <div className="flex items-center space-x-3">
           <Button variant="outline" className="flex items-center space-x-2">
@@ -22,14 +52,63 @@ const CustomersHeader = () => {
           </Button>
         </div>
       </div>
-      
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-        <input
-          type="text"
-          placeholder="Search customers..."
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
+
+      <CustomersFilters />
+      <CustomersTable />
+    </div>
+  );
+
+  const renderSegmentsContent = () => (
+    <div>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold">Customer Segments</h2>
+        <p className="text-sm text-gray-600">Create and manage customer segments for targeted marketing</p>
+      </div>
+      <div className="text-center py-12 text-gray-500">
+        <UserPlus className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+        <h3 className="text-lg font-medium mb-2">No segments created yet</h3>
+        <p className="text-sm mb-4">Create your first customer segment to organize your customers</p>
+        <Button className={`${currentPalette.primary} text-white hover:opacity-90`}>
+          Create Segment
+        </Button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="space-y-6">
+      {/* Page Title */}
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
+      </div>
+
+      {/* Navigation Tabs - WhatsApp style */}
+      <div className="border-b border-gray-200">
+        <nav className="flex space-x-8">
+          {navigationTabs.map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center space-x-2 py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === tab.id
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+      </div>
+
+      {/* Tab Content */}
+      <div>
+        {activeTab === 'customers' && renderCustomersContent()}
+        {activeTab === 'segments' && renderSegmentsContent()}
       </div>
     </div>
   );
