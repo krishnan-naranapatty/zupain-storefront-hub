@@ -3,10 +3,24 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Upload } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Upload, Plus } from 'lucide-react';
 
 const WhatsAppCompose: React.FC = () => {
   const [selectedNumber, setSelectedNumber] = useState('');
+  const [whatsappNumbers, setWhatsappNumbers] = useState([
+    '8939347493',
+    '9328823678'
+  ]);
+  const [newNumber, setNewNumber] = useState('');
+
+  const handleAddNumber = () => {
+    if (newNumber.trim() && !whatsappNumbers.includes(newNumber.trim())) {
+      setWhatsappNumbers([...whatsappNumbers, newNumber.trim()]);
+      setNewNumber('');
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -24,10 +38,35 @@ const WhatsAppCompose: React.FC = () => {
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Choose whatsapp number" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="number1">+1 (555) 123-4567</SelectItem>
-                  <SelectItem value="number2">+1 (555) 987-6543</SelectItem>
-                  <SelectItem value="number3">+1 (555) 456-7890</SelectItem>
+                <SelectContent className="bg-white border shadow-lg">
+                  {whatsappNumbers.map((number) => (
+                    <SelectItem key={number} value={number} className="hover:bg-gray-50">
+                      {number}
+                    </SelectItem>
+                  ))}
+                  <div className="p-2 border-t border-gray-200">
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Add whatsapp number"
+                        value={newNumber}
+                        onChange={(e) => setNewNumber(e.target.value)}
+                        className="flex-1 text-sm"
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            handleAddNumber();
+                          }
+                        }}
+                      />
+                      <Button 
+                        onClick={handleAddNumber}
+                        size="sm"
+                        className="bg-slate-700 hover:bg-slate-800 text-white px-3"
+                      >
+                        <Plus className="w-4 h-4 mr-1" />
+                        Add
+                      </Button>
+                    </div>
+                  </div>
                 </SelectContent>
               </Select>
             </div>
