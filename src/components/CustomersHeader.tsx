@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
-import { Search, Download, Upload, Users, UserPlus } from 'lucide-react';
+import { Search, Download, Upload, Users, UserPlus, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTheme } from '@/contexts/ThemeContext';
 import CustomersTable from '@/components/CustomersTable';
 
@@ -24,7 +25,7 @@ const CustomersHeader = () => {
     }
   ];
 
-  const filterTabs = [
+  const filterOptions = [
     { id: 'all', label: 'All Customers' },
     { id: 'new-not-signed', label: 'New (Not Signed)' },
     { id: 'new-signed', label: 'New (Signed In)' },
@@ -39,7 +40,7 @@ const CustomersHeader = () => {
         <p className="text-sm text-gray-600">View and manage your customer database</p>
       </div>
 
-      {/* Integrated Card with Search, Actions, and Filters */}
+      {/* Card with Search, Actions, and Dropdown Filter */}
       <Card className={`${currentPalette.cardBg} border shadow-sm`}>
         <CardContent className="p-4 space-y-4">
           {/* Top Row: Search and Action Buttons */}
@@ -71,22 +72,22 @@ const CustomersHeader = () => {
             </div>
           </div>
 
-          {/* Bottom Row: Filter Tabs */}
+          {/* Bottom Row: Filter Dropdown */}
           <div className="pt-2 border-t border-gray-200">
-            <div className="flex flex-wrap gap-2">
-              {filterTabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    activeFilter === tab.id 
-                      ? `${currentPalette.primary.replace('bg-', 'bg-')} text-white` 
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                  }`}
-                  onClick={() => setActiveFilter(tab.id)}
-                >
-                  {tab.label}
-                </button>
-              ))}
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium text-gray-700">Filter by:</span>
+              <Select value={activeFilter} onValueChange={setActiveFilter}>
+                <SelectTrigger className="w-[200px] bg-white">
+                  <SelectValue placeholder="Select filter" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border shadow-lg z-50">
+                  {filterOptions.map((option) => (
+                    <SelectItem key={option.id} value={option.id}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </CardContent>
