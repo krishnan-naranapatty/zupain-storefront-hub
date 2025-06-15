@@ -18,21 +18,21 @@ const CategoriesFilters = () => {
   const hasActiveFilters = category || subCategory;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center space-x-6 flex-wrap gap-4">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
-              <Filter className="w-5 h-5 text-blue-600" />
+            <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+              <Filter className="w-4 h-4 text-blue-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
+            <h3 className="text-base font-semibold text-gray-900">Filters</h3>
           </div>
           
           <div className="flex items-center space-x-4 flex-wrap gap-4">
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-1">
               <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Category</label>
               <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger className="w-48 h-10 bg-gray-50 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                <SelectTrigger className="w-48 h-9 bg-gray-50 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
@@ -42,10 +42,10 @@ const CategoriesFilters = () => {
               </Select>
             </div>
 
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-1">
               <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Sub Category</label>
               <Select value={subCategory} onValueChange={setSubCategory}>
-                <SelectTrigger className="w-48 h-10 bg-gray-50 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
+                <SelectTrigger className="w-48 h-9 bg-gray-50 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all">
                   <SelectValue placeholder="Select sub category" />
                 </SelectTrigger>
                 <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg z-50">
@@ -61,7 +61,7 @@ const CategoriesFilters = () => {
           <Button 
             variant="outline" 
             onClick={handleClearFilters}
-            className="text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 rounded-xl px-4 h-10 font-medium transition-all duration-200 flex items-center space-x-2"
+            className="text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 rounded-xl px-4 h-9 font-medium transition-all duration-200 flex items-center space-x-2"
           >
             <X className="w-4 h-4" />
             <span>Clear filters</span>
