@@ -6,12 +6,14 @@ import CouponsHeader from '@/components/CouponsHeader';
 import CouponsTable from '@/components/CouponsTable';
 import CouponsGrid from '@/components/CouponsGrid';
 import EditCouponDrawer from '@/components/EditCouponDrawer';
+import EditProductCouponDrawer from '@/components/EditProductCouponDrawer';
 import { useTheme } from '@/contexts/ThemeContext';
 
 const Coupons = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [editDrawerOpen, setEditDrawerOpen] = useState(false);
+  const [productCouponDrawerOpen, setProductCouponDrawerOpen] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const { currentPalette } = useTheme();
 
@@ -25,11 +27,22 @@ const Coupons = () => {
 
   const handleEditCoupon = (coupon: any) => {
     setSelectedCoupon(coupon);
-    setEditDrawerOpen(true);
+    
+    // Check if it's a product/category coupon
+    if (coupon.type === 'Product' || coupon.type === 'Category') {
+      setProductCouponDrawerOpen(true);
+    } else {
+      setEditDrawerOpen(true);
+    }
   };
 
   const handleCloseEditDrawer = () => {
     setEditDrawerOpen(false);
+    setSelectedCoupon(null);
+  };
+
+  const handleCloseProductCouponDrawer = () => {
+    setProductCouponDrawerOpen(false);
     setSelectedCoupon(null);
   };
 
@@ -51,7 +64,13 @@ const Coupons = () => {
     };
     
     setSelectedCoupon(newCoupon);
-    setEditDrawerOpen(true);
+    
+    // Open appropriate drawer based on coupon type
+    if (type === 'Product' || type === 'Category') {
+      setProductCouponDrawerOpen(true);
+    } else {
+      setEditDrawerOpen(true);
+    }
   };
 
   return (
@@ -77,6 +96,12 @@ const Coupons = () => {
       <EditCouponDrawer
         isOpen={editDrawerOpen}
         onClose={handleCloseEditDrawer}
+        coupon={selectedCoupon}
+      />
+
+      <EditProductCouponDrawer
+        isOpen={productCouponDrawerOpen}
+        onClose={handleCloseProductCouponDrawer}
         coupon={selectedCoupon}
       />
     </div>
