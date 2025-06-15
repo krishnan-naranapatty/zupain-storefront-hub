@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Download } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { Download, ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card } from '@/components/ui/card';
@@ -15,6 +15,7 @@ const customersData = [
     mobile: "+91 9157101975",
     totalOrders: 8,
     totalSales: "₹3,303.00",
+    totalSalesValue: 3303,
     totalCart: 0
   },
   {
@@ -25,6 +26,7 @@ const customersData = [
     mobile: "6363618762",
     totalOrders: 0,
     totalSales: "₹0.00",
+    totalSalesValue: 0,
     totalCart: "1 items"
   },
   {
@@ -35,6 +37,7 @@ const customersData = [
     mobile: "91 8849626093",
     totalOrders: 5,
     totalSales: "₹5.00",
+    totalSalesValue: 5,
     totalCart: 0
   },
   {
@@ -45,6 +48,7 @@ const customersData = [
     mobile: "91 8124001125",
     totalOrders: 2,
     totalSales: "₹1,600.00",
+    totalSalesValue: 1600,
     totalCart: 0
   },
   {
@@ -55,6 +59,7 @@ const customersData = [
     mobile: "91 9236084106",
     totalOrders: 2,
     totalSales: "₹2.00",
+    totalSalesValue: 2,
     totalCart: "1 items"
   },
   {
@@ -65,6 +70,7 @@ const customersData = [
     mobile: "91 9727776523",
     totalOrders: 1,
     totalSales: "₹1.00",
+    totalSalesValue: 1,
     totalCart: "1 items"
   },
   {
@@ -75,6 +81,7 @@ const customersData = [
     mobile: "+91 9080235290",
     totalOrders: 1,
     totalSales: "₹1,000.00",
+    totalSalesValue: 1000,
     totalCart: 0
   },
   {
@@ -85,6 +92,7 @@ const customersData = [
     mobile: "91 1122334455",
     totalOrders: 1,
     totalSales: "₹1.00",
+    totalSalesValue: 1,
     totalCart: 0
   },
   {
@@ -95,6 +103,7 @@ const customersData = [
     mobile: "91 8934347493",
     totalOrders: 0,
     totalSales: "₹0.00",
+    totalSalesValue: 0,
     totalCart: 0
   },
   {
@@ -105,11 +114,76 @@ const customersData = [
     mobile: "+91 6369131926",
     totalOrders: 0,
     totalSales: "₹0.00",
+    totalSalesValue: 0,
     totalCart: 0
   }
 ];
 
+type SortKey = 'name' | 'type' | 'mobile' | 'totalOrders' | 'totalSalesValue';
+type SortDirection = 'asc' | 'desc' | null;
+
 const CustomersTable = () => {
+  const [sortKey, setSortKey] = useState<SortKey | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>(null);
+
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      if (sortDirection === 'asc') {
+        setSortDirection('desc');
+      } else if (sortDirection === 'desc') {
+        setSortKey(null);
+        setSortDirection(null);
+      } else {
+        setSortDirection('asc');
+      }
+    } else {
+      setSortKey(key);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedData = useMemo(() => {
+    if (!sortKey || !sortDirection) {
+      return customersData;
+    }
+
+    return [...customersData].sort((a, b) => {
+      let aValue = a[sortKey];
+      let bValue = b[sortKey];
+
+      // Handle empty names
+      if (sortKey === 'name') {
+        aValue = aValue || 'ZZZ'; // Put empty names at the end
+        bValue = bValue || 'ZZZ';
+      }
+
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        const comparison = aValue.toLowerCase().localeCompare(bValue.toLowerCase());
+        return sortDirection === 'asc' ? comparison : -comparison;
+      }
+
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+      }
+
+      return 0;
+    });
+  }, [sortKey, sortDirection]);
+
+  const getSortIcon = (key: SortKey) => {
+    if (sortKey !== key) {
+      return <ChevronsUpDown className="w-4 h-4 text-gray-400" />;
+    }
+    
+    if (sortDirection === 'asc') {
+      return <ChevronUp className="w-4 h-4 text-blue-600" />;
+    } else if (sortDirection === 'desc') {
+      return <ChevronDown className="w-4 h-4 text-blue-600" />;
+    }
+    
+    return <ChevronsUpDown className="w-4 h-4 text-gray-400" />;
+  };
+
   const getCustomerTypeColor = (type: string) => {
     if (type === "Return Customer") {
       return "bg-green-100 text-green-800";
@@ -123,17 +197,57 @@ const CustomersTable = () => {
         <Table>
           <TableHeader>
             <TableRow className="border-b">
-              <TableHead className="font-semibold text-gray-900">Customer Name</TableHead>
-              <TableHead className="font-semibold text-gray-900">Customer Type</TableHead>
-              <TableHead className="font-semibold text-gray-900">Mobile Number</TableHead>
-              <TableHead className="font-semibold text-gray-900">Total Orders</TableHead>
-              <TableHead className="font-semibold text-gray-900">Total Sales</TableHead>
+              <TableHead className="font-semibold text-gray-900">
+                <button
+                  onClick={() => handleSort('name')}
+                  className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+                >
+                  Customer Name
+                  {getSortIcon('name')}
+                </button>
+              </TableHead>
+              <TableHead className="font-semibold text-gray-900">
+                <button
+                  onClick={() => handleSort('type')}
+                  className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+                >
+                  Customer Type
+                  {getSortIcon('type')}
+                </button>
+              </TableHead>
+              <TableHead className="font-semibold text-gray-900">
+                <button
+                  onClick={() => handleSort('mobile')}
+                  className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+                >
+                  Mobile Number
+                  {getSortIcon('mobile')}
+                </button>
+              </TableHead>
+              <TableHead className="font-semibold text-gray-900">
+                <button
+                  onClick={() => handleSort('totalOrders')}
+                  className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+                >
+                  Total Orders
+                  {getSortIcon('totalOrders')}
+                </button>
+              </TableHead>
+              <TableHead className="font-semibold text-gray-900">
+                <button
+                  onClick={() => handleSort('totalSalesValue')}
+                  className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+                >
+                  Total Sales
+                  {getSortIcon('totalSalesValue')}
+                </button>
+              </TableHead>
               <TableHead className="font-semibold text-gray-900">Total Cart</TableHead>
               <TableHead className="font-semibold text-gray-900 w-20">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {customersData.map((customer) => (
+            {sortedData.map((customer) => (
               <TableRow key={customer.id} className="hover:bg-gray-50/50 border-b border-gray-100">
                 <TableCell>
                   <div className="flex items-center space-x-3">
