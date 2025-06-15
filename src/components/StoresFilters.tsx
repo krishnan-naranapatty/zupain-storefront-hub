@@ -4,7 +4,12 @@ import { Grid3X3, List, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const StoresFilters = () => {
+interface StoresFiltersProps {
+  viewMode: 'grid' | 'list';
+  onViewModeChange: (mode: 'grid' | 'list') => void;
+}
+
+const StoresFilters = ({ viewMode, onViewModeChange }: StoresFiltersProps) => {
   return (
     <div className="flex items-center justify-between bg-white p-4 rounded-lg border">
       <div className="flex items-center space-x-4">
@@ -57,10 +62,20 @@ const StoresFilters = () => {
       
       <div className="flex items-center space-x-3">
         <div className="flex items-center space-x-1 bg-gray-100 p-1 rounded-lg">
-          <Button variant="ghost" size="sm" className="p-2">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className={`p-2 ${viewMode === 'grid' ? 'bg-white shadow-sm' : ''}`}
+            onClick={() => onViewModeChange('grid')}
+          >
             <Grid3X3 className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="sm" className="p-2 bg-white shadow-sm">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className={`p-2 ${viewMode === 'list' ? 'bg-white shadow-sm' : ''}`}
+            onClick={() => onViewModeChange('list')}
+          >
             <List className="w-4 h-4" />
           </Button>
         </div>

@@ -5,14 +5,20 @@ import Header from '@/components/Header';
 import StoresHeader from '@/components/StoresHeader';
 import StoresFilters from '@/components/StoresFilters';
 import StoresTable from '@/components/StoresTable';
+import StoresGrid from '@/components/StoresGrid';
 import { useTheme } from '@/contexts/ThemeContext';
 
 const Stores = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
   const { currentPalette } = useTheme();
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  const handleViewModeChange = (mode: 'grid' | 'list') => {
+    setViewMode(mode);
   };
 
   return (
@@ -24,8 +30,8 @@ const Stores = () => {
         
         <main className="flex-1 p-6 space-y-6">
           <StoresHeader />
-          <StoresFilters />
-          <StoresTable />
+          <StoresFilters viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+          {viewMode === 'list' ? <StoresTable /> : <StoresGrid />}
         </main>
       </div>
     </div>
