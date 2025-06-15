@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { RefreshCw } from 'lucide-react';
 
 const WhatsAppMessages: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('messages');
   const [selectedAccount, setSelectedAccount] = useState('');
 
   // Sample data for the table
@@ -18,38 +16,35 @@ const WhatsAppMessages: React.FC = () => {
     <div className="space-y-6">
       {/* Header with Actions */}
       <div className="flex justify-between items-center">
-        <div className="flex space-x-2">
-          <Button
-            variant={activeTab === 'messages' ? 'default' : 'outline'}
-            onClick={() => setActiveTab('messages')}
-            className="px-4 py-2"
-          >
-            WhatsApp Messages
-          </Button>
+        <div>
+          <h2 className="text-xl font-semibold text-gray-900">Message Campaigns</h2>
+          <p className="text-sm text-gray-600 mt-1">View and manage your WhatsApp message campaigns</p>
+        </div>
+
+        <div className="flex items-center space-x-4">
           <Button
             variant="outline"
-            onClick={() => setActiveTab('refresh')}
             className="px-4 py-2"
           >
             <RefreshCw className="w-4 h-4 mr-2" />
             Refresh
           </Button>
-        </div>
 
-        <div className="w-80">
-          <Select value={selectedAccount} onValueChange={setSelectedAccount}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Choose a account" />
-            </SelectTrigger>
-            <SelectContent className="bg-white border shadow-lg z-50">
-              <SelectItem value="8939347493" className="hover:bg-gray-50">
-                8939347493
-              </SelectItem>
-              <SelectItem value="9328823678" className="hover:bg-gray-50">
-                9328823678
-              </SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="w-80">
+            <Select value={selectedAccount} onValueChange={setSelectedAccount}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Choose a account" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border shadow-lg z-50">
+                <SelectItem value="8939347493" className="hover:bg-gray-50">
+                  8939347493
+                </SelectItem>
+                <SelectItem value="9328823678" className="hover:bg-gray-50">
+                  9328823678
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
