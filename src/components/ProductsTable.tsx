@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Edit, MoreHorizontal, Eye, Copy, Archive, ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -210,8 +209,8 @@ const ProductsTable = ({ className }: ProductsTableProps) => {
       let bValue = b[sortField];
 
       if (sortField === 'name') {
-        aValue = aValue.toLowerCase();
-        bValue = bValue.toLowerCase();
+        aValue = (aValue as string).toLowerCase();
+        bValue = (bValue as string).toLowerCase();
       }
 
       if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
