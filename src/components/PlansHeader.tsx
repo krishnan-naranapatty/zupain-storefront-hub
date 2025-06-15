@@ -16,12 +16,14 @@ const PlansHeader = () => {
     { 
       id: 'plans', 
       label: 'Plans', 
-      icon: CreditCard
+      icon: CreditCard,
+      description: 'Manage your subscription plans and billing'
     },
     { 
       id: 'wallet', 
       label: 'Wallet', 
-      icon: Wallet
+      icon: Wallet,
+      description: 'View your wallet balance and add funds'
     }
   ];
 
@@ -92,14 +94,19 @@ const PlansHeader = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`flex flex-col items-center space-y-1 py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                <Icon className="w-4 h-4" />
-                <span>{tab.label}</span>
+                <div className="flex items-center space-x-2">
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                </div>
+                <span className="text-xs text-gray-400 text-center max-w-32">
+                  {tab.description}
+                </span>
               </button>
             );
           })}
