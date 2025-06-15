@@ -69,16 +69,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const isMenuExpanded = (menuKey: string) => expandedMenus.includes(menuKey);
   const isPathActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
-  // Dynamic icon size based on collapsed state
-  const iconSize = isCollapsed ? 'w-6 h-6' : 'w-5 h-5';
+  // Much larger icon size when collapsed for better visibility
+  const iconSize = isCollapsed ? 'w-8 h-8' : 'w-5 h-5';
+  const logoIconSize = isCollapsed ? 'w-8 h-8' : 'w-6 h-6';
 
   return (
     <div className={`${currentPalette.sidebar} ${currentPalette.sidebarText} transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'} min-h-screen flex flex-col`}>
       {/* Logo Section */}
       <div className="p-4 border-b border-slate-700">
         <div className="flex items-center space-x-3">
-          <div className={`w-10 h-10 ${currentPalette.accent} rounded-lg flex items-center justify-center`}>
-            <Store className={iconSize} />
+          <div className={`${isCollapsed ? 'w-8 h-8' : 'w-10 h-10'} ${currentPalette.accent} rounded-lg flex items-center justify-center`}>
+            <Store className={logoIconSize} />
           </div>
           {!isCollapsed && (
             <div>
