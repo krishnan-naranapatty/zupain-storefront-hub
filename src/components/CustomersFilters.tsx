@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { useTheme } from '@/contexts/ThemeContext';
 
 const CustomersFilters = () => {
@@ -9,29 +9,32 @@ const CustomersFilters = () => {
 
   const tabs = [
     { id: 'all', label: 'All Customers' },
-    { id: 'new-not-signed', label: 'New Customers (Yet to sign in)' },
-    { id: 'new-signed', label: 'New Customers (Signed In)' },
-    { id: 'repeated', label: 'Returning Customers' },
+    { id: 'new-not-signed', label: 'New (Not Signed)' },
+    { id: 'new-signed', label: 'New (Signed In)' },
+    { id: 'repeated', label: 'Returning' },
     { id: 'abandoned', label: 'Abandoned Cart' }
   ];
 
   return (
-    <div className="flex flex-wrap gap-2">
-      {tabs.map((tab) => (
-        <Button
-          key={tab.id}
-          variant={activeTab === tab.id ? "default" : "outline"}
-          className={`${
-            activeTab === tab.id 
-              ? `${currentPalette.primary} text-white hover:${currentPalette.primary}/90` 
-              : `${currentPalette.cardBg} text-gray-700 border-gray-300 hover:${currentPalette.secondary}`
-          }`}
-          onClick={() => setActiveTab(tab.id)}
-        >
-          {tab.label}
-        </Button>
-      ))}
-    </div>
+    <Card className={`${currentPalette.cardBg} border shadow-sm`}>
+      <CardContent className="p-3">
+        <div className="flex flex-wrap gap-1 bg-gray-100 rounded-lg p-1">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              className={`px-4 py-2.5 rounded-md text-sm font-medium transition-all duration-200 flex-1 min-w-fit ${
+                activeTab === tab.id 
+                  ? 'bg-white text-gray-900 shadow-sm' 
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
+              }`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
