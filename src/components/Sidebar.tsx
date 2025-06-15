@@ -57,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       submenu: [
         { label: 'Landing Page', path: '/page-builder/landing-page' },
         { label: 'Additional Pages', path: '/page-builder/additional-pages' },
-        { label: 'Menu', path: '/page-builder/menu' },
+        { label: 'Menu Builder', path: '/page-builder/menu' },
         { label: 'Appearance', path: '/page-builder/appearance' },
         { label: 'Theme Builder', path: '/page-builder/theme-builder' }
       ]
