@@ -90,13 +90,13 @@ const PageBuilderMenu: React.FC = () => {
             </Button>
           </div>
 
-          {/* Search */}
-          <div className="flex items-center">
+          {/* Search - Aligned to match Menu tab */}
+          <div className="flex items-center justify-end">
             <div className="relative w-80">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input 
                 placeholder="Search" 
-                className="pl-10 bg-white border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="pl-10 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
               />
             </div>
           </div>
