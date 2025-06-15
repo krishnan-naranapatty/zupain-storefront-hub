@@ -20,6 +20,7 @@ interface Category {
   products: number;
   description: string;
   type: string;
+  image?: string;
 }
 
 const CategoriesGrid = () => {
@@ -32,7 +33,8 @@ const CategoriesGrid = () => {
       status: true,
       products: 3,
       description: 'Premium skincare serums collection',
-      type: 'Serum'
+      type: 'Serum',
+      image: '/placeholder.svg'
     },
     {
       id: 2,
@@ -40,7 +42,8 @@ const CategoriesGrid = () => {
       status: true,
       products: 1,
       description: 'High-quality sun protection products',
-      type: 'Sunscreen'
+      type: 'Sunscreen',
+      image: '/placeholder.svg'
     }
   ]);
 
@@ -52,9 +55,9 @@ const CategoriesGrid = () => {
     setIsEditDrawerOpen(true);
   };
 
-  const handleSaveCategory = (updatedCategory: Category) => {
+  const handleSaveCategory = (updatedCategory: any) => {
     setCategories(categories.map(category => 
-      category.id === updatedCategory.id ? updatedCategory : category
+      category.id === updatedCategory.id ? { ...category, ...updatedCategory } : category
     ));
   };
 
