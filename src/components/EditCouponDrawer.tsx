@@ -8,14 +8,16 @@ import ImageUploadSection from '@/components/coupon-form/ImageUploadSection';
 import CouponDetailsSection from '@/components/coupon-form/CouponDetailsSection';
 import DiscountSettingsSection from '@/components/coupon-form/DiscountSettingsSection';
 import DateRangeSection from '@/components/coupon-form/DateRangeSection';
+import ProductSelectionSection from '@/components/coupon-form/ProductSelectionSection';
 
 interface EditCouponDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   coupon: any;
+  couponType?: string;
 }
 
-const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, coupon }) => {
+const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, coupon, couponType }) => {
   const { currentPalette } = useTheme();
   
   const [formData, setFormData] = useState({
@@ -31,7 +33,10 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
     startDate: undefined as Date | undefined,
     endDate: undefined as Date | undefined,
     showToCustomers: true,
-    validOnlineOnly: false
+    validOnlineOnly: false,
+    selectionType: 'category',
+    selectedCategory: '',
+    selectedProduct: ''
   });
 
   useEffect(() => {
@@ -49,7 +54,10 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
         startDate: coupon.startDate ? new Date(coupon.startDate) : undefined,
         endDate: coupon.endDate ? new Date(coupon.endDate) : undefined,
         showToCustomers: true,
-        validOnlineOnly: false
+        validOnlineOnly: false,
+        selectionType: 'category',
+        selectedCategory: '',
+        selectedProduct: ''
       });
     }
   }, [coupon]);
@@ -63,6 +71,7 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
 
   const handleSave = () => {
     console.log('Saving coupon:', formData);
+    console.log('Coupon type:', couponType || coupon?.type);
     onClose();
   };
 
@@ -71,6 +80,36 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
   };
 
   const isNewCoupon = !coupon?.id;
+  const currentCouponType = couponType || coupon?.type;
+  const isProductOrCategoryCoupon = currentCouponType === 'product-category' || 
+                                    currentCouponType === 'Product' || 
+                                    currentCouponType === 'Category';
+
+  const getDrawerTitle = () => {
+    if (isNewCoupon) {
+      switch (currentCouponType) {
+        case 'product-category':
+          return 'Create Product/Category Coupon';
+        case 'free-shipping':
+          return 'Create Free Shipping Coupon';
+        case 'order-discount':
+        default:
+          return 'Create Order Discount Coupon';
+      }
+    } else {
+      switch (currentCouponType) {
+        case 'product-category':
+        case 'Product':
+        case 'Category':
+          return 'Edit Product/Category Coupon';
+        case 'free-shipping':
+          return 'Edit Free Shipping Coupon';
+        case 'order-discount':
+        default:
+          return 'Edit Order Discount Coupon';
+      }
+    }
+  };
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
@@ -85,7 +124,7 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
-            {isNewCoupon ? 'Create New Coupon' : 'Edit Coupon'}
+            {getDrawerTitle()}
           </SheetTitle>
         </SheetHeader>
 
@@ -96,6 +135,13 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
             formData={formData} 
             onInputChange={handleInputChange} 
           />
+
+          {isProductOrCategoryCoupon && (
+            <ProductSelectionSection 
+              formData={formData} 
+              onInputChange={handleInputChange} 
+            />
+          )}
 
           <DiscountSettingsSection 
             formData={formData} 
