@@ -25,24 +25,21 @@ const PageBuilderMenu: React.FC = () => {
     // Empty array to show "No data" state
   ];
 
-  const navigationItems = [
+  const navigationTabs = [
     { 
-      key: 'collections', 
+      id: 'collections', 
       label: 'Collections', 
-      icon: FolderOpen,
-      description: 'Manage product collections'
+      icon: FolderOpen
     },
     { 
-      key: 'menu', 
+      id: 'menu', 
       label: 'Menu Items', 
-      icon: Menu,
-      description: 'Configure navigation menu'
+      icon: Menu
     },
     { 
-      key: 'menu-theme', 
+      id: 'menu-theme', 
       label: 'Menu Theme', 
-      icon: Palette,
-      description: 'Customize menu appearance'
+      icon: Palette
     }
   ];
 
@@ -246,7 +243,7 @@ const PageBuilderMenu: React.FC = () => {
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-900">Menu Builder</h2>
@@ -259,50 +256,34 @@ const PageBuilderMenu: React.FC = () => {
         </Button>
       </div>
 
-      {/* Main Layout with Sidebar Navigation */}
-      <div className="grid grid-cols-12 gap-8">
-        {/* Sidebar Navigation */}
-        <div className="col-span-3">
-          <Card className="border border-gray-200">
-            <CardContent className="p-0">
-              <nav className="space-y-1">
-                {navigationItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeSection === item.key;
-                  
-                  return (
-                    <button
-                      key={item.key}
-                      onClick={() => setActiveSection(item.key)}
-                      className={`w-full flex items-center space-x-3 px-4 py-3 text-left transition-colors ${
-                        isActive
-                          ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
-                          : 'text-gray-700 hover:bg-gray-50'
-                      }`}
-                    >
-                      <Icon className={`w-5 h-5 ${isActive ? 'text-blue-600' : 'text-gray-500'}`} />
-                      <div className="flex-1">
-                        <div className={`font-medium ${isActive ? 'text-blue-900' : 'text-gray-900'}`}>
-                          {item.label}
-                        </div>
-                        <div className="text-xs text-gray-500 mt-0.5">
-                          {item.description}
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </nav>
-            </CardContent>
-          </Card>
-        </div>
+      {/* Navigation Tabs */}
+      <div className="border-b border-gray-200 dark:border-gray-700">
+        <nav className="-mb-px flex space-x-8">
+          {navigationTabs.map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveSection(tab.id)}
+                className={`flex items-center space-x-2 py-2 px-1 border-b-2 font-medium text-sm ${
+                  activeSection === tab.id
+                    ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+      </div>
 
-        {/* Content Area */}
-        <div className="col-span-9">
-          {activeSection === 'collections' && renderCollectionsContent()}
-          {activeSection === 'menu' && renderMenuContent()}
-          {activeSection === 'menu-theme' && renderMenuThemeContent()}
-        </div>
+      {/* Tab Content */}
+      <div>
+        {activeSection === 'collections' && renderCollectionsContent()}
+        {activeSection === 'menu' && renderMenuContent()}
+        {activeSection === 'menu-theme' && renderMenuThemeContent()}
       </div>
 
       {/* Collection Form */}
