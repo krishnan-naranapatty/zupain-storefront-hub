@@ -8,9 +8,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Plus, Edit, Trash, Search } from 'lucide-react';
 import MenuForm from '@/components/page-builder/MenuForm';
+import CollectionForm from '@/components/page-builder/CollectionForm';
 
 const PageBuilderMenu: React.FC = () => {
   const [showMenuForm, setShowMenuForm] = useState(false);
+  const [showCollectionForm, setShowCollectionForm] = useState(false);
   const [editingMenu, setEditingMenu] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('collections');
 
@@ -35,7 +37,12 @@ const PageBuilderMenu: React.FC = () => {
   };
 
   const handleCreateCollection = () => {
-    console.log('Create collection clicked');
+    setShowCollectionForm(true);
+  };
+
+  const handleCollectionSave = () => {
+    setShowCollectionForm(false);
+    console.log('Collection saved');
   };
 
   if (showMenuForm) {
@@ -198,6 +205,13 @@ const PageBuilderMenu: React.FC = () => {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Collection Form */}
+      <CollectionForm
+        isOpen={showCollectionForm}
+        onClose={() => setShowCollectionForm(false)}
+        onSave={handleCollectionSave}
+      />
     </div>
   );
 };
