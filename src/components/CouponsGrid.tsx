@@ -68,99 +68,131 @@ const CouponsGrid: React.FC<CouponsGridProps> = ({ onEditCoupon }) => {
     }
   };
 
+  const getCardColorScheme = (coupon: any) => {
+    // Different color schemes based on type and status
+    if (coupon.status === 'Expired') {
+      return {
+        iconBg: 'bg-gradient-to-br from-gray-400 to-gray-500',
+        progressBar: 'bg-gray-600'
+      };
+    }
+
+    switch (coupon.type) {
+      case 'Percentage':
+        return {
+          iconBg: 'bg-gradient-to-br from-blue-500 to-blue-600',
+          progressBar: 'bg-blue-600'
+        };
+      case 'Fixed':
+        return {
+          iconBg: 'bg-gradient-to-br from-green-500 to-green-600',
+          progressBar: 'bg-green-600'
+        };
+      default:
+        return {
+          iconBg: 'bg-gradient-to-br from-orange-500 to-orange-600',
+          progressBar: 'bg-orange-600'
+        };
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {mockCoupons.map((coupon) => (
-        <Card key={coupon.id} className="hover:shadow-lg transition-shadow border-0 shadow-sm">
-          <CardContent className="p-6">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center">
-                  <Tag className="w-6 h-6 text-white" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-gray-900 text-sm">
-                      {coupon.code}
-                    </h3>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-6 w-6 p-0"
-                      onClick={() => navigator.clipboard.writeText(coupon.code)}
-                    >
-                      <Copy className="w-3 h-3" />
-                    </Button>
+      {mockCoupons.map((coupon) => {
+        const colorScheme = getCardColorScheme(coupon);
+        
+        return (
+          <Card key={coupon.id} className="hover:shadow-lg transition-shadow border-0 shadow-sm">
+            <CardContent className="p-6">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-center space-x-3">
+                  <div className={`w-12 h-12 ${colorScheme.iconBg} rounded-xl flex items-center justify-center`}>
+                    <Tag className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">{coupon.description}</p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold text-gray-900 text-sm">
+                        {coupon.code}
+                      </h3>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0"
+                        onClick={() => navigator.clipboard.writeText(coupon.code)}
+                      >
+                        <Copy className="w-3 h-3" />
+                      </Button>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">{coupon.description}</p>
+                  </div>
+                </div>
+                <Badge className={getStatusColor(coupon.status)}>
+                  {coupon.status}
+                </Badge>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <DollarSign className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm font-medium text-gray-900">
+                      {coupon.type === 'Percentage' ? `${coupon.value}%` : `₹${coupon.value}`}
+                    </span>
+                  </div>
+                  <span className="text-xs text-gray-500">
+                    Min: ₹{coupon.minPurchase}
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center space-x-1">
+                      <Users className="w-4 h-4 text-gray-400" />
+                      <span className="text-gray-600">Usage</span>
+                    </div>
+                    <span className="font-medium">
+                      {coupon.used}/{coupon.usageLimit}
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div 
+                      className={`${colorScheme.progressBar} h-2 rounded-full`}
+                      style={{ width: `${(coupon.used / coupon.usageLimit) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-2 pt-2 border-t border-gray-100">
+                  <Calendar className="w-4 h-4 text-gray-400" />
+                  <span className="text-xs text-gray-500">
+                    Valid until {coupon.endDate}
+                  </span>
                 </div>
               </div>
-              <Badge className={getStatusColor(coupon.status)}>
-                {coupon.status}
-              </Badge>
-            </div>
 
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
                 <div className="flex items-center space-x-2">
-                  <DollarSign className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm font-medium text-gray-900">
-                    {coupon.type === 'Percentage' ? `${coupon.value}%` : `₹${coupon.value}`}
-                  </span>
-                </div>
-                <span className="text-xs text-gray-500">
-                  Min: ₹{coupon.minPurchase}
-                </span>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center space-x-1">
-                    <Users className="w-4 h-4 text-gray-400" />
-                    <span className="text-gray-600">Usage</span>
-                  </div>
-                  <span className="font-medium">
-                    {coupon.used}/{coupon.usageLimit}
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-blue-600 h-2 rounded-full" 
-                    style={{ width: `${(coupon.used / coupon.usageLimit) * 100}%` }}
-                  ></div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onEditCoupon(coupon)}
+                    className="h-8 w-8 p-0"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
-
-              <div className="flex items-center space-x-2 pt-2 border-t border-gray-100">
-                <Calendar className="w-4 h-4 text-gray-400" />
-                <span className="text-xs text-gray-500">
-                  Valid until {coupon.endDate}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
-              <div className="flex items-center space-x-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onEditCoupon(coupon)}
-                  className="h-8 w-8 p-0"
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        );
+      })}
     </div>
   );
 };
