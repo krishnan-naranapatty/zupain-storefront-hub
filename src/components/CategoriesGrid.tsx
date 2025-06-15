@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { Edit, Eye, Trash2, ShoppingBag, Sparkles, MoreHorizontal } from 'lucide-react';
+import { Edit, Eye, Trash2, ShoppingBag, Sparkles, MoreHorizontal, MapPin, Phone } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import EditCategoryDrawer from './EditCategoryDrawer';
 import {
@@ -19,7 +18,8 @@ interface Category {
   name: string;
   status: boolean;
   products: number;
-  image: string;
+  description: string;
+  type: string;
 }
 
 const CategoriesGrid = () => {
@@ -28,30 +28,24 @@ const CategoriesGrid = () => {
   const [categories, setCategories] = useState<Category[]>([
     {
       id: 1,
-      name: 'Serum',
+      name: 'Vitanix Serum Category',
       status: true,
       products: 3,
-      image: 'serum'
+      description: 'Premium skincare serums collection',
+      type: 'Serum'
     },
     {
       id: 2,
-      name: 'Sunscreen',
+      name: 'Vitanix Sunscreen Category',
       status: true,
       products: 1,
-      image: 'sunscreen'
+      description: 'High-quality sun protection products',
+      type: 'Sunscreen'
     }
   ]);
 
   const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-
-  const handleStatusToggle = (id: number) => {
-    setCategories(categories.map(category => 
-      category.id === id 
-        ? { ...category, status: !category.status }
-        : category
-    ));
-  };
 
   const handleEditClick = (category: Category) => {
     setSelectedCategory(category);
@@ -64,114 +58,101 @@ const CategoriesGrid = () => {
     ));
   };
 
-  const getCategoryIcon = (categoryName: string) => {
-    switch (categoryName.toLowerCase()) {
-      case 'serum':
-        return <Sparkles className="w-6 h-6 text-white" />;
-      case 'sunscreen':
-        return <ShoppingBag className="w-6 h-6 text-white" />;
-      default:
-        return <ShoppingBag className="w-6 h-6 text-white" />;
-    }
+  const getCategoryInitial = (categoryName: string) => {
+    return categoryName.charAt(0).toUpperCase();
   };
 
-  const getCategoryGradient = (categoryName: string) => {
+  const getCategoryColor = (categoryName: string) => {
     switch (categoryName.toLowerCase()) {
-      case 'serum':
-        return 'bg-gradient-to-br from-purple-500 to-pink-500';
-      case 'sunscreen':
-        return 'bg-gradient-to-br from-orange-500 to-yellow-500';
+      case 'vitanix serum category':
+        return 'bg-blue-600';
+      case 'vitanix sunscreen category':
+        return 'bg-blue-600';
       default:
-        return 'bg-gradient-to-br from-blue-500 to-blue-600';
+        return 'bg-blue-600';
     }
   };
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {categories.map((category) => (
-          <Card key={category.id} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-sm bg-white rounded-2xl overflow-hidden">
+          <Card key={category.id} className="group hover:shadow-lg transition-all duration-200 border border-gray-200 bg-white">
             <CardContent className="p-6">
-              {/* Header with icon and actions */}
-              <div className="flex items-start justify-between mb-6">
-                <div className={`w-14 h-14 ${getCategoryGradient(category.name)} rounded-2xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-all duration-300`}>
-                  {getCategoryIcon(category.name)}
+              {/* Header with initial and actions */}
+              <div className="flex items-start justify-between mb-4">
+                <div className={`w-12 h-12 ${getCategoryColor(category.name)} rounded-lg flex items-center justify-center text-white font-bold text-lg`}>
+                  {getCategoryInitial(category.name)}
                 </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                    >
-                      <MoreHorizontal className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-40">
-                    <DropdownMenuItem onClick={() => handleEditClick(category)}>
-                      <Edit className="w-4 h-4 mr-2" />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Eye className="w-4 h-4 mr-2" />
-                      View
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-600">
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex items-center space-x-2">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Eye className="w-4 h-4 text-gray-400" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    onClick={() => handleEditClick(category)}
+                  >
+                    <Edit className="w-4 h-4 text-gray-400" />
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <MoreHorizontal className="w-4 h-4 text-gray-400" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-40 bg-white border shadow-lg z-50">
+                      <DropdownMenuItem onClick={() => handleEditClick(category)}>
+                        <Edit className="w-4 h-4 mr-2" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Eye className="w-4 h-4 mr-2" />
+                        View
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="text-red-600">
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
 
-              {/* Category name and status */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-bold text-gray-900 text-lg">
-                    {category.name}
-                  </h3>
-                  <Badge 
-                    variant={category.status ? "default" : "secondary"}
-                    className={`${category.status 
-                      ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-100'
-                    } font-medium border-0`}
-                  >
-                    {category.status ? 'Active' : 'Inactive'}
-                  </Badge>
-                </div>
+              {/* Category name */}
+              <h3 className="font-semibold text-gray-900 text-lg mb-1">
+                {category.name}
+              </h3>
+              
+              {/* Brand/Type */}
+              <p className="text-sm text-blue-600 mb-3">
+                {category.type}
+              </p>
+
+              {/* Description */}
+              <div className="flex items-center text-sm text-gray-500 mb-3">
+                <p>{category.description}</p>
               </div>
 
               {/* Products count */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <ShoppingBag className="w-4 h-4 text-blue-600" />
-                    </div>
-                    <span className="text-sm font-medium text-gray-700">Products</span>
-                  </div>
-                  <span className="text-xl font-bold text-gray-900">
-                    {category.products}
-                  </span>
-                </div>
+              <div className="flex items-center text-sm text-gray-500 mb-4">
+                <ShoppingBag className="w-4 h-4 mr-1" />
+                <span>{category.products} products</span>
               </div>
 
-              {/* Status toggle */}
+              {/* Status and revenue */}
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700">
-                  Status
-                </span>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-500">
-                    {category.status ? 'Active' : 'Inactive'}
-                  </span>
-                  <Switch
-                    checked={category.status}
-                    onCheckedChange={() => handleStatusToggle(category.id)}
-                    className="data-[state=checked]:bg-emerald-500"
-                  />
-                </div>
+                <Badge 
+                  variant={category.status ? "default" : "secondary"}
+                  className={`${category.status 
+                    ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100' 
+                    : 'bg-red-100 text-red-600 hover:bg-red-100'
+                  } font-medium border-0 text-xs`}
+                >
+                  <div className={`w-1.5 h-1.5 rounded-full mr-1 ${category.status ? 'bg-emerald-500' : 'bg-red-500'}`}></div>
+                  {category.status ? 'Active' : 'Inactive'}
+                </Badge>
               </div>
             </CardContent>
           </Card>

@@ -29,8 +29,8 @@ const Categories = () => {
         <Header onToggleSidebar={toggleSidebar} />
         
         <main className="flex-1 p-6 space-y-6">
-          <CategoriesHeader viewMode={viewMode} onViewModeChange={handleViewModeChange} />
-          <CategoriesFilters />
+          <CategoriesHeader />
+          <CategoriesFilters viewMode={viewMode} onViewModeChange={handleViewModeChange} />
           {viewMode === 'list' ? <CategoriesTable /> : <CategoriesGrid />}
         </main>
       </div>
