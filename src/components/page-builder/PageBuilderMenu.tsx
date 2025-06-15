@@ -56,7 +56,7 @@ const PageBuilderMenu: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-900">Menu</h2>
@@ -77,10 +77,10 @@ const PageBuilderMenu: React.FC = () => {
           <TabsTrigger value="menu-theme">Menu Theme</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="collections" className="space-y-6">
-          {/* Collections Header */}
+        <TabsContent value="collections" className="space-y-6 mt-8">
+          {/* Collections Header */}          
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-medium text-gray-900">Collections</h3>
+            <h3 className="text-xl font-semibold text-gray-900">Collections</h3>
             <Button 
               onClick={handleCreateCollection}
               className="bg-blue-600 hover:bg-blue-700 text-white"
@@ -91,30 +91,33 @@ const PageBuilderMenu: React.FC = () => {
           </div>
 
           {/* Search */}
-          <div className="flex items-center space-x-4">
-            <div className="relative flex-1 max-w-md">
+          <div className="flex items-center">
+            <div className="relative w-80">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <Input placeholder="Search" className="pl-10" />
+              <Input 
+                placeholder="Search" 
+                className="pl-10 bg-white border-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              />
             </div>
           </div>
 
           {/* Collections Table */}
-          <Card>
+          <Card className="border border-gray-200 shadow-sm">
             <CardContent className="p-0">
               {collections.length === 0 ? (
-                <div className="py-16 text-center">
-                  <div className="text-4xl mb-4">📁</div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No data</h3>
-                  <p className="text-gray-500">Your collections will appear here</p>
+                <div className="py-20 text-center">
+                  <div className="text-5xl mb-6">📁</div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">No data</h3>
+                  <p className="text-gray-600">Your collections will appear here</p>
                 </div>
               ) : (
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead>Collection Image</TableHead>
-                      <TableHead>Collection</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Action</TableHead>
+                    <TableRow className="border-b border-gray-100">
+                      <TableHead className="font-semibold text-gray-700 py-4">Collection Image</TableHead>
+                      <TableHead className="font-semibold text-gray-700 py-4">Collection</TableHead>
+                      <TableHead className="font-semibold text-gray-700 py-4">Status</TableHead>
+                      <TableHead className="font-semibold text-gray-700 py-4">Action</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -148,7 +151,7 @@ const PageBuilderMenu: React.FC = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="menu" className="space-y-6">
+        <TabsContent value="menu" className="space-y-6 mt-8">
           {/* Search - More refined design */}
           <div className="flex items-center justify-end">
             <div className="relative w-80">
@@ -205,7 +208,7 @@ const PageBuilderMenu: React.FC = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="menu-theme" className="space-y-6">
+        <TabsContent value="menu-theme" className="space-y-6 mt-8">
           <div className="text-center py-16">
             <div className="text-4xl mb-4">🎨</div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">Menu Theme</h3>
