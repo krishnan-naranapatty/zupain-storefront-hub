@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,7 +19,7 @@ interface Category {
   products: number;
   description: string;
   type: string;
-  image?: string;
+  image: string;
 }
 
 const CategoriesGrid = () => {
@@ -55,7 +54,7 @@ const CategoriesGrid = () => {
     setIsEditDrawerOpen(true);
   };
 
-  const handleSaveCategory = (updatedCategory: any) => {
+  const handleSaveCategory = (updatedCategory: Category) => {
     setCategories(categories.map(category => 
       category.id === updatedCategory.id ? { ...category, ...updatedCategory } : category
     ));
