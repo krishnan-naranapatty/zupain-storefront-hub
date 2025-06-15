@@ -40,24 +40,43 @@ const CustomersHeader = () => {
         <p className="text-sm text-gray-600">View and manage your customer database</p>
       </div>
 
-      {/* Card with Search, Actions, and Dropdown Filter */}
+      {/* Card with Search, Filter, and Actions */}
       <Card className={`${currentPalette.cardBg} border shadow-sm`}>
-        <CardContent className="p-4 space-y-4">
-          {/* Top Row: Search and Action Buttons */}
+        <CardContent className="p-4">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            {/* Search Section */}
-            <div className="flex-1 max-w-md">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <input
-                  type="text"
-                  placeholder="Search customers..."
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                />
+            {/* Left Section: Search and Filter */}
+            <div className="flex flex-col sm:flex-row gap-3 flex-1">
+              {/* Search Section */}
+              <div className="flex-1 max-w-md">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    placeholder="Search customers..."
+                    className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  />
+                </div>
+              </div>
+              
+              {/* Filter Dropdown */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Filter:</span>
+                <Select value={activeFilter} onValueChange={setActiveFilter}>
+                  <SelectTrigger className="w-[180px] bg-white">
+                    <SelectValue placeholder="Select filter" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border shadow-lg z-50">
+                    {filterOptions.map((option) => (
+                      <SelectItem key={option.id} value={option.id}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             
-            {/* Action Buttons */}
+            {/* Right Section: Action Buttons */}
             <div className="flex items-center gap-3">
               <Button variant="outline" className="flex items-center gap-2 bg-white hover:bg-gray-50">
                 <Upload className="w-4 h-4" />
@@ -69,25 +88,6 @@ const CustomersHeader = () => {
                 <span className="hidden sm:inline">Export to Excel</span>
                 <span className="sm:hidden">Export</span>
               </Button>
-            </div>
-          </div>
-
-          {/* Bottom Row: Filter Dropdown */}
-          <div className="pt-2 border-t border-gray-200">
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-medium text-gray-700">Filter by:</span>
-              <Select value={activeFilter} onValueChange={setActiveFilter}>
-                <SelectTrigger className="w-[200px] bg-white">
-                  <SelectValue placeholder="Select filter" />
-                </SelectTrigger>
-                <SelectContent className="bg-white border shadow-lg z-50">
-                  {filterOptions.map((option) => (
-                    <SelectItem key={option.id} value={option.id}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
             </div>
           </div>
         </CardContent>
