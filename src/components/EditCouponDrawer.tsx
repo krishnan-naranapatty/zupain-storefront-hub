@@ -74,15 +74,15 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-[800px] sm:max-w-[800px] overflow-y-auto" hideCloseButton={true}>
-        <SheetHeader className="mb-6 border-b pb-4">
-          <SheetTitle className="flex items-center text-lg font-medium">
-            <ArrowLeft className="w-5 h-5 mr-2 cursor-pointer" onClick={onClose} />
+      <SheetContent className="w-[900px] sm:max-w-[900px] overflow-y-auto bg-white" hideCloseButton={true}>
+        <SheetHeader className="mb-8 pb-6 border-b border-gray-200">
+          <SheetTitle className="flex items-center text-xl font-semibold text-gray-900">
+            <ArrowLeft className="w-6 h-6 mr-3 cursor-pointer text-gray-600 hover:text-gray-900" onClick={onClose} />
             {isNewCoupon ? 'Add order discount coupon' : 'Edit order discount coupon'}
           </SheetTitle>
         </SheetHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           <ImageUploadSection />
           
           <CouponDetailsSection 
@@ -101,11 +101,18 @@ const EditCouponDrawer: React.FC<EditCouponDrawerProps> = ({ isOpen, onClose, co
           />
 
           {/* Footer */}
-          <div className="flex items-center justify-end space-x-4 pt-6 border-t">
-            <Button variant="outline" onClick={handleCancel}>
+          <div className="flex items-center justify-end space-x-4 pt-8 border-t border-gray-200">
+            <Button 
+              variant="outline" 
+              onClick={handleCancel}
+              className="px-8 py-3 border-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+            >
               Cancel
             </Button>
-            <Button onClick={handleSave} className={`${currentPalette.primary} text-white hover:opacity-90`}>
+            <Button 
+              onClick={handleSave} 
+              className="px-8 py-3 bg-blue-600 text-white hover:bg-blue-700"
+            >
               Save
             </Button>
           </div>

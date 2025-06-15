@@ -16,65 +16,71 @@ interface DiscountSettingsSectionProps {
 
 const DiscountSettingsSection: React.FC<DiscountSettingsSectionProps> = ({ formData, onInputChange }) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
-        <Label className="text-sm font-medium">Discount amount</Label>
-        <div className="flex space-x-2 mt-2">
+        <Label className="text-sm font-medium text-gray-700 mb-3 block">Discount amount</Label>
+        
+        {/* Toggle Buttons */}
+        <div className="grid grid-cols-2 gap-0 mb-4">
           <Button
             variant={formData.discountType === 'By Value' ? 'default' : 'outline'}
-            size="sm"
             onClick={() => onInputChange('discountType', 'By Value')}
-            className="flex-1"
+            className={`rounded-r-none border-r-0 h-12 font-medium ${
+              formData.discountType === 'By Value' 
+                ? 'bg-gray-900 text-white hover:bg-gray-800' 
+                : 'bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50'
+            }`}
           >
             By Value
           </Button>
           <Button
             variant={formData.discountType === 'By Percentage' ? 'default' : 'outline'}
-            size="sm"
             onClick={() => onInputChange('discountType', 'By Percentage')}
-            className="flex-1"
+            className={`rounded-l-none h-12 font-medium ${
+              formData.discountType === 'By Percentage' 
+                ? 'bg-gray-900 text-white hover:bg-gray-800' 
+                : 'bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50'
+            }`}
           >
             By Percentage
           </Button>
         </div>
         
-        <div className="relative mt-3">
+        {/* Input Field */}
+        <div className="relative">
           {formData.discountType === 'By Value' ? (
             <>
-              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">₹</span>
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">₹</span>
               <Input
-                placeholder="Enter amount"
+                placeholder="0"
                 value={formData.discountValue}
                 onChange={(e) => onInputChange('discountValue', e.target.value)}
-                className="pl-8"
+                className="pl-8 h-12 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-0"
                 type="number"
               />
             </>
           ) : (
-            <>
-              <Input
-                placeholder="Enter Percentage %"
-                value={formData.discountValue}
-                onChange={(e) => onInputChange('discountValue', e.target.value)}
-                className="pr-8"
-                type="number"
-              />
-              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">%</span>
-            </>
+            <Input
+              placeholder="0"
+              value={formData.discountValue}
+              onChange={(e) => onInputChange('discountValue', e.target.value)}
+              className="h-12 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-0"
+              type="number"
+            />
           )}
         </div>
       </div>
 
       <div>
-        <Label htmlFor="userLimit" className="text-sm font-medium text-red-500">
+        <Label htmlFor="userLimit" className="text-sm font-medium text-red-500 mb-2 block">
           * Coupon user limit
         </Label>
         <Input
           id="userLimit"
-          placeholder="Enter coupon user limit"
+          placeholder="100"
           value={formData.userLimit}
           onChange={(e) => onInputChange('userLimit', e.target.value)}
-          className="mt-1"
+          className="h-12 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-0"
           type="number"
         />
       </div>
