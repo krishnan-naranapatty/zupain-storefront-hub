@@ -1,10 +1,15 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Grid3X3, List } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
-const CouponsHeader = () => {
+interface CouponsHeaderProps {
+  viewMode: 'grid' | 'list';
+  onViewModeChange: (mode: 'grid' | 'list') => void;
+}
+
+const CouponsHeader: React.FC<CouponsHeaderProps> = ({ viewMode, onViewModeChange }) => {
   const { currentPalette } = useTheme();
 
   return (
@@ -14,10 +19,31 @@ const CouponsHeader = () => {
         <p className="text-gray-600 mt-1">Manage your discount coupons</p>
       </div>
       
-      <Button className={`${currentPalette.primary} text-white hover:opacity-90`}>
-        <Plus className="w-4 h-4 mr-2" />
-        Add Coupon
-      </Button>
+      <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-1 bg-gray-100 p-1 rounded-lg">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className={`p-2 ${viewMode === 'grid' ? 'bg-white shadow-sm' : ''}`}
+            onClick={() => onViewModeChange('grid')}
+          >
+            <Grid3X3 className="w-4 h-4" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className={`p-2 ${viewMode === 'list' ? 'bg-white shadow-sm' : ''}`}
+            onClick={() => onViewModeChange('list')}
+          >
+            <List className="w-4 h-4" />
+          </Button>
+        </div>
+        
+        <Button className={`${currentPalette.primary} text-white hover:opacity-90`}>
+          <Plus className="w-4 h-4 mr-2" />
+          Add Coupon
+        </Button>
+      </div>
     </div>
   );
 };

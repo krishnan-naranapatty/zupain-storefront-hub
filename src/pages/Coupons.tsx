@@ -4,17 +4,23 @@ import Sidebar from '@/components/Sidebar';
 import Header from '@/components/Header';
 import CouponsHeader from '@/components/CouponsHeader';
 import CouponsTable from '@/components/CouponsTable';
+import CouponsGrid from '@/components/CouponsGrid';
 import EditCouponDrawer from '@/components/EditCouponDrawer';
 import { useTheme } from '@/contexts/ThemeContext';
 
 const Coupons = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [editDrawerOpen, setEditDrawerOpen] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const { currentPalette } = useTheme();
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  const handleViewModeChange = (mode: 'grid' | 'list') => {
+    setViewMode(mode);
   };
 
   const handleEditCoupon = (coupon: any) => {
@@ -35,8 +41,11 @@ const Coupons = () => {
         <Header onToggleSidebar={toggleSidebar} />
         
         <main className="flex-1 p-6 space-y-6">
-          <CouponsHeader />
-          <CouponsTable onEditCoupon={handleEditCoupon} />
+          <CouponsHeader viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+          {viewMode === 'list' ? 
+            <CouponsTable onEditCoupon={handleEditCoupon} /> : 
+            <CouponsGrid onEditCoupon={handleEditCoupon} />
+          }
         </main>
       </div>
 
