@@ -16,20 +16,21 @@ const PlansHeader = () => {
     { 
       id: 'plans', 
       label: 'Plans', 
-      icon: CreditCard,
-      description: 'Manage your subscription plans and billing'
+      icon: CreditCard
     },
     { 
       id: 'wallet', 
       label: 'Wallet', 
-      icon: Wallet,
-      description: 'View your wallet balance and add funds'
+      icon: Wallet
     }
   ];
 
   const renderPlansContent = () => (
     <div>
-      <h2 className="text-lg font-semibold mb-4">Subscriptions</h2>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold">Subscriptions</h2>
+        <p className="text-sm text-gray-600">Manage your subscription plans and billing</p>
+      </div>
       
       <Card className={`${currentPalette.cardBg} border`}>
         <CardContent className="p-6">
@@ -68,7 +69,10 @@ const PlansHeader = () => {
 
   const renderWalletContent = () => (
     <div>
-      <h2 className="text-lg font-semibold mb-4">Wallet</h2>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold">Wallet</h2>
+        <p className="text-sm text-gray-600">View your wallet balance and add funds</p>
+      </div>
       <Card className={`${currentPalette.cardBg} border`}>
         <CardContent className="p-6">
           <div className="text-center">
@@ -94,19 +98,14 @@ const PlansHeader = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex flex-col items-center space-y-1 py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`flex items-center space-x-2 py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                <div className="flex items-center space-x-2">
-                  <Icon className="w-4 h-4" />
-                  <span>{tab.label}</span>
-                </div>
-                <span className="text-xs text-gray-400 text-center max-w-32">
-                  {tab.description}
-                </span>
+                <Icon className="w-4 h-4" />
+                <span>{tab.label}</span>
               </button>
             );
           })}
