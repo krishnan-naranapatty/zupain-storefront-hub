@@ -1,79 +1,58 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Sidebar from '@/components/Sidebar';
-import Header from '@/components/Header';
-import { useTheme } from '@/contexts/ThemeContext';
+import Layout from '@/components/Layout';
 import WhatsAppAccount from '@/components/whatsapp/WhatsAppAccount';
 import WhatsAppMessages from '@/components/whatsapp/WhatsAppMessages';
 import WhatsAppCompose from '@/components/whatsapp/WhatsAppCompose';
+import { User, MessageSquare, PenTool } from 'lucide-react';
 
-const WhatsApp: React.FC = () => {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const { currentPalette } = useTheme();
+const WhatsApp = () => {
+  const [activeTab, setActiveTab] = useState('account');
 
-  const toggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
-  };
+  const tabs = [
+    { id: 'account', label: 'Account', icon: User, component: WhatsAppAccount },
+    { id: 'messages', label: 'Messages', icon: MessageSquare, component: WhatsAppMessages },
+    { id: 'compose', label: 'Compose', icon: PenTool, component: WhatsAppCompose },
+  ];
+
+  const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component || WhatsAppAccount;
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar isCollapsed={sidebarCollapsed} onToggle={toggleSidebar} />
-      
-      <div className="flex-1 flex flex-col">
-        <Header onToggleSidebar={toggleSidebar} />
-        
-        <main className="flex-1 p-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">WhatsApp</h1>
-            </div>
+    <Layout>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">WhatsApp</h1>
+        </div>
 
-            <Card className="bg-white shadow-sm">
-              <CardContent className="p-0">
-                <Tabs defaultValue="account" className="w-full">
-                  <div className="border-b border-gray-200">
-                    <TabsList className="grid w-full grid-cols-3 bg-transparent h-auto p-0 rounded-none">
-                      <TabsTrigger 
-                        value="account" 
-                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:bg-transparent px-6 py-3"
-                      >
-                        Account
-                      </TabsTrigger>
-                      <TabsTrigger 
-                        value="messages" 
-                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:bg-transparent px-6 py-3"
-                      >
-                        Messages
-                      </TabsTrigger>
-                      <TabsTrigger 
-                        value="compose" 
-                        className="rounded-none border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:bg-transparent px-6 py-3"
-                      >
-                        Compose
-                      </TabsTrigger>
-                    </TabsList>
-                  </div>
+        {/* Navigation Tabs */}
+        <div className="border-b border-gray-200 dark:border-gray-700">
+          <nav className="-mb-px flex space-x-8">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center space-x-2 py-2 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === tab.id
+                      ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+        </div>
 
-                  <TabsContent value="account" className="mt-0 p-6">
-                    <WhatsAppAccount />
-                  </TabsContent>
-
-                  <TabsContent value="messages" className="mt-0 p-6">
-                    <WhatsAppMessages />
-                  </TabsContent>
-
-                  <TabsContent value="compose" className="mt-0 p-6">
-                    <WhatsAppCompose />
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
-          </div>
-        </main>
+        {/* Tab Content */}
+        <div>
+          <ActiveComponent />
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
