@@ -4,12 +4,12 @@ import { Search, Download, Upload, Users, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTheme } from '@/contexts/ThemeContext';
-import CustomersFilters from '@/components/CustomersFilters';
 import CustomersTable from '@/components/CustomersTable';
 
 const CustomersHeader = () => {
   const { currentPalette } = useTheme();
   const [activeTab, setActiveTab] = useState('customers');
+  const [activeFilter, setActiveFilter] = useState('all');
 
   const navigationTabs = [
     { 
@@ -24,6 +24,14 @@ const CustomersHeader = () => {
     }
   ];
 
+  const filterTabs = [
+    { id: 'all', label: 'All Customers' },
+    { id: 'new-not-signed', label: 'New (Not Signed)' },
+    { id: 'new-signed', label: 'New (Signed In)' },
+    { id: 'repeated', label: 'Returning' },
+    { id: 'abandoned', label: 'Abandoned Cart' }
+  ];
+
   const renderCustomersContent = () => (
     <div className="space-y-6">
       <div className="mb-4">
@@ -31,9 +39,10 @@ const CustomersHeader = () => {
         <p className="text-sm text-gray-600">View and manage your customer database</p>
       </div>
 
-      {/* Card-based Action Bar */}
+      {/* Integrated Card with Search, Actions, and Filters */}
       <Card className={`${currentPalette.cardBg} border shadow-sm`}>
-        <CardContent className="p-4">
+        <CardContent className="p-4 space-y-4">
+          {/* Top Row: Search and Action Buttons */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             {/* Search Section */}
             <div className="flex-1 max-w-md">
@@ -61,10 +70,28 @@ const CustomersHeader = () => {
               </Button>
             </div>
           </div>
+
+          {/* Bottom Row: Filter Tabs */}
+          <div className="pt-2 border-t border-gray-200">
+            <div className="flex flex-wrap gap-2">
+              {filterTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    activeFilter === tab.id 
+                      ? `${currentPalette.primary.replace('bg-', 'bg-')} text-white` 
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                  onClick={() => setActiveFilter(tab.id)}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </CardContent>
       </Card>
 
-      <CustomersFilters />
       <CustomersTable />
     </div>
   );
