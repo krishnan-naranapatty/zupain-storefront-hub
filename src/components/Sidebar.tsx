@@ -69,9 +69,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const isMenuExpanded = (menuKey: string) => expandedMenus.includes(menuKey);
   const isPathActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
-  // Much larger icon size when collapsed for better visibility
-  const iconSize = isCollapsed ? 'w-8 h-8' : 'w-5 h-5';
-  const logoIconSize = isCollapsed ? 'w-8 h-8' : 'w-6 h-6';
+  // Icon sizes for different states
+  const iconSize = isCollapsed ? 'w-6 h-6' : 'w-5 h-5';
+  const logoIconSize = isCollapsed ? 'w-6 h-6' : 'w-6 h-6';
 
   return (
     <div className={`${currentPalette.sidebar} ${currentPalette.sidebarText} transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'} min-h-screen flex flex-col`}>
