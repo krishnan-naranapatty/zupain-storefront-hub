@@ -149,43 +149,51 @@ const PageBuilderMenu: React.FC = () => {
         </TabsContent>
 
         <TabsContent value="menu" className="space-y-6">
-          {/* Search */}
-          <div className="flex items-center space-x-4">
-            <div className="relative flex-1 max-w-md">
+          {/* Search - More refined design */}
+          <div className="flex items-center justify-end">
+            <div className="relative w-80">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <Input placeholder="Search" className="pl-10" />
+              <Input 
+                placeholder="Search menu items..." 
+                className="pl-10 bg-gray-50 border-gray-200 focus:bg-white transition-colors"
+              />
             </div>
           </div>
 
           {/* Menu Table */}
-          <Card>
+          <Card className="border-0 shadow-sm">
             <CardContent className="p-0">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Menu Name</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
+                  <TableRow className="border-b border-gray-100">
+                    <TableHead className="font-semibold text-gray-700 py-4">Menu Name</TableHead>
+                    <TableHead className="font-semibold text-gray-700 py-4">Status</TableHead>
+                    <TableHead className="font-semibold text-gray-700 py-4">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {menuItems.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.name}</TableCell>
-                      <TableCell>
+                    <TableRow key={item.id} className="border-b border-gray-50 hover:bg-gray-25 transition-colors">
+                      <TableCell className="font-medium text-gray-900 py-4">{item.name}</TableCell>
+                      <TableCell className="py-4">
                         <Switch checked={item.status} />
                       </TableCell>
-                      <TableCell>
-                        <div className="flex space-x-2">
+                      <TableCell className="py-4">
+                        <div className="flex space-x-1">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handleEditMenu(item)}
+                            className="hover:bg-blue-50 hover:text-blue-600"
                           >
                             <Edit className="w-4 h-4" />
                           </Button>
-                          <Button variant="ghost" size="sm">
-                            <Trash className="w-4 h-4 text-red-500" />
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            className="hover:bg-red-50 hover:text-red-600"
+                          >
+                            <Trash className="w-4 h-4" />
                           </Button>
                         </div>
                       </TableCell>
