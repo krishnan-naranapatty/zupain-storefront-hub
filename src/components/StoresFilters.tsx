@@ -3,19 +3,24 @@ import React from 'react';
 import { Grid3X3, List, SlidersHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const StoresFilters = () => {
   return (
     <div className="flex items-center justify-between bg-white p-4 rounded-lg border">
       <div className="flex items-center space-x-4">
-        <Tabs defaultValue="all" className="w-auto">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="all" className="text-xs">All Stores</TabsTrigger>
-            <TabsTrigger value="active" className="text-xs">Active</TabsTrigger>
-            <TabsTrigger value="inactive" className="text-xs">Inactive</TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Status:</span>
+          <Select defaultValue="all">
+            <SelectTrigger className="w-[140px] bg-white">
+              <SelectValue placeholder="Select status" />
+            </SelectTrigger>
+            <SelectContent className="bg-white border shadow-lg z-50">
+              <SelectItem value="all">All Stores</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="inactive">Inactive</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         
         <div className="flex items-center space-x-3">
           <Select defaultValue="all-locations">
