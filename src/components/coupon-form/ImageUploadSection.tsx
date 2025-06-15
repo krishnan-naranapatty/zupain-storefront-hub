@@ -1,21 +1,21 @@
 
 import React from 'react';
-import { Upload } from 'lucide-react';
+import { Upload, Image } from 'lucide-react';
 
 const ImageUploadSection: React.FC = () => {
   return (
-    <div className="space-y-4">
-      <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center hover:border-gray-400 transition-colors bg-gray-50">
+    <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Coupon Image</h3>
+      <div className="border-2 border-dashed border-blue-300 rounded-xl p-8 text-center hover:border-blue-400 transition-colors bg-blue-50/50 hover:bg-blue-50">
         <div className="flex flex-col items-center">
-          <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center mb-4">
-            <Upload className="w-8 h-8 text-gray-400" />
+          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+            <Image className="w-6 h-6 text-blue-600" />
           </div>
-          <p className="text-base text-gray-700 mb-2 font-medium">
-            <span>Drag & drop files or Browse</span>
+          <p className="text-gray-700 font-medium mb-1">
+            Upload coupon image
           </p>
-          <p className="text-sm text-gray-500 mb-1">300 x 300</p>
-          <p className="text-sm text-blue-500 mb-1">Image aspect ratio for better fit</p>
-          <p className="text-sm text-red-500">Max file size: Image 2MB</p>
+          <p className="text-sm text-gray-500 mb-1">Recommended: 300 x 300 pixels</p>
+          <p className="text-xs text-gray-400">Max file size: 2MB</p>
         </div>
       </div>
     </div>
