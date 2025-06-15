@@ -16,6 +16,7 @@ import Plans from "./pages/Plans";
 import ChangePlan from "./pages/ChangePlan";
 import Coupons from "./pages/Coupons";
 import WhatsApp from "./pages/WhatsApp";
+import PageBuilder from "./pages/PageBuilder";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/change-plan" element={<ChangePlan />} />
             <Route path="/coupons" element={<Coupons />} />
             <Route path="/whatsapp" element={<WhatsApp />} />
+            <Route path="/page-builder/*" element={<PageBuilder />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
