@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Search, Download, Upload, Users, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { useTheme } from '@/contexts/ThemeContext';
 import CustomersFilters from '@/components/CustomersFilters';
 import CustomersTable from '@/components/CustomersTable';
@@ -30,28 +31,38 @@ const CustomersHeader = () => {
         <p className="text-sm text-gray-600">View and manage your customer database</p>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex-1 max-w-md">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input
-              type="text"
-              placeholder="Search customers..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+      {/* Card-based Action Bar */}
+      <Card className={`${currentPalette.cardBg} border shadow-sm`}>
+        <CardContent className="p-4">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            {/* Search Section */}
+            <div className="flex-1 max-w-md">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Search customers..."
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                />
+              </div>
+            </div>
+            
+            {/* Action Buttons */}
+            <div className="flex items-center gap-3">
+              <Button variant="outline" className="flex items-center gap-2 bg-white hover:bg-gray-50">
+                <Upload className="w-4 h-4" />
+                <span className="hidden sm:inline">Import Customers</span>
+                <span className="sm:hidden">Import</span>
+              </Button>
+              <Button variant="outline" className="flex items-center gap-2 bg-white hover:bg-gray-50">
+                <Download className="w-4 h-4" />
+                <span className="hidden sm:inline">Export to Excel</span>
+                <span className="sm:hidden">Export</span>
+              </Button>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center space-x-3">
-          <Button variant="outline" className="flex items-center space-x-2">
-            <Upload className="w-4 h-4" />
-            <span>Import Customers</span>
-          </Button>
-          <Button variant="outline" className="flex items-center space-x-2">
-            <Download className="w-4 h-4" />
-            <span>Export to Excel</span>
-          </Button>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
       <CustomersFilters />
       <CustomersTable />
