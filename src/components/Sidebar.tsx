@@ -78,7 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
       <div className="p-4 border-b border-slate-700">
         <div className="flex items-center space-x-3">
           <div className={`w-10 h-10 ${currentPalette.accent} rounded-lg flex items-center justify-center`}>
-            <Store className="w-6 h-6 text-white" />
+            <Store className={iconSize} />
           </div>
           {!isCollapsed && (
             <div>
