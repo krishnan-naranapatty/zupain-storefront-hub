@@ -2,11 +2,10 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Package, Calendar, User, Phone, Mail, MapPin, CreditCard, Truck, Copy, ExternalLink } from 'lucide-react';
 
 const ShiprocketOrdersView = () => {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -54,6 +53,10 @@ const ShiprocketOrdersView = () => {
     }
   };
 
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
   return (
     <div className="space-y-6">
       {/* Filter Buttons */}
@@ -79,150 +82,132 @@ const ShiprocketOrdersView = () => {
         ))}
       </div>
 
-      {/* Orders Table */}
-      <Card className="shadow-sm border border-gray-200">
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-50">
-                <TableHead className="text-gray-700 font-medium">Zupain Order Details</TableHead>
-                <TableHead className="text-gray-700 font-medium">
-                  <div className="flex items-center">
-                    Shiprocket Order Details
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="ml-1 h-4 w-4 p-0">
-                          <MoreHorizontal className="w-3 h-3" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem>Sort A-Z</DropdownMenuItem>
-                        <DropdownMenuItem>Sort Z-A</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+      {/* Orders Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {orders.map((order, index) => (
+          <Card key={index} className="hover:shadow-lg transition-all duration-300 border border-gray-200">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-bold text-blue-600 flex items-center space-x-2">
+                  <span>{order.zupainOrderId}</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => copyToClipboard(order.zupainOrderId)} 
+                    className="h-6 w-6 p-0"
+                  >
+                    <Copy className="w-3 h-3" />
+                  </Button>
+                </CardTitle>
+                <Badge variant="secondary" className={getStatusColor(order.status)}>
+                  {order.status}
+                </Badge>
+              </div>
+              <div className="flex items-center text-sm text-gray-500">
+                <Calendar className="w-4 h-4 mr-2" />
+                {order.orderDate}
+              </div>
+            </CardHeader>
+
+            <CardContent className="space-y-4">
+              {/* Customer Details */}
+              <div className="bg-gray-50 rounded-lg p-3">
+                <h4 className="font-semibold text-gray-700 mb-2 flex items-center">
+                  <User className="w-4 h-4 mr-2" />
+                  Customer Details
+                </h4>
+                <div className="space-y-1 text-sm">
+                  <div className="font-medium text-gray-900">{order.customerName}</div>
+                  <div className="flex items-center text-gray-600">
+                    <Mail className="w-3 h-3 mr-2" />
+                    {order.customerEmail}
                   </div>
-                </TableHead>
-                <TableHead className="text-gray-700 font-medium">
-                  <div className="flex items-center">
-                    Customer Details
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="ml-1 h-4 w-4 p-0">
-                          <MoreHorizontal className="w-3 h-3" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem>Sort A-Z</DropdownMenuItem>
-                        <DropdownMenuItem>Sort Z-A</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                  <div className="flex items-center text-gray-600">
+                    <Phone className="w-3 h-3 mr-2" />
+                    {order.customerPhone}
                   </div>
-                </TableHead>
-                <TableHead className="text-gray-700 font-medium">Package Details</TableHead>
-                <TableHead className="text-gray-700 font-medium">
-                  <div className="flex items-center">
+                </div>
+              </div>
+
+              {/* Package Details */}
+              <div className="bg-blue-50 rounded-lg p-3">
+                <h4 className="font-semibold text-gray-700 mb-2 flex items-center">
+                  <Package className="w-4 h-4 mr-2" />
+                  Package Details
+                </h4>
+                <div className="space-y-1 text-sm text-gray-600">
+                  <div>{order.packageWeight}</div>
+                  <div>{order.packageDimensions}</div>
+                  <div>{order.packageVolumetric}</div>
+                </div>
+              </div>
+
+              {/* Payment & Pickup */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-green-50 rounded-lg p-3">
+                  <h4 className="font-semibold text-gray-700 mb-1 flex items-center text-sm">
+                    <CreditCard className="w-3 h-3 mr-1" />
                     Payment
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="ml-1 h-4 w-4 p-0">
-                          <MoreHorizontal className="w-3 h-3" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem>Sort A-Z</DropdownMenuItem>
-                        <DropdownMenuItem>Sort Z-A</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </TableHead>
-                <TableHead className="text-gray-700 font-medium">Pickup Details</TableHead>
-                <TableHead className="text-gray-700 font-medium">
-                  <div className="flex items-center">
-                    Status
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="ml-1 h-4 w-4 p-0">
-                          <MoreHorizontal className="w-3 h-3" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem>Sort A-Z</DropdownMenuItem>
-                        <DropdownMenuItem>Sort Z-A</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </TableHead>
-                <TableHead className="text-gray-700 font-medium">Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {orders.map((order, index) => (
-                <TableRow key={index} className="border-b border-gray-100">
-                  <TableCell>
-                    <div>
-                      <div className="font-semibold text-gray-900">{order.zupainOrderId}</div>
-                      <div className="text-sm text-gray-500">{order.orderDate}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-gray-500 text-sm">-</div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <div className="font-medium text-gray-900">{order.customerName}</div>
-                      <div className="text-sm text-gray-600">{order.customerEmail}</div>
-                      <div className="text-sm text-gray-600">{order.customerPhone}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="space-y-1 text-sm">
-                      <div className="text-gray-600">{order.packageWeight}</div>
-                      <div className="text-gray-600">{order.packageDimensions}</div>
-                      <div className="text-gray-600">{order.packageVolumetric}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <div className="font-medium text-gray-900">{order.paymentAmount}</div>
-                      <div className="text-sm text-green-600">{order.paymentStatus}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-gray-600">{order.pickupLocation}</div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className={getStatusColor(order.status)}>
-                      {order.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-2">
-                      <Button 
-                        size="sm" 
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 text-sm"
-                      >
-                        {order.action}
-                      </Button>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                            <MoreHorizontal className="w-4 h-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>View Details</DropdownMenuItem>
-                          <DropdownMenuItem>Edit Order</DropdownMenuItem>
-                          <DropdownMenuItem>Cancel Order</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+                  </h4>
+                  <div className="font-medium text-gray-900">{order.paymentAmount}</div>
+                  <div className="text-sm text-green-600">{order.paymentStatus}</div>
+                </div>
+                
+                <div className="bg-orange-50 rounded-lg p-3">
+                  <h4 className="font-semibold text-gray-700 mb-1 flex items-center text-sm">
+                    <MapPin className="w-3 h-3 mr-1" />
+                    Pickup
+                  </h4>
+                  <div className="text-sm text-gray-600">{order.pickupLocation}</div>
+                </div>
+              </div>
+
+              {/* Shiprocket Order Details */}
+              <div className="bg-gray-50 rounded-lg p-3">
+                <h4 className="font-semibold text-gray-700 mb-2 flex items-center">
+                  <Truck className="w-4 h-4 mr-2" />
+                  Shiprocket Details
+                </h4>
+                <div className="text-sm text-gray-500">
+                  {order.shiprocketOrderDetails || 'Not yet created'}
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-between pt-2">
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700 text-white flex-1 mr-2"
+                >
+                  {order.action}
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-9 w-9 p-0">
+                      <MoreHorizontal className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem>View Details</DropdownMenuItem>
+                    <DropdownMenuItem>Edit Order</DropdownMenuItem>
+                    <DropdownMenuItem>Track Shipment</DropdownMenuItem>
+                    <DropdownMenuItem>Download Label</DropdownMenuItem>
+                    <DropdownMenuItem>Cancel Order</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* No Orders State */}
+      {orders.length === 0 && (
+        <div className="text-center py-12">
+          <Package className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+          <h3 className="text-xl font-semibold text-gray-600 mb-2">No Orders Found</h3>
+          <p className="text-gray-500">No shiprocket orders match the selected filters.</p>
+        </div>
+      )}
 
       {/* Pagination */}
       <div className="flex justify-center">
