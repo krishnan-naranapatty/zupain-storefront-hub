@@ -8,6 +8,8 @@ import ProductsHeader from '@/components/ProductsHeader';
 import ProductsFilters from '@/components/ProductsFilters';
 import ProductsTable from '@/components/ProductsTable';
 import ProductsGrid from '@/components/ProductsGrid';
+import InventoryHeader from '@/components/inventory/InventoryHeader';
+import InventoryTable from '@/components/inventory/InventoryTable';
 
 const Inventory = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -43,11 +45,9 @@ const Inventory = () => {
                 {viewMode === 'list' ? <ProductsTable /> : <ProductsGrid />}
               </TabsContent>
               
-              <TabsContent value="inventory" className="mt-6">
-                <div className="text-center py-12">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Inventory Management</h2>
-                  <p className="text-gray-600">Inventory tracking and management features coming soon...</p>
-                </div>
+              <TabsContent value="inventory" className="mt-6 space-y-6">
+                <InventoryHeader />
+                <InventoryTable />
               </TabsContent>
             </Tabs>
           </div>
