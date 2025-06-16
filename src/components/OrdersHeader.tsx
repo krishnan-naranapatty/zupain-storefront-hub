@@ -46,7 +46,7 @@ const OrdersHeader = ({ showShiprocketOrders = false, onToggleShiprocketOrders }
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="more-filters">More Filters</SelectItem>
+              <SelectItem value="more-filters">Advanced Filters</SelectItem>
               <SelectItem value="status">Status</SelectItem>
               <SelectItem value="date">Date Range</SelectItem>
               <SelectItem value="amount">Amount</SelectItem>
