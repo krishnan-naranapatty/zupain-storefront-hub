@@ -7,13 +7,13 @@ import OrdersFilter from '@/components/OrdersFilter';
 import OrdersTable from '@/components/OrdersTable';
 import ShiprocketOrdersView from '@/components/ShiprocketOrdersView';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Package, Truck } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Truck } from 'lucide-react';
 
 const Orders = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [activeFilter, setActiveFilter] = useState('all');
-  const [activeTab, setActiveTab] = useState('regular');
+  const [showShiprocketOrders, setShowShiprocketOrders] = useState(false);
   const { currentPalette } = useTheme();
 
   const toggleSidebar = () => {
@@ -24,6 +24,10 @@ const Orders = () => {
     setActiveFilter(filterId);
   };
 
+  const toggleShiprocketOrders = () => {
+    setShowShiprocketOrders(!showShiprocketOrders);
+  };
+
   return (
     <div className={`flex min-h-screen ${currentPalette.background}`}>
       <Sidebar isCollapsed={sidebarCollapsed} onToggle={toggleSidebar} />
@@ -32,29 +36,19 @@ const Orders = () => {
         <Header onToggleSidebar={toggleSidebar} />
         
         <main className="flex-1 p-6 space-y-6">
-          <OrdersHeader />
+          <OrdersHeader 
+            showShiprocketOrders={showShiprocketOrders}
+            onToggleShiprocketOrders={toggleShiprocketOrders}
+          />
           
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 max-w-md">
-              <TabsTrigger value="regular" className="flex items-center space-x-2">
-                <Package className="w-4 h-4" />
-                <span>Regular Orders</span>
-              </TabsTrigger>
-              <TabsTrigger value="shiprocket" className="flex items-center space-x-2">
-                <Truck className="w-4 h-4" />
-                <span>Shiprocket Orders</span>
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="regular" className="space-y-6">
+          {showShiprocketOrders ? (
+            <ShiprocketOrdersView />
+          ) : (
+            <>
               <OrdersFilter activeFilter={activeFilter} onFilterChange={handleFilterChange} />
               <OrdersTable activeFilter={activeFilter} />
-            </TabsContent>
-            
-            <TabsContent value="shiprocket" className="space-y-6">
-              <ShiprocketOrdersView />
-            </TabsContent>
-          </Tabs>
+            </>
+          )}
         </main>
       </div>
     </div>

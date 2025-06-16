@@ -1,15 +1,22 @@
 
 import React from 'react';
-import { Download, Plus } from 'lucide-react';
+import { Download, Plus, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const OrdersHeader = () => {
+interface OrdersHeaderProps {
+  showShiprocketOrders?: boolean;
+  onToggleShiprocketOrders?: () => void;
+}
+
+const OrdersHeader = ({ showShiprocketOrders = false, onToggleShiprocketOrders }: OrdersHeaderProps) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Orders</h1>
+        <h1 className="text-3xl font-bold text-gray-900">
+          {showShiprocketOrders ? 'Shiprocket Orders' : 'Orders'}
+        </h1>
         <div className="flex items-center space-x-3">
           <Select defaultValue="all">
             <SelectTrigger className="w-32">
@@ -34,7 +41,26 @@ const OrdersHeader = () => {
 
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          {/* Empty space where dropdowns used to be */}
+          <Select defaultValue="more-filters">
+            <SelectTrigger className="w-40">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="more-filters">More Filters</SelectItem>
+              <SelectItem value="status">Status</SelectItem>
+              <SelectItem value="date">Date Range</SelectItem>
+              <SelectItem value="amount">Amount</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Button
+            variant={showShiprocketOrders ? "default" : "outline"}
+            onClick={onToggleShiprocketOrders}
+            className="flex items-center space-x-2"
+          >
+            <Truck className="w-4 h-4" />
+            <span>Shiprocket Orders</span>
+          </Button>
         </div>
         
         <div className="relative w-80">
