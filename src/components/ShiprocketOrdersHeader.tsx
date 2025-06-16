@@ -3,8 +3,40 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Download, RefreshCw, Plus, Truck, Package, AlertCircle } from 'lucide-react';
+import { downloadShiprocketOrdersToExcel } from '@/utils/excelExport';
 
 const ShiprocketOrdersHeader = () => {
+  // Sample Shiprocket orders data
+  const sampleShiprocketOrders = [
+    {
+      orderId: 'SR001',
+      awbNumber: '123456789',
+      customerName: 'John Doe',
+      orderDate: '2024-12-15',
+      status: 'Delivered',
+      courierPartner: 'FedEx',
+      destination: 'Mumbai, Maharashtra',
+      amount: '₹1,200.00',
+      weight: '0.5 kg',
+    },
+    {
+      orderId: 'SR002',
+      awbNumber: '987654321',
+      customerName: 'Jane Smith',
+      orderDate: '2024-12-14',
+      status: 'In Transit',
+      courierPartner: 'BlueDart',
+      destination: 'Delhi, Delhi',
+      amount: '₹850.00',
+      weight: '0.3 kg',
+    },
+    // Add more sample data as needed
+  ];
+
+  const handleExport = () => {
+    downloadShiprocketOrdersToExcel(sampleShiprocketOrders);
+  };
+
   return (
     <div className="space-y-6">
       {/* Main Header */}
@@ -19,7 +51,11 @@ const ShiprocketOrdersHeader = () => {
             <RefreshCw className="w-4 h-4" />
             <span>Sync Orders</span>
           </Button>
-          <Button variant="outline" className="flex items-center space-x-2">
+          <Button 
+            variant="outline" 
+            className="flex items-center space-x-2"
+            onClick={handleExport}
+          >
             <Download className="w-4 h-4" />
             <span>Export</span>
           </Button>
