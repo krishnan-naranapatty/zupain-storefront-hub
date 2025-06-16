@@ -41,17 +41,7 @@ const OrdersHeader = ({ showShiprocketOrders = false, onToggleShiprocketOrders }
 
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <Select defaultValue="more-filters">
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="more-filters">Advanced Filters</SelectItem>
-              <SelectItem value="status">Status</SelectItem>
-              <SelectItem value="date">Date Range</SelectItem>
-              <SelectItem value="amount">Amount</SelectItem>
-            </SelectContent>
-          </Select>
+          <span className="text-gray-700 font-medium">Advanced Filters</span>
           
           <Button
             variant={showShiprocketOrders ? "default" : "outline"}
