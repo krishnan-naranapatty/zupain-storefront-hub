@@ -1,10 +1,11 @@
 
 import React, { useState, useMemo } from 'react';
-import { Download, ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
+import { Download, ChevronUp, ChevronDown, ChevronsUpDown, Search, Filter, MoreVertical, User, Phone, ShoppingCart, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card } from '@/components/ui/card';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { Badge } from '@/components/ui/badge';
 
 const customersData = [
   {
@@ -151,9 +152,8 @@ const CustomersTable = () => {
       let aValue = a[sortKey];
       let bValue = b[sortKey];
 
-      // Handle empty names
       if (sortKey === 'name') {
-        aValue = aValue || 'ZZZ'; // Put empty names at the end
+        aValue = aValue || 'ZZZ';
         bValue = bValue || 'ZZZ';
       }
 
@@ -184,134 +184,244 @@ const CustomersTable = () => {
     return <ChevronsUpDown className="w-4 h-4 text-gray-400" />;
   };
 
+  const getCustomerTypeVariant = (type: string) => {
+    if (type === "Return Customer") {
+      return "default";
+    }
+    return "secondary";
+  };
+
   const getCustomerTypeColor = (type: string) => {
     if (type === "Return Customer") {
-      return "bg-green-100 text-green-800";
+      return "bg-emerald-50 text-emerald-700 border-emerald-200";
     }
-    return "bg-blue-100 text-blue-800";
+    return "bg-blue-50 text-blue-700 border-blue-200";
   };
 
   return (
-    <Card className="border-0 shadow-sm">
-      <div className="overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="border-b">
-              <TableHead className="font-semibold text-gray-900">
-                <button
-                  onClick={() => handleSort('name')}
-                  className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+    <div className="space-y-6">
+      {/* Modern Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card className="p-4 border-0 shadow-sm bg-gradient-to-br from-blue-50 to-blue-100/50">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-blue-500 rounded-lg">
+              <User className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600">Total Customers</p>
+              <p className="text-2xl font-bold text-gray-900">25</p>
+            </div>
+          </div>
+        </Card>
+        
+        <Card className="p-4 border-0 shadow-sm bg-gradient-to-br from-emerald-50 to-emerald-100/50">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-emerald-500 rounded-lg">
+              <TrendingUp className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600">Return Customers</p>
+              <p className="text-2xl font-bold text-gray-900">4</p>
+            </div>
+          </div>
+        </Card>
+        
+        <Card className="p-4 border-0 shadow-sm bg-gradient-to-br from-purple-50 to-purple-100/50">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-purple-500 rounded-lg">
+              <ShoppingCart className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600">Active Carts</p>
+              <p className="text-2xl font-bold text-gray-900">4</p>
+            </div>
+          </div>
+        </Card>
+        
+        <Card className="p-4 border-0 shadow-sm bg-gradient-to-br from-orange-50 to-orange-100/50">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-orange-500 rounded-lg">
+              <Phone className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-600">New Signups</p>
+              <p className="text-2xl font-bold text-gray-900">6</p>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      {/* Modern Table Card */}
+      <Card className="border-0 shadow-sm rounded-xl overflow-hidden">
+        <div className="bg-white rounded-xl">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-b border-gray-100 bg-gray-50/50">
+                <TableHead className="font-semibold text-gray-700 py-4">
+                  <button
+                    onClick={() => handleSort('name')}
+                    className="flex items-center gap-2 hover:text-blue-600 transition-colors group"
+                  >
+                    <User className="w-4 h-4" />
+                    Customer
+                    <div className="group-hover:text-blue-600">
+                      {getSortIcon('name')}
+                    </div>
+                  </button>
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  <button
+                    onClick={() => handleSort('type')}
+                    className="flex items-center gap-2 hover:text-blue-600 transition-colors group"
+                  >
+                    Type
+                    <div className="group-hover:text-blue-600">
+                      {getSortIcon('type')}
+                    </div>
+                  </button>
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  <button
+                    onClick={() => handleSort('mobile')}
+                    className="flex items-center gap-2 hover:text-blue-600 transition-colors group"
+                  >
+                    <Phone className="w-4 h-4" />
+                    Mobile
+                    <div className="group-hover:text-blue-600">
+                      {getSortIcon('mobile')}
+                    </div>
+                  </button>
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  <button
+                    onClick={() => handleSort('totalOrders')}
+                    className="flex items-center gap-2 hover:text-blue-600 transition-colors group"
+                  >
+                    Orders
+                    <div className="group-hover:text-blue-600">
+                      {getSortIcon('totalOrders')}
+                    </div>
+                  </button>
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  <button
+                    onClick={() => handleSort('totalSalesValue')}
+                    className="flex items-center gap-2 hover:text-blue-600 transition-colors group"
+                  >
+                    Revenue
+                    <div className="group-hover:text-blue-600">
+                      {getSortIcon('totalSalesValue')}
+                    </div>
+                  </button>
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  <ShoppingCart className="w-4 h-4 inline mr-2" />
+                  Cart
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700 w-20">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {sortedData.map((customer, index) => (
+                <TableRow 
+                  key={customer.id} 
+                  className={`hover:bg-blue-50/30 transition-colors duration-200 border-b border-gray-50 ${
+                    index % 2 === 0 ? 'bg-white' : 'bg-gray-50/30'
+                  }`}
                 >
-                  Customer Name
-                  {getSortIcon('name')}
-                </button>
-              </TableHead>
-              <TableHead className="font-semibold text-gray-900">
-                <button
-                  onClick={() => handleSort('type')}
-                  className="flex items-center gap-1 hover:text-blue-600 transition-colors"
-                >
-                  Customer Type
-                  {getSortIcon('type')}
-                </button>
-              </TableHead>
-              <TableHead className="font-semibold text-gray-900">
-                <button
-                  onClick={() => handleSort('mobile')}
-                  className="flex items-center gap-1 hover:text-blue-600 transition-colors"
-                >
-                  Mobile Number
-                  {getSortIcon('mobile')}
-                </button>
-              </TableHead>
-              <TableHead className="font-semibold text-gray-900">
-                <button
-                  onClick={() => handleSort('totalOrders')}
-                  className="flex items-center gap-1 hover:text-blue-600 transition-colors"
-                >
-                  Total Orders
-                  {getSortIcon('totalOrders')}
-                </button>
-              </TableHead>
-              <TableHead className="font-semibold text-gray-900">
-                <button
-                  onClick={() => handleSort('totalSalesValue')}
-                  className="flex items-center gap-1 hover:text-blue-600 transition-colors"
-                >
-                  Total Sales
-                  {getSortIcon('totalSalesValue')}
-                </button>
-              </TableHead>
-              <TableHead className="font-semibold text-gray-900">Total Cart</TableHead>
-              <TableHead className="font-semibold text-gray-900 w-20">Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sortedData.map((customer) => (
-              <TableRow key={customer.id} className="hover:bg-gray-50/50 border-b border-gray-100">
-                <TableCell>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                      <span className="text-gray-600 font-medium text-sm">
-                        {customer.initial}
+                  <TableCell className="py-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="relative">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center shadow-sm">
+                          <span className="text-white font-semibold text-sm">
+                            {customer.initial || customer.name?.charAt(0)?.toUpperCase() || '?'}
+                          </span>
+                        </div>
+                        {customer.type === "Return Customer" && (
+                          <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center">
+                            <TrendingUp className="w-2 h-2 text-white" />
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">{customer.name || "Anonymous"}</p>
+                        <p className="text-xs text-gray-500">ID: {customer.id}</p>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge 
+                      variant="outline" 
+                      className={`${getCustomerTypeColor(customer.type)} font-medium border`}
+                    >
+                      {customer.type}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center space-x-2">
+                      <Phone className="w-4 h-4 text-gray-400" />
+                      <span className="text-gray-900 font-mono text-sm">{customer.mobile}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-center">
+                      <span className="inline-flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
+                        {customer.totalOrders}
                       </span>
                     </div>
-                    <span className="font-medium text-gray-900">{customer.name}</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getCustomerTypeColor(customer.type)}`}>
-                    {customer.type}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-gray-900">{customer.mobile}</span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-gray-900">{customer.totalOrders}</span>
-                </TableCell>
-                <TableCell>
-                  <span className="font-semibold text-gray-900">{customer.totalSales}</span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-gray-900">
-                    {typeof customer.totalCart === 'string' ? customer.totalCart : customer.totalCart}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <Button variant="ghost" size="sm" className="p-1 h-8 w-8">
-                    <Download className="w-4 h-4" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-      
-      <div className="flex items-center justify-between p-4 border-t">
-        <div className="text-sm text-gray-500">
-          Showing 1-10 of 25 customers
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-right">
+                      <span className="font-bold text-gray-900 text-lg">{customer.totalSales}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-center">
+                      {typeof customer.totalCart === 'string' ? (
+                        <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200">
+                          {customer.totalCart}
+                        </Badge>
+                      ) : (
+                        <span className="text-gray-400">-</span>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="ghost" size="sm" className="p-2 h-8 w-8 hover:bg-blue-50">
+                      <MoreVertical className="w-4 h-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
         
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
-    </Card>
+        {/* Modern Pagination */}
+        <div className="flex items-center justify-between p-6 border-t border-gray-100 bg-gray-50/30">
+          <div className="text-sm text-gray-600 font-medium">
+            Showing <span className="font-semibold text-gray-900">1-10</span> of <span className="font-semibold text-gray-900">25</span> customers
+          </div>
+          
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious href="#" className="hover:bg-blue-50" />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#" isActive className="bg-blue-500 text-white hover:bg-blue-600">1</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#" className="hover:bg-blue-50">2</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext href="#" className="hover:bg-blue-50" />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      </Card>
+    </div>
   );
 };
 
