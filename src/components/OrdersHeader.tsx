@@ -40,7 +40,7 @@ const OrdersHeader = ({ showShiprocketOrders = false, onToggleShiprocketOrders }
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-3">
           <Select defaultValue="more-filters">
             <SelectTrigger className="w-40">
               <SelectValue />
