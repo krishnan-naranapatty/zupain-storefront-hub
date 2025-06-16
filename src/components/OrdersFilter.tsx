@@ -1,10 +1,12 @@
 
-import React, { useState } from 'react';
-import { Badge } from '@/components/ui/badge';
+import React from 'react';
 
-const OrdersFilter = () => {
-  const [activeFilter, setActiveFilter] = useState('all');
+interface OrdersFilterProps {
+  activeFilter: string;
+  onFilterChange: (filterId: string) => void;
+}
 
+const OrdersFilter = ({ activeFilter, onFilterChange }: OrdersFilterProps) => {
   const filters = [
     { id: 'all', label: 'All', count: 56, color: 'bg-blue-600' },
     { id: 'pending', label: 'Pending', count: 10, color: 'bg-orange-500' },
@@ -22,7 +24,7 @@ const OrdersFilter = () => {
       {filters.map((filter) => (
         <button
           key={filter.id}
-          onClick={() => setActiveFilter(filter.id)}
+          onClick={() => onFilterChange(filter.id)}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
             activeFilter === filter.id
               ? `${filter.color} text-white`

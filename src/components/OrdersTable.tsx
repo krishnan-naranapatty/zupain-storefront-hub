@@ -13,8 +13,12 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 
-const OrdersTable = () => {
-  const orders = [
+interface OrdersTableProps {
+  activeFilter: string;
+}
+
+const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
+  const allOrders = [
     {
       id: 'ORID0056',
       customer: 'Jaya Khubani',
@@ -98,11 +102,16 @@ const OrdersTable = () => {
     },
   ];
 
+  // Filter orders based on active filter
+  const filteredOrders = activeFilter === 'all' 
+    ? allOrders 
+    : allOrders.filter(order => order.status.toLowerCase() === activeFilter.toLowerCase());
+
   return (
     <div className="space-y-6">
       {/* Orders Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {orders.map((order) => (
+        {filteredOrders.map((order) => (
           <Card key={order.id} className="hover:shadow-lg transition-all duration-200 border border-gray-200 bg-white">
             <CardContent className="p-6">
               {/* Header with Order ID and Status */}
@@ -150,37 +159,46 @@ const OrdersTable = () => {
         ))}
       </div>
 
+      {/* No results message */}
+      {filteredOrders.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-gray-500 text-lg">No orders found for the selected filter.</p>
+        </div>
+      )}
+
       {/* Pagination */}
-      <div className="flex justify-center">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive>1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">4</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">5</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">6</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      {filteredOrders.length > 0 && (
+        <div className="flex justify-center">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious href="#" />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#" isActive>1</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">2</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">3</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">4</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">5</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink href="#">6</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext href="#" />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 };

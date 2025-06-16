@@ -9,10 +9,15 @@ import { useTheme } from '@/contexts/ThemeContext';
 
 const Orders = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('all');
   const { currentPalette } = useTheme();
 
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  const handleFilterChange = (filterId: string) => {
+    setActiveFilter(filterId);
   };
 
   return (
@@ -24,8 +29,8 @@ const Orders = () => {
         
         <main className="flex-1 p-6 space-y-6">
           <OrdersHeader />
-          <OrdersFilter />
-          <OrdersTable />
+          <OrdersFilter activeFilter={activeFilter} onFilterChange={handleFilterChange} />
+          <OrdersTable activeFilter={activeFilter} />
         </main>
       </div>
     </div>
