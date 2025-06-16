@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Download, ArrowUpDown, Calendar, User, CreditCard, Package, Kanban, Clock, LayoutGrid, Eye, Edit3, Trash2, MessageSquare, Truck, ChevronDown, ChevronRight, Grid3X3, List, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -203,29 +202,33 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
 
   return (
     <div className="space-y-6">
-      {/* Controls Container */}
-      <Card className="bg-white border border-gray-200 shadow-sm">
-        <CardContent className="p-4">
+      {/* Enhanced Controls Container */}
+      <Card className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 shadow-lg">
+        <CardContent className="p-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-6">
               {/* Source/Platform Dropdown - Outside Integrations */}
-              <div className="flex flex-col">
-                <span className="text-xs text-gray-500 mb-1">Outside Integrations</span>
+              <div className="flex flex-col group">
+                <div className="flex items-center space-x-2 mb-2">
+                  <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
+                  <span className="text-xs font-semibold text-blue-700 uppercase tracking-wider">External Sources</span>
+                </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="flex items-center space-x-2">
-                      <span>Jingls (0)</span>
-                      <ChevronDown className="w-4 h-4" />
+                    <Button variant="outline" className="flex items-center space-x-3 bg-white hover:bg-blue-50 border-blue-200 hover:border-blue-300 transition-all duration-200 shadow-sm hover:shadow-md group-hover:scale-105">
+                      <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
+                      <span className="font-medium text-blue-700">Jingls (0)</span>
+                      <ChevronDown className="w-4 h-4 text-blue-500" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
-                    <DropdownMenuItem className="cursor-pointer">
+                  <DropdownMenuContent align="start" className="w-56 bg-white border border-blue-200 shadow-xl rounded-lg">
+                    <DropdownMenuItem className="cursor-pointer hover:bg-blue-50 transition-colors">
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-blue-700">Jingls (0)</span>
                         <span className="text-xs text-gray-500">Third-party platform</span>
                       </div>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer opacity-50">
+                    <DropdownMenuItem className="cursor-pointer opacity-50 hover:bg-gray-50">
                       <div className="flex flex-col">
                         <span className="text-sm text-gray-600">ONDC</span>
                         <span className="text-xs text-gray-400">Coming Soon</span>
@@ -236,28 +239,35 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
               </div>
 
               {/* Status Filter Dropdown - Order Status */}
-              <div className="flex flex-col">
-                <span className="text-xs text-gray-500 mb-1">Order Status</span>
+              <div className="flex flex-col group">
+                <div className="flex items-center space-x-2 mb-2">
+                  <div className="w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"></div>
+                  <span className="text-xs font-semibold text-green-700 uppercase tracking-wider">Order Status</span>
+                </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button 
                       variant="outline" 
-                      className={`flex items-center space-x-2 ${activeFilterData.color} text-white hover:opacity-90`}
+                      className={`flex items-center space-x-3 ${activeFilterData.color} text-white hover:opacity-90 transition-all duration-200 shadow-md hover:shadow-lg border-0 group-hover:scale-105`}
                     >
-                      <span>{activeFilterData.label} ({activeFilterData.count})</span>
+                      <div className="w-3 h-3 bg-white bg-opacity-30 rounded-full"></div>
+                      <span className="font-medium">{activeFilterData.label} ({activeFilterData.count})</span>
                       <ChevronDown className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
+                  <DropdownMenuContent align="start" className="w-56 bg-white border border-green-200 shadow-xl rounded-lg">
                     {filters.map((filter) => (
                       <DropdownMenuItem 
                         key={filter.id}
-                        className="cursor-pointer"
+                        className="cursor-pointer hover:bg-green-50 transition-colors"
                         onClick={() => {}} // This will be handled by the parent component
                       >
                         <div className="flex items-center justify-between w-full">
-                          <span className="text-sm">{filter.label}</span>
-                          <span className="text-sm text-gray-500">({filter.count})</span>
+                          <div className="flex items-center space-x-2">
+                            <div className={`w-2 h-2 ${filter.color} rounded-full`}></div>
+                            <span className="text-sm font-medium">{filter.label}</span>
+                          </div>
+                          <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">({filter.count})</span>
                         </div>
                       </DropdownMenuItem>
                     ))}
@@ -265,45 +275,57 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
                 </DropdownMenu>
               </div>
 
-              {/* Filters Dropdown - Other */}
-              <div className="flex flex-col">
-                <span className="text-xs text-gray-500 mb-1">Other</span>
+              {/* Filters Dropdown - Advanced Options */}
+              <div className="flex flex-col group">
+                <div className="flex items-center space-x-2 mb-2">
+                  <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+                  <span className="text-xs font-semibold text-purple-700 uppercase tracking-wider">Advanced Filters</span>
+                </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="flex items-center space-x-2">
-                      <Filter className="w-4 h-4" />
-                      <span>Filters</span>
-                      <ChevronDown className="w-4 h-4" />
+                    <Button variant="outline" className="flex items-center space-x-3 bg-white hover:bg-purple-50 border-purple-200 hover:border-purple-300 transition-all duration-200 shadow-sm hover:shadow-md group-hover:scale-105">
+                      <Filter className="w-4 h-4 text-purple-600" />
+                      <span className="font-medium text-purple-700">More Filters</span>
+                      <ChevronDown className="w-4 h-4 text-purple-500" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
-                    <DropdownMenuItem className="cursor-pointer">
-                      <span className="text-sm">Date Range</span>
+                  <DropdownMenuContent align="start" className="w-56 bg-white border border-purple-200 shadow-xl rounded-lg">
+                    <DropdownMenuItem className="cursor-pointer hover:bg-purple-50 transition-colors">
+                      <Calendar className="w-4 h-4 mr-3 text-purple-600" />
+                      <span className="text-sm font-medium">Date Range</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      <span className="text-sm">Order Status</span>
+                    <DropdownMenuItem className="cursor-pointer hover:bg-purple-50 transition-colors">
+                      <Package className="w-4 h-4 mr-3 text-purple-600" />
+                      <span className="text-sm font-medium">Order Status</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      <span className="text-sm">Payment Method</span>
+                    <DropdownMenuItem className="cursor-pointer hover:bg-purple-50 transition-colors">
+                      <CreditCard className="w-4 h-4 mr-3 text-purple-600" />
+                      <span className="text-sm font-medium">Payment Method</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      <span className="text-sm">Customer</span>
+                    <DropdownMenuItem className="cursor-pointer hover:bg-purple-50 transition-colors">
+                      <User className="w-4 h-4 mr-3 text-purple-600" />
+                      <span className="text-sm font-medium">Customer</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      <span className="text-sm">Amount Range</span>
+                    <DropdownMenuItem className="cursor-pointer hover:bg-purple-50 transition-colors">
+                      <ArrowUpDown className="w-4 h-4 mr-3 text-purple-600" />
+                      <span className="text-sm font-medium">Amount Range</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
             </div>
 
-            {/* Right-aligned View Options - Icons Only */}
-            <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+            {/* Enhanced Right-aligned View Options */}
+            <div className="flex items-center space-x-2 bg-gradient-to-r from-gray-100 to-gray-200 rounded-xl p-2 shadow-inner">
               <Button
                 variant={viewMode === 'kanban' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('kanban')}
-                className="h-8 w-8 p-0"
+                className={`h-10 w-10 p-0 transition-all duration-200 ${
+                  viewMode === 'kanban' 
+                    ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg scale-110' 
+                    : 'hover:bg-white hover:shadow-md'
+                }`}
               >
                 <Kanban className="w-4 h-4" />
               </Button>
@@ -311,7 +333,11 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
                 variant={viewMode === 'timeline' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('timeline')}
-                className="h-8 w-8 p-0"
+                className={`h-10 w-10 p-0 transition-all duration-200 ${
+                  viewMode === 'timeline' 
+                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg scale-110' 
+                    : 'hover:bg-white hover:shadow-md'
+                }`}
               >
                 <Clock className="w-4 h-4" />
               </Button>
@@ -319,7 +345,11 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
                 variant={viewMode === 'cards' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('cards')}
-                className="h-8 w-8 p-0"
+                className={`h-10 w-10 p-0 transition-all duration-200 ${
+                  viewMode === 'cards' 
+                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg scale-110' 
+                    : 'hover:bg-white hover:shadow-md'
+                }`}
               >
                 <Grid3X3 className="w-4 h-4" />
               </Button>
@@ -327,7 +357,11 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
                 variant={viewMode === 'list' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setViewMode('list')}
-                className="h-8 w-8 p-0"
+                className={`h-10 w-10 p-0 transition-all duration-200 ${
+                  viewMode === 'list' 
+                    ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-110' 
+                    : 'hover:bg-white hover:shadow-md'
+                }`}
               >
                 <List className="w-4 h-4" />
               </Button>
@@ -340,6 +374,7 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
       {viewMode === 'timeline' ? (
         <OrdersTimeline activeFilter={activeFilter} />
       ) : viewMode === 'cards' ? (
+        // ... keep existing code (cards view) the same ...
         <>
           {/* Cards View - Similar to Stores */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -406,6 +441,7 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
           )}
         </>
       ) : viewMode === 'list' ? (
+        // ... keep existing code (list view) the same ...
         <>
           {/* List View with Expandable Details */}
           <div className="space-y-2">
@@ -517,6 +553,7 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
           )}
         </>
       ) : (
+        // ... keep existing code (kanban view) the same ...
         <>
           {/* Kanban Board */}
           <div className="flex gap-6 overflow-x-auto pb-4">
