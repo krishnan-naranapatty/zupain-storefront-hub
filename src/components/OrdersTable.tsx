@@ -202,123 +202,127 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
 
   return (
     <div className="space-y-6">
-      {/* View Toggle and Filters */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          {/* View Options */}
-          <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
-            <Button
-              variant={viewMode === 'kanban' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('kanban')}
-              className="flex items-center space-x-2"
-            >
-              <Kanban className="w-4 h-4" />
-              <span>Kanban</span>
-            </Button>
-            <Button
-              variant={viewMode === 'timeline' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('timeline')}
-              className="flex items-center space-x-2"
-            >
-              <Clock className="w-4 h-4" />
-              <span>Timeline</span>
-            </Button>
-            <Button
-              variant={viewMode === 'cards' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('cards')}
-              className="flex items-center space-x-2"
-            >
-              <Grid3X3 className="w-4 h-4" />
-              <span>Cards</span>
-            </Button>
-            <Button
-              variant={viewMode === 'list' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setViewMode('list')}
-              className="flex items-center space-x-2"
-            >
-              <List className="w-4 h-4" />
-              <span>List</span>
-            </Button>
-          </div>
-
-          {/* Source/Platform Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center space-x-2">
-                <span>Jingls (0)</span>
-                <ChevronDown className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
-              <DropdownMenuItem className="cursor-pointer">
-                <span className="text-sm font-medium text-blue-700">Jingls (0)</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer opacity-50">
-                <span className="text-sm text-gray-600">ONDC (Coming Soon)</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Status Filter Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="outline" 
-                className={`flex items-center space-x-2 ${activeFilterData.color} text-white hover:opacity-90`}
-              >
-                <span>{activeFilterData.label} ({activeFilterData.count})</span>
-                <ChevronDown className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
-              {filters.map((filter) => (
-                <DropdownMenuItem 
-                  key={filter.id}
-                  className="cursor-pointer"
-                  onClick={() => {}} // This will be handled by the parent component
+      {/* Controls Container */}
+      <Card className="bg-white border border-gray-200 shadow-sm">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              {/* View Options */}
+              <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+                <Button
+                  variant={viewMode === 'kanban' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('kanban')}
+                  className="flex items-center space-x-2"
                 >
-                  <div className="flex items-center justify-between w-full">
-                    <span className="text-sm">{filter.label}</span>
-                    <span className="text-sm text-gray-500">({filter.count})</span>
-                  </div>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <Kanban className="w-4 h-4" />
+                  <span>Kanban</span>
+                </Button>
+                <Button
+                  variant={viewMode === 'timeline' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('timeline')}
+                  className="flex items-center space-x-2"
+                >
+                  <Clock className="w-4 h-4" />
+                  <span>Timeline</span>
+                </Button>
+                <Button
+                  variant={viewMode === 'cards' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('cards')}
+                  className="flex items-center space-x-2"
+                >
+                  <Grid3X3 className="w-4 h-4" />
+                  <span>Cards</span>
+                </Button>
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('list')}
+                  className="flex items-center space-x-2"
+                >
+                  <List className="w-4 h-4" />
+                  <span>List</span>
+                </Button>
+              </div>
 
-          {/* Filters Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center space-x-2">
-                <Filter className="w-4 h-4" />
-                <span>Filters</span>
-                <ChevronDown className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
-              <DropdownMenuItem className="cursor-pointer">
-                <span className="text-sm">Date Range</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <span className="text-sm">Order Status</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <span className="text-sm">Payment Method</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <span className="text-sm">Customer</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <span className="text-sm">Amount Range</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
+              {/* Source/Platform Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="flex items-center space-x-2">
+                    <span>Jingls (0)</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
+                  <DropdownMenuItem className="cursor-pointer">
+                    <span className="text-sm font-medium text-blue-700">Jingls (0)</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer opacity-50">
+                    <span className="text-sm text-gray-600">ONDC (Coming Soon)</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Status Filter Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="outline" 
+                    className={`flex items-center space-x-2 ${activeFilterData.color} text-white hover:opacity-90`}
+                  >
+                    <span>{activeFilterData.label} ({activeFilterData.count})</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
+                  {filters.map((filter) => (
+                    <DropdownMenuItem 
+                      key={filter.id}
+                      className="cursor-pointer"
+                      onClick={() => {}} // This will be handled by the parent component
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <span className="text-sm">{filter.label}</span>
+                        <span className="text-sm text-gray-500">({filter.count})</span>
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Filters Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="flex items-center space-x-2">
+                    <Filter className="w-4 h-4" />
+                    <span>Filters</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
+                  <DropdownMenuItem className="cursor-pointer">
+                    <span className="text-sm">Date Range</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <span className="text-sm">Order Status</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <span className="text-sm">Payment Method</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <span className="text-sm">Customer</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <span className="text-sm">Amount Range</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Render based on view mode */}
       {viewMode === 'timeline' ? (
