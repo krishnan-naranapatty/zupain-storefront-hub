@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Search, Download, Upload, Users, Plus, Filter, Grid, List, User, Phone, ShoppingCart, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -182,19 +181,6 @@ const CustomersHeader = () => {
           </div>
           <span>•</span>
           <span>Last updated: 2 minutes ago</span>
-        </div>
-      </div>
-
-      {/* Modern Header Section */}
-      <div className="mb-6">
-        <div className="flex items-center space-x-3 mb-2">
-          <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
-            <Users className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-gray-900">Customer Management</h2>
-            <p className="text-sm text-gray-600">Manage your customer relationships and insights</p>
-          </div>
         </div>
       </div>
 
