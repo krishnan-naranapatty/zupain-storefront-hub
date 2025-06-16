@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Download, ArrowUpDown, Calendar, User, CreditCard, Package, Kanban, Clock, LayoutGrid, Eye, Edit3, Trash2, MessageSquare, Truck, ChevronDown, ChevronRight, Grid3X3, List, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -207,23 +208,32 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              {/* Source/Platform Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="flex items-center space-x-2">
-                    <span>Jingls (0)</span>
-                    <ChevronDown className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
-                  <DropdownMenuItem className="cursor-pointer">
-                    <span className="text-sm font-medium text-blue-700">Jingls (0)</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer opacity-50">
-                    <span className="text-sm text-gray-600">ONDC (Coming Soon)</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/* Source/Platform Dropdown - Outside Integrations */}
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-500 mb-1">Outside Integrations</span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="flex items-center space-x-2">
+                      <span>Jingls (0)</span>
+                      <ChevronDown className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
+                    <DropdownMenuItem className="cursor-pointer">
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-blue-700">Jingls (0)</span>
+                        <span className="text-xs text-gray-500">Third-party platform</span>
+                      </div>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer opacity-50">
+                      <div className="flex flex-col">
+                        <span className="text-sm text-gray-600">ONDC</span>
+                        <span className="text-xs text-gray-400">Coming Soon</span>
+                      </div>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
 
               {/* Status Filter Dropdown */}
               <DropdownMenu>
