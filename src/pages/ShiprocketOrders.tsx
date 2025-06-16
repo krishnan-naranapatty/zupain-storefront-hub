@@ -74,9 +74,9 @@ const ShiprocketOrders = () => {
           {/* Breadcrumb */}
           <div className="flex items-center space-x-2 text-sm text-gray-600 mb-6">
             <span>Home</span>
-            <span>></span>
+            <span>{'>'}</span>
             <span>Orders</span>
-            <span>></span>
+            <span>{'>'}</span>
             <span className="text-gray-900 font-medium">Shiprocket Orders</span>
           </div>
 
