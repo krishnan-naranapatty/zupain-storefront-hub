@@ -1,12 +1,24 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Plus, Package, TrendingUp, Eye, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTheme } from '@/contexts/ThemeContext';
+import EditCategoryDrawer from './EditCategoryDrawer';
 
 const CategoriesHeader = () => {
   const { currentPalette } = useTheme();
+  const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
+
+  const handleAddCategory = () => {
+    setIsAddCategoryOpen(true);
+  };
+
+  const handleSaveCategory = (category: any) => {
+    console.log('Saving category:', category);
+    // Here you would typically handle the category save logic
+    setIsAddCategoryOpen(false);
+  };
 
   return (
     <div className="space-y-8">
@@ -100,7 +112,10 @@ const CategoriesHeader = () => {
             </div>
             
             <div className="flex items-center gap-3">
-              <Button className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-200">
+              <Button 
+                onClick={handleAddCategory}
+                className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-200"
+              >
                 <Plus className="w-4 h-4" />
                 <span>Add Category</span>
               </Button>
@@ -108,6 +123,14 @@ const CategoriesHeader = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Add Category Drawer */}
+      <EditCategoryDrawer
+        isOpen={isAddCategoryOpen}
+        onClose={() => setIsAddCategoryOpen(false)}
+        category={null}
+        onSave={handleSaveCategory}
+      />
     </div>
   );
 };
