@@ -13,7 +13,7 @@ interface OrdersTableProps {
 }
 
 const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
-  const [viewMode, setViewMode] = useState<'kanban' | 'timeline' | 'cards' | 'list'>('kanban');
+  const [viewMode, setViewMode] = useState<'kanban' | 'timeline' | 'cards' | 'list'>('cards');
   const [expandedOrders, setExpandedOrders] = useState<Set<string>>(new Set());
 
   const toggleOrderExpansion = (orderId: string) => {
@@ -248,7 +248,7 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
           {/* Source/Platform Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center space-x-2 bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100">
+              <Button variant="outline" className="flex items-center space-x-2">
                 <span>Jingls (0)</span>
                 <ChevronDown className="w-4 h-4" />
               </Button>
