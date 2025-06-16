@@ -53,8 +53,6 @@ const OrdersHeader = ({ showShiprocketOrders = false, onToggleShiprocketOrders }
 
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <span className="text-gray-700 font-medium">Advanced Filters</span>
-          
           {!showShiprocketOrders && (
             <Button
               variant="outline"
