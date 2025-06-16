@@ -186,6 +186,20 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
     return acc;
   }, {} as Record<string, typeof allOrders>);
 
+  const filters = [
+    { id: 'all', label: 'All', count: 56, color: 'bg-blue-600' },
+    { id: 'pending', label: 'Pending', count: 10, color: 'bg-orange-500' },
+    { id: 'confirmed', label: 'Confirmed', count: 7, color: 'bg-green-600' },
+    { id: 'in-packing', label: 'In Packing', count: 0, color: 'bg-purple-500' },
+    { id: 'dispatched', label: 'Dispatched', count: 0, color: 'bg-blue-500' },
+    { id: 'delivered', label: 'Delivered', count: 7, color: 'bg-green-500' },
+    { id: 'cancelled', label: 'Cancelled', count: 0, color: 'bg-red-500' },
+    { id: 'checkout', label: 'Checkout', count: 30, color: 'bg-gray-500' },
+    { id: 'cancel-request', label: 'Cancel Request', count: 0, color: 'bg-yellow-500' },
+  ];
+
+  const activeFilterData = filters.find(filter => filter.id === activeFilter) || filters[0];
+
   return (
     <div className="space-y-6">
       {/* View Toggle and Filters */}
@@ -230,6 +244,51 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
               <span>List</span>
             </Button>
           </div>
+
+          {/* Source/Platform Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="flex items-center space-x-2 bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100">
+                <span>Jingls (0)</span>
+                <ChevronDown className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
+              <DropdownMenuItem className="cursor-pointer">
+                <span className="text-sm font-medium text-blue-700">Jingls (0)</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer opacity-50">
+                <span className="text-sm text-gray-600">ONDC (Coming Soon)</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Status Filter Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="outline" 
+                className={`flex items-center space-x-2 ${activeFilterData.color} text-white hover:opacity-90`}
+              >
+                <span>{activeFilterData.label} ({activeFilterData.count})</span>
+                <ChevronDown className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
+              {filters.map((filter) => (
+                <DropdownMenuItem 
+                  key={filter.id}
+                  className="cursor-pointer"
+                  onClick={() => {}} // This will be handled by the parent component
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <span className="text-sm">{filter.label}</span>
+                    <span className="text-sm text-gray-500">({filter.count})</span>
+                  </div>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* Filters Dropdown */}
           <DropdownMenu>

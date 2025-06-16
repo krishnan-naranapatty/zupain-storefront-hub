@@ -1,10 +1,9 @@
 
 import React from 'react';
-import { Download, Plus, ChevronDown } from 'lucide-react';
+import { Download, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 const OrdersHeader = () => {
   return (
@@ -35,23 +34,7 @@ const OrdersHeader = () => {
 
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          {/* Source/Platform Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center space-x-2 bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100">
-                <span>Jingls (0)</span>
-                <ChevronDown className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
-              <DropdownMenuItem className="cursor-pointer">
-                <span className="text-sm font-medium text-blue-700">Jingls (0)</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer opacity-50">
-                <span className="text-sm text-gray-600">ONDC (Coming Soon)</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Empty space where dropdowns used to be */}
         </div>
         
         <div className="relative w-80">
