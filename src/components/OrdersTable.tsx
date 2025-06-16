@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, ArrowUpDown, Calendar, User, CreditCard, Package, Kanban, Clock } from 'lucide-react';
+import { Download, ArrowUpDown, Calendar, User, CreditCard, Package, Kanban, Clock, LayoutGrid, Eye, Edit3, Trash2, MessageSquare, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -11,7 +11,7 @@ interface OrdersTableProps {
 }
 
 const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
-  const [viewMode, setViewMode] = useState<'kanban' | 'timeline'>('kanban');
+  const [viewMode, setViewMode] = useState<'kanban' | 'timeline' | 'dashboard'>('kanban');
 
   const allOrders = [
     {
@@ -160,12 +160,133 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
             <Clock className="w-4 h-4" />
             <span>Timeline</span>
           </Button>
+          <Button
+            variant={viewMode === 'dashboard' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setViewMode('dashboard')}
+            className="flex items-center space-x-2"
+          >
+            <LayoutGrid className="w-4 h-4" />
+            <span>Dashboard</span>
+          </Button>
         </div>
       </div>
 
       {/* Render based on view mode */}
       {viewMode === 'timeline' ? (
         <OrdersTimeline activeFilter={activeFilter} />
+      ) : viewMode === 'dashboard' ? (
+        <>
+          {/* Dashboard Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredOrders.map((order) => (
+              <Card key={order.id} className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-blue-200">
+                <CardContent className="p-0">
+                  {/* Header Section */}
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 border-b">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="font-bold text-lg text-blue-700">{order.id}</h3>
+                      <Badge variant="secondary" className={`${order.statusColor} font-medium`}>
+                        {order.status}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <User className="w-4 h-4 mr-2" />
+                      <span className="font-medium text-sm">{order.customer}</span>
+                    </div>
+                  </div>
+
+                  {/* Content Section */}
+                  <div className="p-4 space-y-3">
+                    {/* Date and Payment */}
+                    <div className="space-y-2">
+                      <div className="flex items-center text-gray-600">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        <span className="text-xs">{order.billDate}</span>
+                      </div>
+                      <div className="flex items-center text-gray-600">
+                        <CreditCard className="w-4 h-4 mr-2" />
+                        <span className="text-sm font-medium">{order.paymentMethod}</span>
+                      </div>
+                    </div>
+
+                    {/* Amount */}
+                    <div className="bg-gray-50 rounded-lg p-3 text-center">
+                      <span className="text-2xl font-bold text-gray-900">{order.amount}</span>
+                    </div>
+
+                    {/* Quick Actions */}
+                    <div className="pt-3 border-t">
+                      <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Quick Actions</h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-xs h-8 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300"
+                        >
+                          <Eye className="w-3 h-3 mr-1" />
+                          View
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-xs h-8 hover:bg-green-50 hover:text-green-700 hover:border-green-300"
+                        >
+                          <Edit3 className="w-3 h-3 mr-1" />
+                          Edit
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-xs h-8 hover:bg-purple-50 hover:text-purple-700 hover:border-purple-300"
+                        >
+                          <MessageSquare className="w-3 h-3 mr-1" />
+                          Message
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="text-xs h-8 hover:bg-orange-50 hover:text-orange-700 hover:border-orange-300"
+                        >
+                          <Truck className="w-3 h-3 mr-1" />
+                          Track
+                        </Button>
+                      </div>
+                      
+                      {/* Secondary Actions */}
+                      <div className="flex justify-between mt-2 pt-2 border-t border-gray-100">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-xs h-7 px-2 text-gray-500 hover:text-gray-700"
+                        >
+                          <Package className="w-3 h-3 mr-1" />
+                          Details
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="text-xs h-7 px-2 text-gray-500 hover:text-gray-700"
+                        >
+                          <Download className="w-3 h-3 mr-1" />
+                          Export
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* No results message for dashboard view */}
+          {filteredOrders.length === 0 && (
+            <div className="text-center py-12">
+              <LayoutGrid className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+              <p className="text-gray-500 text-lg">No orders found for the selected filter.</p>
+            </div>
+          )}
+        </>
       ) : (
         <>
           {/* Kanban Board */}
