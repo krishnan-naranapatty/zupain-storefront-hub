@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Download, Plus, Truck, ArrowLeft } from 'lucide-react';
+import { Download, Truck, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -42,10 +42,6 @@ const OrdersHeader = ({ showShiprocketOrders = false, onToggleShiprocketOrders }
           <Button variant="outline" className="space-x-2">
             <Download className="w-4 h-4" />
             <span>Download To Excel</span>
-          </Button>
-          <Button className="space-x-2">
-            <Plus className="w-4 h-4" />
-            <span>Shiprocket Order</span>
           </Button>
         </div>
       </div>
