@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { 
@@ -15,8 +14,7 @@ import {
   PenTool,
   HelpCircle,
   ChevronDown,
-  ChevronRight,
-  Truck
+  ChevronRight
 } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -41,7 +39,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) => {
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/', isActive: true },
     { icon: ShoppingCart, label: 'Orders', path: '/orders' },
-    { icon: Truck, label: 'Shiprocket Orders', path: '/shiprocket-orders' },
     { icon: Package, label: 'Products', path: '/products' },
     { icon: Package, label: 'Inventory', path: '/inventory' },
     { icon: Store, label: 'Stores', path: '/stores' },
