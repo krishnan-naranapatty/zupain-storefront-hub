@@ -2,7 +2,6 @@
 import React from 'react';
 import { Download, Plus, Truck, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface OrdersHeaderProps {
@@ -63,13 +62,6 @@ const OrdersHeader = ({ showShiprocketOrders = false, onToggleShiprocketOrders }
               <span>Shiprocket Orders</span>
             </Button>
           )}
-        </div>
-        
-        <div className="relative w-80">
-          <Input
-            placeholder="Search orders..."
-            className="pl-4"
-          />
         </div>
       </div>
     </div>
