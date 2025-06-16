@@ -24,22 +24,22 @@ const ShiprocketOrdersFilters = ({ activeFilters, onFilterChange }: ShiprocketOr
 
   return (
     <Card className="bg-gradient-to-r from-gray-50 via-blue-50 to-indigo-50 border border-gray-200 shadow-md">
-      <CardContent className="p-6">
-        <div className="flex flex-wrap items-center gap-4">
+      <CardContent className="p-4">
+        <div className="flex items-center gap-3 overflow-x-auto">
           {/* Search */}
-          <div className="flex items-center space-x-2 bg-white rounded-lg border border-gray-200 px-3 py-2 min-w-64">
+          <div className="flex items-center space-x-2 bg-white rounded-lg border border-gray-200 px-3 py-2 min-w-64 flex-shrink-0">
             <Search className="w-4 h-4 text-gray-400" />
             <Input 
               placeholder="Search by Order ID, AWB, or Customer" 
-              className="border-0 p-0 focus-visible:ring-0 bg-transparent"
+              className="border-0 p-0 focus-visible:ring-0 bg-transparent min-w-0"
             />
           </div>
 
           {/* Status Filter */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             <Package className="w-4 h-4 text-gray-600" />
             <Select value={activeFilters.status} onValueChange={(value) => onFilterChange('status', value)}>
-              <SelectTrigger className="w-48 bg-white">
+              <SelectTrigger className="w-40 bg-white">
                 <SelectValue placeholder="All Status" />
               </SelectTrigger>
               <SelectContent>
@@ -59,10 +59,10 @@ const ShiprocketOrdersFilters = ({ activeFilters, onFilterChange }: ShiprocketOr
           </div>
 
           {/* Date Range Filter */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             <Calendar className="w-4 h-4 text-gray-600" />
             <Select value={activeFilters.dateRange} onValueChange={(value) => onFilterChange('dateRange', value)}>
-              <SelectTrigger className="w-48 bg-white">
+              <SelectTrigger className="w-40 bg-white">
                 <SelectValue placeholder="All Dates" />
               </SelectTrigger>
               <SelectContent>
@@ -79,10 +79,10 @@ const ShiprocketOrdersFilters = ({ activeFilters, onFilterChange }: ShiprocketOr
           </div>
 
           {/* Courier Partner Filter */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             <Truck className="w-4 h-4 text-gray-600" />
             <Select value={activeFilters.courier} onValueChange={(value) => onFilterChange('courier', value)}>
-              <SelectTrigger className="w-48 bg-white">
+              <SelectTrigger className="w-40 bg-white">
                 <SelectValue placeholder="All Couriers" />
               </SelectTrigger>
               <SelectContent>
@@ -100,13 +100,13 @@ const ShiprocketOrdersFilters = ({ activeFilters, onFilterChange }: ShiprocketOr
           </div>
 
           {/* Reset Filters */}
-          <Button variant="outline" onClick={handleReset} className="flex items-center space-x-2">
+          <Button variant="outline" onClick={handleReset} className="flex items-center space-x-2 flex-shrink-0">
             <RotateCcw className="w-4 h-4" />
             <span>Reset</span>
           </Button>
 
           {/* Advanced Filters */}
-          <Button variant="outline" className="flex items-center space-x-2">
+          <Button variant="outline" className="flex items-center space-x-2 flex-shrink-0">
             <Filter className="w-4 h-4" />
             <span>More Filters</span>
           </Button>
