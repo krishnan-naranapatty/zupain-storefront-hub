@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -11,7 +12,7 @@ interface Product {
   image: string;
   name: string;
   description: string;
-  variant: string;
+  variants: string[];
 }
 
 interface AddStockDialogProps {
@@ -21,8 +22,9 @@ interface AddStockDialogProps {
 
 const AddStockDialog = ({ open, onOpenChange }: AddStockDialogProps) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [quantities, setQuantities] = useState<Record<number, string>>({});
-  const [storeProducts, setStoreProducts] = useState<Product[]>([]);
+  const [quantities, setQuantities] = useState<Record<string, string>>({});
+  const [selectedVariants, setSelectedVariants] = useState<Record<number, string>>({});
+  const [storeProducts, setStoreProducts] = useState<(Product & { selectedVariant: string })[]>([]);
   const { toast } = useToast();
 
   const masterProducts: Product[] = [
@@ -31,28 +33,28 @@ const AddStockDialog = ({ open, onOpenChange }: AddStockDialogProps) => {
       image: '/placeholder.svg',
       name: 'Blameless Hydrating & Brightening Serum',
       description: 'With Watermelon, Niacinamide & Lotus Extracts | For Oily, Acne-Prone & Congested Skin | 50ml',
-      variant: ''
+      variants: ['50ml', '100ml', '150ml']
     },
     {
       id: 2,
       image: '/placeholder.svg',
       name: 'Blameless Oil Control + Brightening Serum',
       description: 'Niacinamide, Multani Mitti, Hyaluronic Acid & Daisy Extract | Lightweight Gel for Oily, Acne-Prone Skin | Controls Sebum, Minimizes Pores & Evens Tone | 50ml',
-      variant: ''
+      variants: ['50ml', '75ml', '100ml']
     },
     {
       id: 3,
       image: '/placeholder.svg',
       name: 'Blameless Avocado + Green Tea Sunscreen SPF 50',
       description: 'Silicon based Ultra-Matte Gel | Broad Spectrum, Blue Light & Infrared Protection | Non-Greasy, Fast-Absorbing | For Face & Body | 50ml',
-      variant: ''
+      variants: ['50ml', '100ml']
     },
     {
       id: 4,
       image: '/placeholder.svg',
       name: 'Blameless Pore Refining & Acne Control Serum',
       description: 'Salicylic Acid, Neem, Green Tea & Hibiscus | Lightweight Gel for Acne-Prone Skin | 50ml',
-      variant: ''
+      variants: ['30ml', '50ml', '100ml']
     }
   ];
 
@@ -61,12 +63,31 @@ const AddStockDialog = ({ open, onOpenChange }: AddStockDialogProps) => {
     product.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleQuantityChange = (productId: number, quantity: string) => {
-    setQuantities(prev => ({ ...prev, [productId]: quantity }));
+  const getProductKey = (productId: number, variant: string) => `${productId}-${variant}`;
+
+  const handleQuantityChange = (productId: number, variant: string, quantity: string) => {
+    const key = getProductKey(productId, variant);
+    setQuantities(prev => ({ ...prev, [key]: quantity }));
+  };
+
+  const handleVariantChange = (productId: number, variant: string) => {
+    setSelectedVariants(prev => ({ ...prev, [productId]: variant }));
   };
 
   const handleAddProduct = (product: Product) => {
-    const quantity = quantities[product.id] || '0';
+    const selectedVariant = selectedVariants[product.id];
+    
+    if (!selectedVariant) {
+      toast({
+        title: "No Variant Selected",
+        description: "Please select a variant before adding the product.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const key = getProductKey(product.id, selectedVariant);
+    const quantity = quantities[key] || '0';
     const numQuantity = parseInt(quantity);
     
     if (numQuantity <= 0) {
@@ -78,30 +99,32 @@ const AddStockDialog = ({ open, onOpenChange }: AddStockDialogProps) => {
       return;
     }
 
-    // Check if product already exists in store
-    const existingProductIndex = storeProducts.findIndex(p => p.id === product.id);
+    // Check if product with same variant already exists in store
+    const existingProductIndex = storeProducts.findIndex(p => p.id === product.id && p.selectedVariant === selectedVariant);
     
     if (existingProductIndex >= 0) {
       toast({
         title: "Product Already Added",
-        description: "This product is already in the store list.",
+        description: "This product variant is already in the store list.",
         variant: "destructive"
       });
       return;
     }
 
-    setStoreProducts(prev => [...prev, product]);
+    const productWithVariant = { ...product, selectedVariant };
+    setStoreProducts(prev => [...prev, productWithVariant]);
     toast({
       title: "Product Added",
-      description: `${product.name} has been added with quantity ${numQuantity}.`,
+      description: `${product.name} (${selectedVariant}) has been added with quantity ${numQuantity}.`,
     });
   };
 
-  const handleRemoveProduct = (productId: number) => {
-    setStoreProducts(prev => prev.filter(p => p.id !== productId));
+  const handleRemoveProduct = (productId: number, variant: string) => {
+    setStoreProducts(prev => prev.filter(p => !(p.id === productId && p.selectedVariant === variant)));
+    const key = getProductKey(productId, variant);
     setQuantities(prev => {
       const newQuantities = { ...prev };
-      delete newQuantities[productId];
+      delete newQuantities[key];
       return newQuantities;
     });
   };
@@ -124,6 +147,7 @@ const AddStockDialog = ({ open, onOpenChange }: AddStockDialogProps) => {
     // Reset dialog state
     setStoreProducts([]);
     setQuantities({});
+    setSelectedVariants({});
     setSearchQuery('');
     onOpenChange(false);
   };
@@ -173,18 +197,33 @@ const AddStockDialog = ({ open, onOpenChange }: AddStockDialogProps) => {
                     </div>
                   </div>
                   
-                  <div className="text-center">
-                    <span className="text-sm text-gray-600">{product.variant || '-'}</span>
+                  <div className="flex justify-center">
+                    <Select 
+                      value={selectedVariants[product.id] || ''} 
+                      onValueChange={(value) => handleVariantChange(product.id, value)}
+                    >
+                      <SelectTrigger className="w-20 h-8 text-xs">
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {product.variants.map((variant) => (
+                          <SelectItem key={variant} value={variant} className="text-xs">
+                            {variant}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                   
                   <div className="flex justify-center">
                     <Input
                       type="number"
                       placeholder="0"
-                      value={quantities[product.id] || ''}
-                      onChange={(e) => handleQuantityChange(product.id, e.target.value)}
+                      value={quantities[getProductKey(product.id, selectedVariants[product.id] || '')] || ''}
+                      onChange={(e) => handleQuantityChange(product.id, selectedVariants[product.id] || '', e.target.value)}
                       className="w-16 h-8 text-center text-sm"
                       min="0"
+                      disabled={!selectedVariants[product.id]}
                     />
                   </div>
                   
@@ -193,6 +232,7 @@ const AddStockDialog = ({ open, onOpenChange }: AddStockDialogProps) => {
                       size="sm"
                       onClick={() => handleAddProduct(product)}
                       className="h-8 px-4 bg-blue-600 hover:bg-blue-700"
+                      disabled={!selectedVariants[product.id]}
                     >
                       Add
                     </Button>
@@ -228,7 +268,7 @@ const AddStockDialog = ({ open, onOpenChange }: AddStockDialogProps) => {
                 </div>
               ) : (
                 storeProducts.map((product) => (
-                  <div key={product.id} className="grid grid-cols-4 gap-4 p-3 border-b hover:bg-gray-50 items-center">
+                  <div key={`${product.id}-${product.selectedVariant}`} className="grid grid-cols-4 gap-4 p-3 border-b hover:bg-gray-50 items-center">
                     <div className="flex items-center space-x-3">
                       <img 
                         src={product.image} 
@@ -242,14 +282,14 @@ const AddStockDialog = ({ open, onOpenChange }: AddStockDialogProps) => {
                     </div>
                     
                     <div className="text-center">
-                      <span className="text-sm text-gray-600">{product.variant || '-'}</span>
+                      <span className="text-sm text-gray-600">{product.selectedVariant}</span>
                     </div>
                     
                     <div className="flex justify-center">
                       <Input
                         type="number"
-                        value={quantities[product.id] || ''}
-                        onChange={(e) => handleQuantityChange(product.id, e.target.value)}
+                        value={quantities[getProductKey(product.id, product.selectedVariant)] || ''}
+                        onChange={(e) => handleQuantityChange(product.id, product.selectedVariant, e.target.value)}
                         className="w-16 h-8 text-center text-sm"
                         min="0"
                       />
@@ -259,7 +299,7 @@ const AddStockDialog = ({ open, onOpenChange }: AddStockDialogProps) => {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => handleRemoveProduct(product.id)}
+                        onClick={() => handleRemoveProduct(product.id, product.selectedVariant)}
                         className="h-8 px-4 text-red-600 hover:text-red-700 hover:bg-red-50"
                       >
                         Remove
