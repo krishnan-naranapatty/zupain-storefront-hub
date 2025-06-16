@@ -6,11 +6,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, Wallet } from 'lucide-react';
+import WalletRechargeDialog from './WalletRechargeDialog';
 
 const PlansHeader = () => {
   const { currentPalette } = useTheme();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('plans');
+  const [isRechargeDialogOpen, setIsRechargeDialogOpen] = useState(false);
 
   const navigationTabs = [
     { 
@@ -78,7 +80,10 @@ const PlansHeader = () => {
           <div className="text-center">
             <h3 className="text-2xl font-bold mb-2">₹0.00</h3>
             <p className="text-gray-600">Current Balance</p>
-            <Button className={`${currentPalette.primary} text-white hover:opacity-90 mt-4`}>
+            <Button 
+              className={`${currentPalette.primary} text-white hover:opacity-90 mt-4`}
+              onClick={() => setIsRechargeDialogOpen(true)}
+            >
               Add Money
             </Button>
           </div>
@@ -117,6 +122,12 @@ const PlansHeader = () => {
         {activeTab === 'plans' && renderPlansContent()}
         {activeTab === 'wallet' && renderWalletContent()}
       </div>
+
+      {/* Wallet Recharge Dialog */}
+      <WalletRechargeDialog
+        open={isRechargeDialogOpen}
+        onOpenChange={setIsRechargeDialogOpen}
+      />
     </div>
   );
 };
