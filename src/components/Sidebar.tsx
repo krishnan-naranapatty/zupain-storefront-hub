@@ -15,7 +15,8 @@ import {
   PenTool,
   HelpCircle,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  Truck
 } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
