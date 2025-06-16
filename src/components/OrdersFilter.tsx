@@ -1,5 +1,8 @@
 
 import React from 'react';
+import { ChevronDown } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 
 interface OrdersFilterProps {
   activeFilter: string;
@@ -19,21 +22,36 @@ const OrdersFilter = ({ activeFilter, onFilterChange }: OrdersFilterProps) => {
     { id: 'cancel-request', label: 'Cancel Request', count: 0, color: 'bg-yellow-500' },
   ];
 
+  const activeFilterData = filters.find(filter => filter.id === activeFilter) || filters[0];
+
   return (
-    <div className="flex flex-wrap gap-2">
-      {filters.map((filter) => (
-        <button
-          key={filter.id}
-          onClick={() => onFilterChange(filter.id)}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-            activeFilter === filter.id
-              ? `${filter.color} text-white`
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          }`}
-        >
-          {filter.label} ({filter.count})
-        </button>
-      ))}
+    <div className="flex items-center space-x-4">
+      {/* Status Filter Dropdown */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button 
+            variant="outline" 
+            className={`flex items-center space-x-2 ${activeFilterData.color} text-white hover:opacity-90`}
+          >
+            <span>{activeFilterData.label} ({activeFilterData.count})</span>
+            <ChevronDown className="w-4 h-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
+          {filters.map((filter) => (
+            <DropdownMenuItem 
+              key={filter.id}
+              className="cursor-pointer"
+              onClick={() => onFilterChange(filter.id)}
+            >
+              <div className="flex items-center justify-between w-full">
+                <span className="text-sm">{filter.label}</span>
+                <span className="text-sm text-gray-500">({filter.count})</span>
+              </div>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
