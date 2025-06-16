@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Download, ArrowUpDown, Calendar, User, CreditCard, Package, Kanban, Clock, LayoutGrid, Eye, Edit3, Trash2, MessageSquare, Truck, ChevronDown, ChevronRight, Grid3X3, List, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -264,33 +265,36 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
                 </DropdownMenu>
               </div>
 
-              {/* Filters Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="flex items-center space-x-2">
-                    <Filter className="w-4 h-4" />
-                    <span>Filters</span>
-                    <ChevronDown className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
-                  <DropdownMenuItem className="cursor-pointer">
-                    <span className="text-sm">Date Range</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <span className="text-sm">Order Status</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <span className="text-sm">Payment Method</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <span className="text-sm">Customer</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <span className="text-sm">Amount Range</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/* Filters Dropdown - Other */}
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-500 mb-1">Other</span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="flex items-center space-x-2">
+                      <Filter className="w-4 h-4" />
+                      <span>Filters</span>
+                      <ChevronDown className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
+                    <DropdownMenuItem className="cursor-pointer">
+                      <span className="text-sm">Date Range</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <span className="text-sm">Order Status</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <span className="text-sm">Payment Method</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <span className="text-sm">Customer</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer">
+                      <span className="text-sm">Amount Range</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
 
             {/* Right-aligned View Options - Icons Only */}
