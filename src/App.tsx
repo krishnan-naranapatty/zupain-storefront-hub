@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Index from "./pages/Index";
 import Orders from "./pages/Orders";
+import ShiprocketOrders from "./pages/ShiprocketOrders";
 import Products from "./pages/Products";
 import Inventory from "./pages/Inventory";
 import Stores from "./pages/Stores";
@@ -31,6 +32,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/shiprocket-orders" element={<ShiprocketOrders />} />
             <Route path="/products" element={<Products />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/stores" element={<Stores />} />
