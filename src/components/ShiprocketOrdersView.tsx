@@ -9,7 +9,6 @@ import { MoreHorizontal, Package, Calendar, User, Phone, Mail, MapPin, CreditCar
 import ShiprocketOrdersFilters from './ShiprocketOrdersFilters';
 
 const ShiprocketOrdersView = () => {
-  const [activeFilter, setActiveFilter] = useState('all');
   const [filters, setFilters] = useState({
     status: 'all',
     dateRange: 'all',
@@ -22,15 +21,6 @@ const ShiprocketOrdersView = () => {
       [filterType]: value
     }));
   };
-
-  const filterButtons = [
-    { id: 'all', label: 'All', count: 1 },
-    { id: 'new', label: 'New', count: 1 },
-    { id: 'ready-to-ship', label: 'Ready To Ship', count: 0 },
-    { id: 'pickups', label: 'Pickups', count: 0 },
-    { id: 'in-transit', label: 'In Transit', count: 0 },
-    { id: 'delivered', label: 'Delivered', count: 0 }
-  ];
 
   const orders = [
     {
@@ -77,29 +67,6 @@ const ShiprocketOrdersView = () => {
         activeFilters={filters}
         onFilterChange={handleFilterChange}
       />
-
-      {/* Filter Buttons */}
-      <div className="flex items-center space-x-2">
-        {filterButtons.map((filter) => (
-          <Button
-            key={filter.id}
-            variant={activeFilter === filter.id ? "default" : "outline"}
-            onClick={() => setActiveFilter(filter.id)}
-            className={`${
-              activeFilter === filter.id 
-                ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-            } rounded-full px-4 py-2`}
-          >
-            {filter.label}
-            {filter.count !== null && (
-              <span className="ml-2 bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">
-                {filter.count}
-              </span>
-            )}
-          </Button>
-        ))}
-      </div>
 
       {/* Orders Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
