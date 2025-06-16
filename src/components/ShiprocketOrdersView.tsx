@@ -5,18 +5,31 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Package, Calendar, User, Phone, Mail, MapPin, CreditCard, Truck, Copy, ExternalLink } from 'lucide-react';
+import { MoreHorizontal, Package, Calendar, User, Phone, Mail, MapPin, CreditCard, Truck, Copy } from 'lucide-react';
+import ShiprocketOrdersFilters from './ShiprocketOrdersFilters';
 
 const ShiprocketOrdersView = () => {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [filters, setFilters] = useState({
+    status: 'all',
+    dateRange: 'all',
+    courier: 'all'
+  });
+
+  const handleFilterChange = (filterType: string, value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterType]: value
+    }));
+  };
 
   const filterButtons = [
-    { id: 'all', label: 'All', count: null },
-    { id: 'new', label: 'New', count: null },
-    { id: 'ready-to-ship', label: 'Ready To Ship', count: null },
-    { id: 'pickups', label: 'Pickups', count: null },
-    { id: 'in-transit', label: 'In Transit', count: null },
-    { id: 'delivered', label: 'Delivered', count: null }
+    { id: 'all', label: 'All', count: 1 },
+    { id: 'new', label: 'New', count: 1 },
+    { id: 'ready-to-ship', label: 'Ready To Ship', count: 0 },
+    { id: 'pickups', label: 'Pickups', count: 0 },
+    { id: 'in-transit', label: 'In Transit', count: 0 },
+    { id: 'delivered', label: 'Delivered', count: 0 }
   ];
 
   const orders = [
@@ -59,6 +72,12 @@ const ShiprocketOrdersView = () => {
 
   return (
     <div className="space-y-6">
+      {/* Advanced Filters */}
+      <ShiprocketOrdersFilters 
+        activeFilters={filters}
+        onFilterChange={handleFilterChange}
+      />
+
       {/* Filter Buttons */}
       <div className="flex items-center space-x-2">
         {filterButtons.map((filter) => (
@@ -73,7 +92,7 @@ const ShiprocketOrdersView = () => {
             } rounded-full px-4 py-2`}
           >
             {filter.label}
-            {filter.count && (
+            {filter.count !== null && (
               <span className="ml-2 bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">
                 {filter.count}
               </span>
@@ -186,7 +205,7 @@ const ShiprocketOrdersView = () => {
                       <MoreHorizontal className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
+                  <DropdownMenuContent align="end" className="bg-white border border-gray-200 shadow-lg">
                     <DropdownMenuItem>View Details</DropdownMenuItem>
                     <DropdownMenuItem>Edit Order</DropdownMenuItem>
                     <DropdownMenuItem>Track Shipment</DropdownMenuItem>
