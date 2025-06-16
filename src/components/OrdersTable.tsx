@@ -1,16 +1,9 @@
 
 import React from 'react';
-import { Download, ArrowUpDown } from 'lucide-react';
+import { Download, ArrowUpDown, Calendar, User, CreditCard, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Pagination,
   PaginationContent,
@@ -106,71 +99,58 @@ const OrdersTable = () => {
   ];
 
   return (
-    <div className="space-y-4">
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-gray-50">
-              <TableHead className="font-semibold text-gray-900">
-                <div className="flex items-center space-x-2">
-                  <span>Order ID</span>
-                  <ArrowUpDown className="w-4 h-4" />
+    <div className="space-y-6">
+      {/* Orders Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {orders.map((order) => (
+          <Card key={order.id} className="hover:shadow-lg transition-all duration-200 border border-gray-200 bg-white">
+            <CardContent className="p-6">
+              {/* Header with Order ID and Status */}
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h3 className="font-semibold text-blue-600 text-lg">{order.id}</h3>
+                  <div className="flex items-center text-sm text-gray-500 mt-1">
+                    <Calendar className="w-4 h-4 mr-1" />
+                    <span>{order.billDate}</span>
+                  </div>
                 </div>
-              </TableHead>
-              <TableHead className="font-semibold text-gray-900">
-                <div className="flex items-center space-x-2">
-                  <span>Customer Name</span>
-                  <ArrowUpDown className="w-4 h-4" />
+                <Badge variant="secondary" className={order.statusColor}>
+                  {order.status}
+                </Badge>
+              </div>
+
+              {/* Customer Info */}
+              <div className="flex items-center mb-3">
+                <User className="w-4 h-4 text-gray-400 mr-2" />
+                <span className="font-medium text-gray-900">{order.customer}</span>
+              </div>
+
+              {/* Payment Method */}
+              <div className="flex items-center mb-4">
+                <CreditCard className="w-4 h-4 text-gray-400 mr-2" />
+                <span className="text-gray-600">{order.paymentMethod}</span>
+              </div>
+
+              {/* Amount and Actions */}
+              <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div>
+                  <span className="text-2xl font-bold text-gray-900">{order.amount}</span>
                 </div>
-              </TableHead>
-              <TableHead className="font-semibold text-gray-900">
                 <div className="flex items-center space-x-2">
-                  <span>Bill Date</span>
-                  <ArrowUpDown className="w-4 h-4" />
-                </div>
-              </TableHead>
-              <TableHead className="font-semibold text-gray-900">
-                <div className="flex items-center space-x-2">
-                  <span>Status</span>
-                  <ArrowUpDown className="w-4 h-4" />
-                </div>
-              </TableHead>
-              <TableHead className="font-semibold text-gray-900">Payment Method</TableHead>
-              <TableHead className="font-semibold text-gray-900">Payment Proof</TableHead>
-              <TableHead className="font-semibold text-gray-900">
-                <div className="flex items-center space-x-2">
-                  <span>Amount</span>
-                  <ArrowUpDown className="w-4 h-4" />
-                </div>
-              </TableHead>
-              <TableHead className="font-semibold text-gray-900">Bills</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {orders.map((order) => (
-              <TableRow key={order.id} className="hover:bg-gray-50">
-                <TableCell className="font-medium text-blue-600">{order.id}</TableCell>
-                <TableCell>{order.customer}</TableCell>
-                <TableCell className="text-gray-600">{order.billDate}</TableCell>
-                <TableCell>
-                  <Badge variant="secondary" className={order.statusColor}>
-                    {order.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>{order.paymentMethod}</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell className="font-semibold">{order.amount}</TableCell>
-                <TableCell>
-                  <Button variant="ghost" size="sm">
-                    <Download className="w-4 h-4" />
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <Package className="w-4 h-4 text-gray-400" />
                   </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <Download className="w-4 h-4 text-gray-400" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
+      {/* Pagination */}
       <div className="flex justify-center">
         <Pagination>
           <PaginationContent>
