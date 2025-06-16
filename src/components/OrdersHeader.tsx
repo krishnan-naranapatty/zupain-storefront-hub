@@ -39,15 +39,6 @@ const OrdersHeader = ({ showShiprocketOrders = false, onToggleShiprocketOrders }
               <SelectItem value="month">This Month</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" className="space-x-2">
-            <Download className="w-4 h-4" />
-            <span>Download To Excel</span>
-          </Button>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
           {!showShiprocketOrders && (
             <Button
               variant="outline"
@@ -58,6 +49,10 @@ const OrdersHeader = ({ showShiprocketOrders = false, onToggleShiprocketOrders }
               <span>Shiprocket Orders</span>
             </Button>
           )}
+          <Button variant="outline" className="space-x-2">
+            <Download className="w-4 h-4" />
+            <span>Download To Excel</span>
+          </Button>
         </div>
       </div>
     </div>
