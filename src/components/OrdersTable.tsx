@@ -315,43 +315,39 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
               </div>
             </div>
 
-            {/* Simple Right-aligned View Options */}
+            {/* Icon-only View Options */}
             <div className="flex items-center space-x-2">
               <Button
                 variant={viewMode === 'kanban' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setViewMode('kanban')}
-                className="flex items-center space-x-2"
+                className="w-10 h-10 p-0"
               >
                 <Kanban className="w-4 h-4" />
-                <span>Kanban</span>
               </Button>
               <Button
                 variant={viewMode === 'timeline' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setViewMode('timeline')}
-                className="flex items-center space-x-2"
+                className="w-10 h-10 p-0"
               >
                 <Clock className="w-4 h-4" />
-                <span>Timeline</span>
               </Button>
               <Button
                 variant={viewMode === 'cards' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setViewMode('cards')}
-                className="flex items-center space-x-2"
+                className="w-10 h-10 p-0"
               >
                 <Grid3X3 className="w-4 h-4" />
-                <span>Cards</span>
               </Button>
               <Button
                 variant={viewMode === 'list' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setViewMode('list')}
-                className="flex items-center space-x-2"
+                className="w-10 h-10 p-0"
               >
                 <List className="w-4 h-4" />
-                <span>List</span>
               </Button>
             </div>
           </div>
