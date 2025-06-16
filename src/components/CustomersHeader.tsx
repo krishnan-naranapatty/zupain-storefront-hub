@@ -1,31 +1,17 @@
 
 import React, { useState } from 'react';
-import { Search, Download, Upload, Users, UserPlus, ChevronDown, Filter, Plus, Sparkles } from 'lucide-react';
+import { Search, Download, Upload, Users, Plus, Filter, Grid, List, User, Phone, ShoppingCart, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 import { useTheme } from '@/contexts/ThemeContext';
 import CustomersTable from '@/components/CustomersTable';
 
 const CustomersHeader = () => {
   const { currentPalette } = useTheme();
-  const [activeTab, setActiveTab] = useState('customers');
   const [activeFilter, setActiveFilter] = useState('all');
-
-  const navigationTabs = [
-    { 
-      id: 'customers', 
-      label: 'Customers', 
-      icon: Users,
-      count: 25
-    },
-    { 
-      id: 'segments', 
-      label: 'Segments', 
-      icon: UserPlus,
-      count: 3
-    }
-  ];
+  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
 
   const filterOptions = [
     { id: 'all', label: 'All Customers', count: 25 },
@@ -35,8 +21,170 @@ const CustomersHeader = () => {
     { id: 'abandoned', label: 'Abandoned Cart', count: 4 }
   ];
 
-  const renderCustomersContent = () => (
-    <div className="space-y-6">
+  const customersData = [
+    {
+      id: 1,
+      name: "Khushboo",
+      initial: "K",
+      type: "Return Customer",
+      mobile: "+91 9157101975",
+      totalOrders: 8,
+      totalSales: "₹3,303.00",
+      totalSalesValue: 3303,
+      totalCart: 0
+    },
+    {
+      id: 2,
+      name: "",
+      initial: "",
+      type: "New Customer(Signed IN)",
+      mobile: "6363618762",
+      totalOrders: 0,
+      totalSales: "₹0.00",
+      totalSalesValue: 0,
+      totalCart: "1 items"
+    },
+    {
+      id: 3,
+      name: "skc",
+      initial: "S",
+      type: "Return Customer",
+      mobile: "91 8849626093",
+      totalOrders: 5,
+      totalSales: "₹5.00",
+      totalSalesValue: 5,
+      totalCart: 0
+    },
+    {
+      id: 4,
+      name: "skc",
+      initial: "S",
+      type: "Return Customer",
+      mobile: "91 8124001125",
+      totalOrders: 2,
+      totalSales: "₹1,600.00",
+      totalSalesValue: 1600,
+      totalCart: 0
+    },
+    {
+      id: 5,
+      name: "Riya",
+      initial: "R",
+      type: "Return Customer",
+      mobile: "91 9236084106",
+      totalOrders: 2,
+      totalSales: "₹2.00",
+      totalSalesValue: 2,
+      totalCart: "1 items"
+    },
+    {
+      id: 6,
+      name: "ABHA",
+      initial: "A",
+      type: "New Customer(Signed IN)",
+      mobile: "91 9727776523",
+      totalOrders: 1,
+      totalSales: "₹1.00",
+      totalSalesValue: 1,
+      totalCart: "1 items"
+    }
+  ];
+
+  const getCustomerTypeColor = (type: string) => {
+    if (type === "Return Customer") {
+      return "bg-emerald-50 text-emerald-700 border-emerald-200";
+    }
+    return "bg-blue-50 text-blue-700 border-blue-200";
+  };
+
+  const renderCardsView = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {customersData.map((customer) => (
+        <Card key={customer.id} className="border-0 shadow-sm hover:shadow-md transition-all duration-200 rounded-xl overflow-hidden bg-white">
+          <CardContent className="p-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center shadow-sm">
+                    <span className="text-white font-semibold text-lg">
+                      {customer.initial || customer.name?.charAt(0)?.toUpperCase() || '?'}
+                    </span>
+                  </div>
+                  {customer.type === "Return Customer" && (
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center">
+                      <TrendingUp className="w-2 h-2 text-white" />
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900 text-lg">{customer.name || "Anonymous"}</h3>
+                  <p className="text-xs text-gray-500">ID: {customer.id}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-3">
+              <Badge 
+                variant="outline" 
+                className={`${getCustomerTypeColor(customer.type)} font-medium border w-full justify-center`}
+              >
+                {customer.type}
+              </Badge>
+              
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <Phone className="w-4 h-4 text-gray-400" />
+                <span className="font-mono">{customer.mobile}</span>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4 pt-3 border-t border-gray-100">
+                <div className="text-center">
+                  <div className="flex items-center justify-center space-x-1 mb-1">
+                    <ShoppingCart className="w-4 h-4 text-blue-500" />
+                    <span className="text-xs text-gray-500">Orders</span>
+                  </div>
+                  <span className="text-lg font-bold text-gray-900">{customer.totalOrders}</span>
+                </div>
+                <div className="text-center">
+                  <div className="flex items-center justify-center space-x-1 mb-1">
+                    <TrendingUp className="w-4 h-4 text-emerald-500" />
+                    <span className="text-xs text-gray-500">Revenue</span>
+                  </div>
+                  <span className="text-lg font-bold text-gray-900">{customer.totalSales}</span>
+                </div>
+              </div>
+              
+              {typeof customer.totalCart === 'string' && (
+                <div className="pt-2 border-t border-gray-100">
+                  <Badge variant="outline" className="bg-orange-50 text-orange-700 border-orange-200 w-full justify-center">
+                    Cart: {customer.totalCart}
+                  </Badge>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+
+  return (
+    <div className="space-y-8">
+      {/* Enhanced Page Title */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Customer Management</h1>
+          <p className="text-gray-600">Build stronger relationships with your customers</p>
+        </div>
+        <div className="hidden lg:flex items-center space-x-3 text-sm text-gray-500">
+          <div className="flex items-center space-x-1">
+            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+            <span>Live data</span>
+          </div>
+          <span>•</span>
+          <span>Last updated: 2 minutes ago</span>
+        </div>
+      </div>
+
       {/* Modern Header Section */}
       <div className="mb-6">
         <div className="flex items-center space-x-3 mb-2">
@@ -97,8 +245,38 @@ const CustomersHeader = () => {
               </div>
             </div>
             
-            {/* Right Section: Enhanced Action Buttons */}
+            {/* Right Section: View Toggle and Action Buttons */}
             <div className="flex items-center gap-3">
+              {/* View Mode Toggle */}
+              <div className="flex items-center bg-gray-100 rounded-xl p-1">
+                <Button
+                  variant={viewMode === 'table' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('table')}
+                  className={`px-3 py-2 rounded-lg transition-all duration-200 ${
+                    viewMode === 'table' 
+                      ? 'bg-white shadow-sm text-gray-900' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <List className="w-4 h-4 mr-2" />
+                  Table
+                </Button>
+                <Button
+                  variant={viewMode === 'cards' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('cards')}
+                  className={`px-3 py-2 rounded-lg transition-all duration-200 ${
+                    viewMode === 'cards' 
+                      ? 'bg-white shadow-sm text-gray-900' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <Grid className="w-4 h-4 mr-2" />
+                  Cards
+                </Button>
+              </div>
+              
               <Button variant="outline" className="flex items-center gap-2 bg-white hover:bg-blue-50 border-2 border-gray-200 hover:border-blue-300 rounded-xl px-4 py-2.5 transition-all duration-200">
                 <Upload className="w-4 h-4" />
                 <span className="hidden sm:inline font-medium">Import</span>
@@ -116,95 +294,8 @@ const CustomersHeader = () => {
         </CardContent>
       </Card>
 
-      <CustomersTable />
-    </div>
-  );
-
-  const renderSegmentsContent = () => (
-    <div>
-      <div className="mb-6">
-        <div className="flex items-center space-x-3 mb-2">
-          <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg">
-            <UserPlus className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-gray-900">Customer Segments</h2>
-            <p className="text-sm text-gray-600">Create and manage customer segments for targeted campaigns</p>
-          </div>
-        </div>
-      </div>
-      
-      <Card className="border-0 shadow-lg rounded-2xl overflow-hidden">
-        <div className="text-center py-16 px-6">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center mb-4">
-            <Sparkles className="w-8 h-8 text-purple-600" />
-          </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Create Your First Segment</h3>
-          <p className="text-gray-600 mb-6 max-w-md mx-auto">
-            Organize your customers into meaningful segments to deliver personalized experiences and targeted marketing campaigns.
-          </p>
-          <Button className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-xl px-6 py-3 shadow-lg hover:shadow-xl transition-all duration-200">
-            <Plus className="w-4 h-4 mr-2" />
-            Create Segment
-          </Button>
-        </div>
-      </Card>
-    </div>
-  );
-
-  return (
-    <div className="space-y-8">
-      {/* Enhanced Page Title */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Customer Management</h1>
-          <p className="text-gray-600">Build stronger relationships with your customers</p>
-        </div>
-        <div className="hidden lg:flex items-center space-x-3 text-sm text-gray-500">
-          <div className="flex items-center space-x-1">
-            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-            <span>Live data</span>
-          </div>
-          <span>•</span>
-          <span>Last updated: 2 minutes ago</span>
-        </div>
-      </div>
-
-      {/* Modern Navigation Tabs */}
-      <div className="border-b border-gray-200">
-        <nav className="flex space-x-8">
-          {navigationTabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-3 py-4 px-2 border-b-3 font-semibold text-sm transition-all duration-200 ${
-                  activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
-              >
-                <Icon className="w-5 h-5" />
-                <span>{tab.label}</span>
-                <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-                  activeTab === tab.id 
-                    ? 'bg-blue-100 text-blue-600' 
-                    : 'bg-gray-100 text-gray-600'
-                }`}>
-                  {tab.count}
-                </span>
-              </button>
-            );
-          })}
-        </nav>
-      </div>
-
-      {/* Tab Content */}
-      <div>
-        {activeTab === 'customers' && renderCustomersContent()}
-        {activeTab === 'segments' && renderSegmentsContent()}
-      </div>
+      {/* Content based on view mode */}
+      {viewMode === 'table' ? <CustomersTable /> : renderCardsView()}
     </div>
   );
 };
