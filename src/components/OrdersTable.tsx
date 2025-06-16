@@ -315,55 +315,43 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
               </div>
             </div>
 
-            {/* Enhanced Right-aligned View Options */}
-            <div className="flex items-center space-x-2 bg-gradient-to-r from-gray-100 to-gray-200 rounded-xl p-2 shadow-inner">
+            {/* Simple Right-aligned View Options */}
+            <div className="flex items-center space-x-2">
               <Button
-                variant={viewMode === 'kanban' ? 'default' : 'ghost'}
+                variant={viewMode === 'kanban' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setViewMode('kanban')}
-                className={`h-10 w-10 p-0 transition-all duration-200 ${
-                  viewMode === 'kanban' 
-                    ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg scale-110' 
-                    : 'hover:bg-white hover:shadow-md'
-                }`}
+                className="flex items-center space-x-2"
               >
                 <Kanban className="w-4 h-4" />
+                <span>Kanban</span>
               </Button>
               <Button
-                variant={viewMode === 'timeline' ? 'default' : 'ghost'}
+                variant={viewMode === 'timeline' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setViewMode('timeline')}
-                className={`h-10 w-10 p-0 transition-all duration-200 ${
-                  viewMode === 'timeline' 
-                    ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg scale-110' 
-                    : 'hover:bg-white hover:shadow-md'
-                }`}
+                className="flex items-center space-x-2"
               >
                 <Clock className="w-4 h-4" />
+                <span>Timeline</span>
               </Button>
               <Button
-                variant={viewMode === 'cards' ? 'default' : 'ghost'}
+                variant={viewMode === 'cards' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setViewMode('cards')}
-                className={`h-10 w-10 p-0 transition-all duration-200 ${
-                  viewMode === 'cards' 
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg scale-110' 
-                    : 'hover:bg-white hover:shadow-md'
-                }`}
+                className="flex items-center space-x-2"
               >
                 <Grid3X3 className="w-4 h-4" />
+                <span>Cards</span>
               </Button>
               <Button
-                variant={viewMode === 'list' ? 'default' : 'ghost'}
+                variant={viewMode === 'list' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setViewMode('list')}
-                className={`h-10 w-10 p-0 transition-all duration-200 ${
-                  viewMode === 'list' 
-                    ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg scale-110' 
-                    : 'hover:bg-white hover:shadow-md'
-                }`}
+                className="flex items-center space-x-2"
               >
                 <List className="w-4 h-4" />
+                <span>List</span>
               </Button>
             </div>
           </div>
