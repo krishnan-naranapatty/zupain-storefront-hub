@@ -207,46 +207,6 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              {/* View Options */}
-              <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
-                <Button
-                  variant={viewMode === 'kanban' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('kanban')}
-                  className="flex items-center space-x-2"
-                >
-                  <Kanban className="w-4 h-4" />
-                  <span>Kanban</span>
-                </Button>
-                <Button
-                  variant={viewMode === 'timeline' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('timeline')}
-                  className="flex items-center space-x-2"
-                >
-                  <Clock className="w-4 h-4" />
-                  <span>Timeline</span>
-                </Button>
-                <Button
-                  variant={viewMode === 'cards' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('cards')}
-                  className="flex items-center space-x-2"
-                >
-                  <Grid3X3 className="w-4 h-4" />
-                  <span>Cards</span>
-                </Button>
-                <Button
-                  variant={viewMode === 'list' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('list')}
-                  className="flex items-center space-x-2"
-                >
-                  <List className="w-4 h-4" />
-                  <span>List</span>
-                </Button>
-              </div>
-
               {/* Source/Platform Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -319,6 +279,42 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+            </div>
+
+            {/* Right-aligned View Options - Icons Only */}
+            <div className="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+              <Button
+                variant={viewMode === 'kanban' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('kanban')}
+                className="h-8 w-8 p-0"
+              >
+                <Kanban className="w-4 h-4" />
+              </Button>
+              <Button
+                variant={viewMode === 'timeline' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('timeline')}
+                className="h-8 w-8 p-0"
+              >
+                <Clock className="w-4 h-4" />
+              </Button>
+              <Button
+                variant={viewMode === 'cards' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('cards')}
+                className="h-8 w-8 p-0"
+              >
+                <Grid3X3 className="w-4 h-4" />
+              </Button>
+              <Button
+                variant={viewMode === 'list' ? 'default' : 'ghost'}
+                size="sm"
+                onClick={() => setViewMode('list')}
+                className="h-8 w-8 p-0"
+              >
+                <List className="w-4 h-4" />
+              </Button>
             </div>
           </div>
         </CardContent>
