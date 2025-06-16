@@ -1,10 +1,15 @@
 
 import React from 'react';
-import { Search, Package, TrendingDown, TrendingUp } from 'lucide-react';
+import { Search, Package, TrendingDown, TrendingUp, LayoutGrid, LayoutList } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-const InventoryHeader = () => {
+interface InventoryHeaderProps {
+  viewMode: 'cards' | 'table';
+  onViewModeChange: (mode: 'cards' | 'table') => void;
+}
+
+const InventoryHeader = ({ viewMode, onViewModeChange }: InventoryHeaderProps) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -41,6 +46,25 @@ const InventoryHeader = () => {
             <span className="font-medium">Low Stock: <span className="text-orange-600">1</span></span>
             <span className="font-medium">Out of Stock: <span className="text-red-600">0</span></span>
           </div>
+        </div>
+
+        <div className="flex items-center space-x-1 ml-4">
+          <Button
+            variant={viewMode === 'cards' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => onViewModeChange('cards')}
+            className="p-2"
+          >
+            <LayoutGrid className="w-4 h-4" />
+          </Button>
+          <Button
+            variant={viewMode === 'table' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => onViewModeChange('table')}
+            className="p-2"
+          >
+            <LayoutList className="w-4 h-4" />
+          </Button>
         </div>
       </div>
     </div>
