@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Download, ArrowUpDown, Calendar, User, CreditCard, Package, Kanban, Clock, LayoutGrid, Eye, Edit3, Trash2, MessageSquare, Truck } from 'lucide-react';
+import { Download, ArrowUpDown, Calendar, User, CreditCard, Package, Kanban, Clock, LayoutGrid, Eye, Edit3, Trash2, MessageSquare, Truck, ChevronDown, ChevronRight, Grid3X3, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import OrdersTimeline from './OrdersTimeline';
 
 interface OrdersTableProps {
@@ -11,7 +12,18 @@ interface OrdersTableProps {
 }
 
 const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
-  const [viewMode, setViewMode] = useState<'kanban' | 'timeline' | 'dashboard'>('kanban');
+  const [viewMode, setViewMode] = useState<'kanban' | 'timeline' | 'dashboard' | 'cards' | 'list'>('kanban');
+  const [expandedOrders, setExpandedOrders] = useState<Set<string>>(new Set());
+
+  const toggleOrderExpansion = (orderId: string) => {
+    const newExpanded = new Set(expandedOrders);
+    if (newExpanded.has(orderId)) {
+      newExpanded.delete(orderId);
+    } else {
+      newExpanded.add(orderId);
+    }
+    setExpandedOrders(newExpanded);
+  };
 
   const allOrders = [
     {
@@ -22,6 +34,10 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
       paymentMethod: 'Cod',
       amount: '₹749.00',
       statusColor: 'bg-red-100 text-red-800',
+      items: 3,
+      address: '123 Main Street, Mumbai, Maharashtra 400001',
+      phone: '+91 9876543210',
+      email: 'jaya.khubani@email.com'
     },
     {
       id: 'ORID0055',
@@ -31,6 +47,10 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
       paymentMethod: 'Cod',
       amount: '₹2,298.00',
       statusColor: 'bg-green-100 text-green-800',
+      items: 5,
+      address: '456 Park Avenue, Delhi, Delhi 110001',
+      phone: '+91 9876543211',
+      email: 'khushboo@email.com'
     },
     {
       id: 'ORID0054',
@@ -40,6 +60,10 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
       paymentMethod: 'Cod',
       amount: '₹850.00',
       statusColor: 'bg-green-100 text-green-800',
+      items: 2,
+      address: '789 Garden Road, Pune, Maharashtra 411001',
+      phone: '+91 9876543212',
+      email: 'sitaben@email.com'
     },
     {
       id: 'ORID0053',
@@ -49,6 +73,10 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
       paymentMethod: 'Cod',
       amount: '₹850.00',
       statusColor: 'bg-green-100 text-green-800',
+      items: 2,
+      address: '321 Lake View, Bangalore, Karnataka 560001',
+      phone: '+91 9876543213',
+      email: 'setu@email.com'
     },
     {
       id: 'ORID0052',
@@ -58,6 +86,10 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
       paymentMethod: 'Cod',
       amount: '₹850.00',
       statusColor: 'bg-green-100 text-green-800',
+      items: 2,
+      address: '654 Hill Station, Chennai, Tamil Nadu 600001',
+      phone: '+91 9876543214',
+      email: 'mukesh.kumar@email.com'
     },
     {
       id: 'ORID0051',
@@ -67,6 +99,10 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
       paymentMethod: 'Cod',
       amount: '₹999.00',
       statusColor: 'bg-green-100 text-green-800',
+      items: 3,
+      address: '987 Valley Road, Hyderabad, Telangana 500001',
+      phone: '+91 9876543215',
+      email: 'shital@email.com'
     },
     {
       id: 'ORID0050',
@@ -76,6 +112,10 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
       paymentMethod: 'Cod',
       amount: '₹850.00',
       statusColor: 'bg-green-100 text-green-800',
+      items: 2,
+      address: '147 River Side, Kolkata, West Bengal 700001',
+      phone: '+91 9876543216',
+      email: 'kamlesh@email.com'
     },
     {
       id: 'ORID0049',
@@ -85,6 +125,10 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
       paymentMethod: 'Cod',
       amount: '₹1.00',
       statusColor: 'bg-red-100 text-red-800',
+      items: 1,
+      address: '456 Park Avenue, Delhi, Delhi 110001',
+      phone: '+91 9876543211',
+      email: 'khushboo@email.com'
     },
     {
       id: 'ORID0048',
@@ -94,6 +138,10 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
       paymentMethod: 'Razorpay',
       amount: '₹999.00',
       statusColor: 'bg-red-100 text-red-800',
+      items: 3,
+      address: '456 Park Avenue, Delhi, Delhi 110001',
+      phone: '+91 9876543211',
+      email: 'khushboo@email.com'
     },
   ];
 
@@ -169,12 +217,207 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
             <LayoutGrid className="w-4 h-4" />
             <span>Dashboard</span>
           </Button>
+          <Button
+            variant={viewMode === 'cards' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setViewMode('cards')}
+            className="flex items-center space-x-2"
+          >
+            <Grid3X3 className="w-4 h-4" />
+            <span>Cards</span>
+          </Button>
+          <Button
+            variant={viewMode === 'list' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => setViewMode('list')}
+            className="flex items-center space-x-2"
+          >
+            <List className="w-4 h-4" />
+            <span>List</span>
+          </Button>
         </div>
       </div>
 
       {/* Render based on view mode */}
       {viewMode === 'timeline' ? (
         <OrdersTimeline activeFilter={activeFilter} />
+      ) : viewMode === 'cards' ? (
+        <>
+          {/* Cards View - Similar to Stores */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filteredOrders.map((order) => (
+              <Card key={order.id} className="group hover:shadow-lg transition-all duration-300 border hover:border-blue-200">
+                <CardContent className="p-0">
+                  {/* Header */}
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 border-b">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="font-bold text-lg text-blue-700">{order.id}</h3>
+                      <Badge variant="secondary" className={order.statusColor}>
+                        {order.status}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <User className="w-4 h-4 mr-2" />
+                      <span className="font-medium text-sm">{order.customer}</span>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-4 space-y-3">
+                    <div className="flex items-center text-gray-600">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      <span className="text-xs">{order.billDate}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      <span className="text-sm">{order.paymentMethod}</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <Package className="w-4 h-4 mr-2" />
+                      <span className="text-sm">{order.items} items</span>
+                    </div>
+
+                    {/* Amount */}
+                    <div className="bg-gray-50 rounded-lg p-3 text-center">
+                      <span className="text-xl font-bold text-gray-900">{order.amount}</span>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex justify-between space-x-2">
+                      <Button variant="outline" size="sm" className="flex-1 text-xs">
+                        <Eye className="w-3 h-3 mr-1" />
+                        View
+                      </Button>
+                      <Button variant="outline" size="sm" className="flex-1 text-xs">
+                        <Edit3 className="w-3 h-3 mr-1" />
+                        Edit
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* No results message for cards view */}
+          {filteredOrders.length === 0 && (
+            <div className="text-center py-12">
+              <Grid3X3 className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+              <p className="text-gray-500 text-lg">No orders found for the selected filter.</p>
+            </div>
+          )}
+        </>
+      ) : viewMode === 'list' ? (
+        <>
+          {/* List View with Expandable Details */}
+          <div className="space-y-2">
+            {filteredOrders.map((order) => (
+              <Card key={order.id} className="border hover:shadow-md transition-all duration-200">
+                <Collapsible>
+                  <CollapsibleTrigger 
+                    className="w-full"
+                    onClick={() => toggleOrderExpansion(order.id)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <div className="flex items-center space-x-1">
+                            {expandedOrders.has(order.id) ? (
+                              <ChevronDown className="w-4 h-4 text-gray-400" />
+                            ) : (
+                              <ChevronRight className="w-4 h-4 text-gray-400" />
+                            )}
+                            <span className="font-semibold text-blue-600">{order.id}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <User className="w-4 h-4 text-gray-400" />
+                            <span className="font-medium">{order.customer}</span>
+                          </div>
+                          <Badge variant="secondary" className={order.statusColor}>
+                            {order.status}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center space-x-4">
+                          <span className="text-sm text-gray-500">{order.billDate}</span>
+                          <span className="font-bold text-lg">{order.amount}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="px-4 pb-4 border-t bg-gray-50">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
+                        {/* Order Details */}
+                        <div>
+                          <h4 className="font-semibold text-gray-700 mb-2">Order Details</h4>
+                          <div className="space-y-1 text-sm">
+                            <div className="flex items-center space-x-2">
+                              <Package className="w-3 h-3 text-gray-400" />
+                              <span>{order.items} items</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <CreditCard className="w-3 h-3 text-gray-400" />
+                              <span>{order.paymentMethod}</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Calendar className="w-3 h-3 text-gray-400" />
+                              <span>{order.billDate}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Customer Info */}
+                        <div>
+                          <h4 className="font-semibold text-gray-700 mb-2">Customer Info</h4>
+                          <div className="space-y-1 text-sm">
+                            <div>{order.email}</div>
+                            <div>{order.phone}</div>
+                            <div className="text-gray-600">{order.address}</div>
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div>
+                          <h4 className="font-semibold text-gray-700 mb-2">Actions</h4>
+                          <div className="flex flex-wrap gap-2">
+                            <Button variant="outline" size="sm">
+                              <Eye className="w-3 h-3 mr-1" />
+                              View
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Edit3 className="w-3 h-3 mr-1" />
+                              Edit
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <MessageSquare className="w-3 h-3 mr-1" />
+                              Message
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Truck className="w-3 h-3 mr-1" />
+                              Track
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Download className="w-3 h-3 mr-1" />
+                              Export
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              </Card>
+            ))}
+          </div>
+
+          {/* No results message for list view */}
+          {filteredOrders.length === 0 && (
+            <div className="text-center py-12">
+              <List className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+              <p className="text-gray-500 text-lg">No orders found for the selected filter.</p>
+            </div>
+          )}
+        </>
       ) : viewMode === 'dashboard' ? (
         <>
           {/* Dashboard Cards Grid */}
