@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Download, ArrowUpDown, Calendar, User, CreditCard, Package, Kanban, Clock, LayoutGrid, Eye, Edit3, Trash2, MessageSquare, Truck, ChevronDown, ChevronRight, Grid3X3, List, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -235,32 +234,35 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
                 </DropdownMenu>
               </div>
 
-              {/* Status Filter Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button 
-                    variant="outline" 
-                    className={`flex items-center space-x-2 ${activeFilterData.color} text-white hover:opacity-90`}
-                  >
-                    <span>{activeFilterData.label} ({activeFilterData.count})</span>
-                    <ChevronDown className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
-                  {filters.map((filter) => (
-                    <DropdownMenuItem 
-                      key={filter.id}
-                      className="cursor-pointer"
-                      onClick={() => {}} // This will be handled by the parent component
+              {/* Status Filter Dropdown - Order Status */}
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-500 mb-1">Order Status</span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      className={`flex items-center space-x-2 ${activeFilterData.color} text-white hover:opacity-90`}
                     >
-                      <div className="flex items-center justify-between w-full">
-                        <span className="text-sm">{filter.label}</span>
-                        <span className="text-sm text-gray-500">({filter.count})</span>
-                      </div>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                      <span>{activeFilterData.label} ({activeFilterData.count})</span>
+                      <ChevronDown className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-48 bg-white border shadow-lg">
+                    {filters.map((filter) => (
+                      <DropdownMenuItem 
+                        key={filter.id}
+                        className="cursor-pointer"
+                        onClick={() => {}} // This will be handled by the parent component
+                      >
+                        <div className="flex items-center justify-between w-full">
+                          <span className="text-sm">{filter.label}</span>
+                          <span className="text-sm text-gray-500">({filter.count})</span>
+                        </div>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
 
               {/* Filters Dropdown */}
               <DropdownMenu>
