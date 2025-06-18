@@ -84,7 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle, isMobileMenuOp
 
   return (
     <div className={`${currentPalette.sidebar} ${currentPalette.sidebarText} transition-all duration-300 ${
-      isCollapsed ? 'w-16' : 'w-64'
+      isCollapsed && window.innerWidth >= 1024 ? 'w-16' : 'w-64'
     } min-h-screen flex flex-col relative`}>
       
       {/* Mobile close button */}
@@ -98,10 +98,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle, isMobileMenuOp
       {/* Logo Section */}
       <div className="p-4 border-b border-slate-700">
         <div className="flex items-center space-x-3">
-          <div className={`${isCollapsed ? 'w-8 h-8' : 'w-10 h-10'} ${currentPalette.accent} rounded-lg flex items-center justify-center flex-shrink-0`}>
+          <div className={`${isCollapsed && window.innerWidth >= 1024 ? 'w-8 h-8' : 'w-10 h-10'} ${currentPalette.accent} rounded-lg flex items-center justify-center flex-shrink-0`}>
             <Store className={logoIconSize} />
           </div>
-          {!isCollapsed && (
+          {!(isCollapsed && window.innerWidth >= 1024) && (
             <div className="min-w-0">
               <h2 className="text-sm font-semibold truncate">Vitanix consumer</h2>
               <p className="text-xs text-slate-400 truncate">private limited</p>
@@ -124,13 +124,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle, isMobileMenuOp
                         ? `${currentPalette.primary} text-white`
                         : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                     }`}
-                    onClick={() => !isCollapsed && toggleMenu(item.key!)}
+                    onClick={() => !(isCollapsed && window.innerWidth >= 1024) && toggleMenu(item.key!)}
                   >
                     <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
                       <item.icon className={iconSize} />
-                      {!isCollapsed && <span className="text-xs sm:text-sm truncate">{item.label}</span>}
+                      {!(isCollapsed && window.innerWidth >= 1024) && <span className="text-xs sm:text-sm truncate">{item.label}</span>}
                     </div>
-                    {!isCollapsed && (
+                    {!(isCollapsed && window.innerWidth >= 1024) && (
                       isMenuExpanded(item.key!) ? 
                         <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" /> : 
                         <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
@@ -138,7 +138,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle, isMobileMenuOp
                   </div>
                   
                   {/* Submenu */}
-                  {!isCollapsed && isMenuExpanded(item.key!) && item.submenu && (
+                  {!(isCollapsed && window.innerWidth >= 1024) && isMenuExpanded(item.key!) && item.submenu && (
                     <ul className="ml-6 sm:ml-8 mt-1 sm:mt-2 space-y-1">
                       {item.submenu.map((subItem, subIndex) => (
                         <li key={subIndex}>
@@ -173,7 +173,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle, isMobileMenuOp
                   }
                 >
                   <item.icon className={iconSize} />
-                  {!isCollapsed && <span className="text-xs sm:text-sm truncate">{item.label}</span>}
+                  {!(isCollapsed && window.innerWidth >= 1024) && <span className="text-xs sm:text-sm truncate">{item.label}</span>}
                 </NavLink>
               )}
             </li>

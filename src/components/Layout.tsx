@@ -49,19 +49,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         />
       )}
       
-      {/* Sidebar */}
-      <div className={`
-        fixed top-0 left-0 h-full z-50 lg:relative lg:z-auto
-        transform transition-transform duration-300 ease-in-out lg:transform-none
-        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-      `}>
-        <Sidebar 
-          isCollapsed={sidebarCollapsed} 
-          onToggle={handleToggleSidebar}
-          isMobileMenuOpen={mobileMenuOpen}
-          onMobileMenuClose={() => setMobileMenuOpen(false)}
-        />
-      </div>
+      {/* Sidebar - Hidden on mobile unless menu is open */}
+      {(mobileMenuOpen || window.innerWidth >= 1024) && (
+        <div className={`
+          fixed top-0 left-0 h-full z-50 lg:relative lg:z-auto
+          transform transition-transform duration-300 ease-in-out lg:transform-none
+          ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}>
+          <Sidebar 
+            isCollapsed={sidebarCollapsed} 
+            onToggle={handleToggleSidebar}
+            isMobileMenuOpen={mobileMenuOpen}
+            onMobileMenuClose={() => setMobileMenuOpen(false)}
+          />
+        </div>
+      )}
       
       {/* Main content area */}
       <div className="flex-1 flex flex-col min-w-0 w-full lg:w-auto">
