@@ -21,9 +21,9 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
   const presetAmounts = [100, 500, 1000, 2000, 5000, 10000];
   
   const paymentMethods = [
-    { id: 'upi', name: 'UPI', icon: Smartphone, color: 'from-green-500 to-emerald-600' },
-    { id: 'card', name: 'Credit/Debit Card', icon: CreditCard, color: 'from-blue-500 to-indigo-600' },
-    { id: 'netbanking', name: 'Net Banking', icon: Building2, color: 'from-purple-500 to-violet-600' },
+    { id: 'upi', name: 'UPI', icon: Smartphone },
+    { id: 'card', name: 'Credit/Debit Card', icon: CreditCard },
+    { id: 'netbanking', name: 'Net Banking', icon: Building2 },
   ];
 
   const handlePresetClick = (presetAmount: number) => {
@@ -60,10 +60,10 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md p-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 border-0 shadow-2xl">
+      <DialogContent className="max-w-md p-0 bg-white border-2 border-gray-200 shadow-2xl">
         <div className="relative">
-          {/* Header with gradient */}
-          <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white p-6 rounded-t-lg">
+          {/* Header with black background */}
+          <div className="bg-black text-white p-6 rounded-t-lg">
             <DialogHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
@@ -92,7 +92,7 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                   Enter Recharge Amount
                 </label>
                 <div className="relative">
-                  <div className="flex items-center bg-white rounded-xl border-2 border-gray-200 focus-within:border-blue-500 transition-colors">
+                  <div className="flex items-center bg-white rounded-xl border-2 border-gray-300 focus-within:border-black transition-colors">
                     <span className="pl-4 text-gray-500 font-medium">₹</span>
                     <Input
                       type="number"
@@ -136,8 +136,8 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                       onClick={() => handlePresetClick(preset)}
                       className={`h-12 font-semibold transition-all duration-200 ${
                         selectedPreset === preset
-                          ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
-                          : 'hover:bg-blue-50 hover:border-blue-300'
+                          ? 'bg-black text-white shadow-lg hover:bg-gray-800'
+                          : 'border-gray-300 hover:bg-gray-50 hover:border-gray-400'
                       }`}
                     >
                       ₹{preset}
@@ -160,21 +160,21 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                       key={method.id}
                       className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
                         paymentMethod === method.id
-                          ? 'ring-2 ring-blue-500 bg-blue-50'
-                          : 'hover:bg-gray-50'
+                          ? 'ring-2 ring-black bg-gray-50'
+                          : 'hover:bg-gray-50 border-gray-200'
                       }`}
                       onClick={() => setPaymentMethod(method.id)}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-center space-x-3">
-                          <div className={`p-2 rounded-lg bg-gradient-to-r ${method.color} text-white`}>
+                          <div className="p-2 rounded-lg bg-black text-white">
                             <Icon className="w-4 h-4" />
                           </div>
                           <span className="font-medium text-gray-800">{method.name}</span>
                           <div className="ml-auto">
                             <div className={`w-4 h-4 rounded-full border-2 ${
                               paymentMethod === method.id
-                                ? 'bg-blue-500 border-blue-500'
+                                ? 'bg-black border-black'
                                 : 'border-gray-300'
                             }`}>
                               {paymentMethod === method.id && (
@@ -192,7 +192,7 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
 
             {/* Payment Summary */}
             {numericAmount > 0 && (
-              <Card className="bg-gradient-to-r from-gray-50 to-slate-100 border border-gray-200">
+              <Card className="bg-gray-50 border border-gray-200">
                 <CardContent className="p-4">
                   <h3 className="font-bold text-gray-800 mb-3 flex items-center">
                     <CreditCard className="w-4 h-4 mr-2" />
@@ -210,7 +210,7 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                     <div className="border-t border-gray-300 pt-2 mt-2">
                       <div className="flex justify-between">
                         <span className="font-bold text-gray-800">Total Amount</span>
-                        <span className="font-bold text-lg text-blue-600">₹{totalAmount}</span>
+                        <span className="font-bold text-lg text-black">₹{totalAmount}</span>
                       </div>
                     </div>
                   </div>
@@ -221,7 +221,7 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
             {/* Action Button */}
             <Button
               disabled={!amount || numericAmount <= 0}
-              className="w-full h-12 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full h-12 bg-black hover:bg-gray-800 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {numericAmount > 0 ? `Pay ₹${totalAmount}` : 'Enter Amount'}
             </Button>
