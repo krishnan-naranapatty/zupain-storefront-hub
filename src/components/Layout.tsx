@@ -10,19 +10,44 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { currentPalette } = useTheme();
 
   const handleToggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
+    // On mobile, toggle mobile menu instead of collapsing
+    if (window.innerWidth < 1024) {
+      setMobileMenuOpen(!mobileMenuOpen);
+    } else {
+      setSidebarCollapsed(!sidebarCollapsed);
+    }
   };
 
   return (
     <div className={`min-h-screen ${currentPalette.background} flex flex-col lg:flex-row`}>
-      <Sidebar 
-        isCollapsed={sidebarCollapsed} 
-        onToggle={handleToggleSidebar} 
-      />
-      <div className="flex-1 flex flex-col min-w-0">
+      {/* Mobile overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div className={`
+        fixed top-0 left-0 h-full z-50 lg:relative lg:z-auto
+        transform transition-transform duration-300 ease-in-out lg:transform-none
+        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        <Sidebar 
+          isCollapsed={sidebarCollapsed} 
+          onToggle={handleToggleSidebar}
+          isMobileMenuOpen={mobileMenuOpen}
+          onMobileMenuClose={() => setMobileMenuOpen(false)}
+        />
+      </div>
+      
+      {/* Main content area */}
+      <div className="flex-1 flex flex-col min-w-0 w-full lg:w-auto">
         <Header onToggleSidebar={handleToggleSidebar} />
         <main className="flex-1 p-3 md:p-6 overflow-x-hidden">
           {children}
