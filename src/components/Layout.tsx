@@ -17,14 +17,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className={`min-h-screen ${currentPalette.background} flex`}>
+    <div className={`min-h-screen ${currentPalette.background} flex flex-col lg:flex-row`}>
       <Sidebar 
         isCollapsed={sidebarCollapsed} 
         onToggle={handleToggleSidebar} 
       />
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         <Header onToggleSidebar={handleToggleSidebar} />
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-3 md:p-6 overflow-x-hidden">
           {children}
         </main>
       </div>

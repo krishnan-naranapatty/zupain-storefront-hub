@@ -35,14 +35,14 @@ const PlansHeader = () => {
       </div>
       
       <Card className={`${currentPalette.cardBg} border`}>
-        <CardContent className="p-6">
+        <CardContent className="p-4 md:p-6">
           <div className="flex items-center justify-between mb-4">
             <Badge variant="secondary" className="bg-green-100 text-green-800 hover:bg-green-100">
               Active
             </Badge>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm text-gray-600 mb-4">
             <div>
               <span className="block">252 days left</span>
             </div>
@@ -59,7 +59,7 @@ const PlansHeader = () => {
           </div>
           
           <Button 
-            className={`${currentPalette.primary} text-white hover:opacity-90`}
+            className={`${currentPalette.primary} text-white hover:opacity-90 w-full sm:w-auto`}
             onClick={() => navigate('/change-plan')}
           >
             Change Plan
@@ -76,12 +76,12 @@ const PlansHeader = () => {
         <p className="text-sm text-gray-600">View your wallet balance and add funds</p>
       </div>
       <Card className={`${currentPalette.cardBg} border`}>
-        <CardContent className="p-6">
+        <CardContent className="p-4 md:p-6">
           <div className="text-center">
             <h3 className="text-2xl font-bold mb-2">₹0.00</h3>
             <p className="text-gray-600">Current Balance</p>
             <Button 
-              className={`${currentPalette.primary} text-white hover:opacity-90 mt-4`}
+              className={`${currentPalette.primary} text-white hover:opacity-90 mt-4 w-full sm:w-auto`}
               onClick={() => setIsRechargeDialogOpen(true)}
             >
               Add Money
@@ -94,16 +94,16 @@ const PlansHeader = () => {
 
   return (
     <div className="space-y-6">
-      {/* Navigation Tabs - WhatsApp style */}
-      <div className="border-b border-gray-200">
-        <nav className="flex space-x-8">
+      {/* Navigation Tabs - Mobile responsive */}
+      <div className="border-b border-gray-200 overflow-x-auto">
+        <nav className="flex space-x-4 md:space-x-8 min-w-max px-1">
           {navigationTabs.map((tab) => {
             const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`flex items-center space-x-2 py-3 px-2 md:px-1 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'

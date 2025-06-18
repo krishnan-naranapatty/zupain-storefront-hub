@@ -60,17 +60,17 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md p-0 bg-white border-2 border-gray-200 shadow-2xl">
+      <DialogContent className="max-w-sm sm:max-w-md p-0 bg-white border-2 border-gray-200 shadow-2xl mx-4">
         <div className="relative">
           {/* Header with theme color */}
-          <div className={`${currentPalette.primary} text-white p-6 rounded-t-lg`}>
+          <div className={`${currentPalette.primary} text-white p-4 sm:p-6 rounded-t-lg`}>
             <DialogHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white/20 rounded-full">
-                    <Wallet className="w-5 h-5" />
+                    <Wallet className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-                  <DialogTitle className="text-xl font-bold">Add Money to Wallet</DialogTitle>
+                  <DialogTitle className="text-lg sm:text-xl font-bold">Add Money to Wallet</DialogTitle>
                 </div>
                 <Button
                   variant="ghost"
@@ -84,7 +84,7 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
             </DialogHeader>
           </div>
 
-          <div className="p-6 space-y-6">
+          <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
             {/* Amount Input Section */}
             <div className="space-y-4">
               <div>
@@ -99,7 +99,7 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                       value={amount}
                       onChange={(e) => handleAmountChange(e.target.value)}
                       placeholder="0"
-                      className="border-0 text-xl font-bold focus-visible:ring-0 bg-transparent"
+                      className="border-0 text-lg sm:text-xl font-bold focus-visible:ring-0 bg-transparent"
                     />
                     <div className="flex items-center pr-2">
                       <Button
@@ -128,13 +128,13 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                 <label className="text-sm font-semibold text-gray-700 mb-3 block">
                   Quick Select
                 </label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                   {presetAmounts.map((preset) => (
                     <Button
                       key={preset}
                       variant={selectedPreset === preset ? "default" : "outline"}
                       onClick={() => handlePresetClick(preset)}
-                      className={`h-12 font-semibold transition-all duration-300 transform hover:scale-105 ${
+                      className={`h-10 sm:h-12 font-semibold transition-all duration-300 transform hover:scale-105 text-xs sm:text-sm ${
                         selectedPreset === preset
                           ? `${currentPalette.primary} text-white shadow-lg hover:opacity-90`
                           : 'border-gray-300 hover:bg-gray-50 hover:border-gray-400 bg-white'
@@ -152,7 +152,7 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
               <label className="text-sm font-semibold text-gray-700 block">
                 Choose Payment Method
               </label>
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {paymentMethods.map((method) => {
                   const Icon = method.icon;
                   return (
@@ -165,20 +165,20 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                       }`}
                       onClick={() => setPaymentMethod(method.id)}
                     >
-                      <CardContent className="p-4">
+                      <CardContent className="p-3 sm:p-4">
                         <div className="flex items-center space-x-3">
-                          <div className={`p-3 rounded-xl ${currentPalette.primary} text-white shadow-sm`}>
-                            <Icon className="w-5 h-5" />
+                          <div className={`p-2 sm:p-3 rounded-xl ${currentPalette.primary} text-white shadow-sm`}>
+                            <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                           </div>
-                          <span className="font-medium text-gray-800 flex-1">{method.name}</span>
+                          <span className="font-medium text-gray-800 flex-1 text-sm sm:text-base">{method.name}</span>
                           <div className="ml-auto">
-                            <div className={`w-5 h-5 rounded-full border-2 transition-all duration-200 ${
+                            <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 transition-all duration-200 ${
                               paymentMethod === method.id
                                 ? `${currentPalette.primary.replace('bg-', 'bg-')} border-blue-500`
                                 : 'border-gray-300 bg-white'
                             }`}>
                               {paymentMethod === method.id && (
-                                <div className="w-3 h-3 bg-white rounded-full m-0.5"></div>
+                                <div className="w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full m-0.5"></div>
                               )}
                             </div>
                           </div>
@@ -193,9 +193,9 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
             {/* Payment Summary */}
             {numericAmount > 0 && (
               <Card className={`${currentPalette.secondary} border border-gray-200 shadow-sm`}>
-                <CardContent className="p-5">
-                  <h3 className="font-bold text-gray-800 mb-4 flex items-center text-lg">
-                    <CreditCard className="w-5 h-5 mr-2" />
+                <CardContent className="p-4 sm:p-5">
+                  <h3 className="font-bold text-gray-800 mb-4 flex items-center text-base sm:text-lg">
+                    <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                     Payment Summary
                   </h3>
                   <div className="space-y-3 text-sm">
@@ -209,8 +209,8 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                     </div>
                     <div className="border-t border-gray-300 pt-3 mt-3">
                       <div className="flex justify-between items-center">
-                        <span className="font-bold text-gray-800 text-base">Total Amount</span>
-                        <span className={`font-bold text-xl ${currentPalette.primary.replace('bg-', 'text-')}`}>₹{totalAmount}</span>
+                        <span className="font-bold text-gray-800 text-sm sm:text-base">Total Amount</span>
+                        <span className={`font-bold text-lg sm:text-xl ${currentPalette.primary.replace('bg-', 'text-')}`}>₹{totalAmount}</span>
                       </div>
                     </div>
                   </div>
@@ -221,7 +221,7 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
             {/* Action Button */}
             <Button
               disabled={!amount || numericAmount <= 0}
-              className={`w-full h-14 ${currentPalette.primary} hover:opacity-90 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none rounded-xl`}
+              className={`w-full h-12 sm:h-14 ${currentPalette.primary} hover:opacity-90 text-white font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none rounded-xl`}
             >
               {numericAmount > 0 ? `Pay ₹${totalAmount} 💳` : 'Enter Amount'}
             </Button>
