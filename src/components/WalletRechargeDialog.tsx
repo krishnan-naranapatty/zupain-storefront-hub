@@ -62,8 +62,8 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md p-0 bg-white border-2 border-gray-200 shadow-2xl">
         <div className="relative">
-          {/* Header with black background */}
-          <div className="bg-black text-white p-6 rounded-t-lg">
+          {/* Header with theme color */}
+          <div className={`${currentPalette.primary} text-white p-6 rounded-t-lg`}>
             <DialogHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
@@ -92,7 +92,7 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                   Enter Recharge Amount
                 </label>
                 <div className="relative">
-                  <div className="flex items-center bg-white rounded-xl border-2 border-gray-300 focus-within:border-black transition-colors">
+                  <div className={`flex items-center bg-white rounded-xl border-2 border-gray-300 focus-within:border-blue-500 transition-colors shadow-sm`}>
                     <span className="pl-4 text-gray-500 font-medium">₹</span>
                     <Input
                       type="number"
@@ -106,7 +106,7 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                         variant="ghost"
                         size="sm"
                         onClick={decrementAmount}
-                        className="h-8 w-8 p-0 hover:bg-gray-100"
+                        className="h-8 w-8 p-0 hover:bg-gray-100 rounded-full"
                       >
                         <Minus className="w-4 h-4" />
                       </Button>
@@ -114,7 +114,7 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                         variant="ghost"
                         size="sm"
                         onClick={incrementAmount}
-                        className="h-8 w-8 p-0 hover:bg-gray-100"
+                        className="h-8 w-8 p-0 hover:bg-gray-100 rounded-full"
                       >
                         <Plus className="w-4 h-4" />
                       </Button>
@@ -128,16 +128,16 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
                 <label className="text-sm font-semibold text-gray-700 mb-3 block">
                   Quick Select
                 </label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-3">
                   {presetAmounts.map((preset) => (
                     <Button
                       key={preset}
                       variant={selectedPreset === preset ? "default" : "outline"}
                       onClick={() => handlePresetClick(preset)}
-                      className={`h-12 font-semibold transition-all duration-200 ${
+                      className={`h-12 font-semibold transition-all duration-300 transform hover:scale-105 ${
                         selectedPreset === preset
-                          ? 'bg-black text-white shadow-lg hover:bg-gray-800'
-                          : 'border-gray-300 hover:bg-gray-50 hover:border-gray-400'
+                          ? `${currentPalette.primary} text-white shadow-lg hover:opacity-90`
+                          : 'border-gray-300 hover:bg-gray-50 hover:border-gray-400 bg-white'
                       }`}
                     >
                       ₹{preset}
@@ -150,35 +150,35 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
             {/* Payment Methods */}
             <div className="space-y-3">
               <label className="text-sm font-semibold text-gray-700 block">
-                Payment Method
+                Choose Payment Method
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {paymentMethods.map((method) => {
                   const Icon = method.icon;
                   return (
                     <Card
                       key={method.id}
-                      className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
+                      className={`cursor-pointer transition-all duration-300 hover:shadow-lg transform hover:scale-[1.02] ${
                         paymentMethod === method.id
-                          ? 'ring-2 ring-black bg-gray-50'
-                          : 'hover:bg-gray-50 border-gray-200'
+                          ? `ring-2 ring-blue-500 ${currentPalette.secondary} shadow-md`
+                          : 'hover:bg-gray-50 border-gray-200 bg-white'
                       }`}
                       onClick={() => setPaymentMethod(method.id)}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-center space-x-3">
-                          <div className="p-2 rounded-lg bg-black text-white">
-                            <Icon className="w-4 h-4" />
+                          <div className={`p-3 rounded-xl ${currentPalette.primary} text-white shadow-sm`}>
+                            <Icon className="w-5 h-5" />
                           </div>
-                          <span className="font-medium text-gray-800">{method.name}</span>
+                          <span className="font-medium text-gray-800 flex-1">{method.name}</span>
                           <div className="ml-auto">
-                            <div className={`w-4 h-4 rounded-full border-2 ${
+                            <div className={`w-5 h-5 rounded-full border-2 transition-all duration-200 ${
                               paymentMethod === method.id
-                                ? 'bg-black border-black'
-                                : 'border-gray-300'
+                                ? `${currentPalette.primary.replace('bg-', 'bg-')} border-blue-500`
+                                : 'border-gray-300 bg-white'
                             }`}>
                               {paymentMethod === method.id && (
-                                <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                                <div className="w-3 h-3 bg-white rounded-full m-0.5"></div>
                               )}
                             </div>
                           </div>
@@ -192,25 +192,25 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
 
             {/* Payment Summary */}
             {numericAmount > 0 && (
-              <Card className="bg-gray-50 border border-gray-200">
-                <CardContent className="p-4">
-                  <h3 className="font-bold text-gray-800 mb-3 flex items-center">
-                    <CreditCard className="w-4 h-4 mr-2" />
+              <Card className={`${currentPalette.secondary} border border-gray-200 shadow-sm`}>
+                <CardContent className="p-5">
+                  <h3 className="font-bold text-gray-800 mb-4 flex items-center text-lg">
+                    <CreditCard className="w-5 h-5 mr-2" />
                     Payment Summary
                   </h3>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between items-center">
                       <span className="text-gray-600">Recharge Amount</span>
-                      <span className="font-semibold">₹{numericAmount}</span>
+                      <span className="font-semibold text-gray-800">₹{numericAmount}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between items-center">
                       <span className="text-gray-600">GST (18%)</span>
-                      <span className="font-semibold">₹{taxAmount}</span>
+                      <span className="font-semibold text-gray-800">₹{taxAmount}</span>
                     </div>
-                    <div className="border-t border-gray-300 pt-2 mt-2">
-                      <div className="flex justify-between">
-                        <span className="font-bold text-gray-800">Total Amount</span>
-                        <span className="font-bold text-lg text-black">₹{totalAmount}</span>
+                    <div className="border-t border-gray-300 pt-3 mt-3">
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-gray-800 text-base">Total Amount</span>
+                        <span className={`font-bold text-xl ${currentPalette.primary.replace('bg-', 'text-')}`}>₹{totalAmount}</span>
                       </div>
                     </div>
                   </div>
@@ -221,9 +221,9 @@ const WalletRechargeDialog = ({ open, onOpenChange }: WalletRechargeDialogProps)
             {/* Action Button */}
             <Button
               disabled={!amount || numericAmount <= 0}
-              className="w-full h-12 bg-black hover:bg-gray-800 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`w-full h-14 ${currentPalette.primary} hover:opacity-90 text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none rounded-xl`}
             >
-              {numericAmount > 0 ? `Pay ₹${totalAmount}` : 'Enter Amount'}
+              {numericAmount > 0 ? `Pay ₹${totalAmount} 💳` : 'Enter Amount'}
             </Button>
           </div>
         </div>
