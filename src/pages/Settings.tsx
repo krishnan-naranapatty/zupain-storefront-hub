@@ -763,7 +763,7 @@ const Settings = () => {
 
             {/* Weekly Schedule */}
             <Card>
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg font-semibold">Weekly Delivery Schedule</CardTitle>
                   <Button 
@@ -779,12 +779,12 @@ const Settings = () => {
                   </Button>
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-2">
                 {daysOfWeek.map((day) => (
-                  <div key={day} className="border rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
+                  <div key={day} className="border rounded-lg p-3">
+                    <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-3">
-                        <h3 className="font-medium text-gray-900">{day}</h3>
+                        <h3 className="font-medium text-gray-900 text-sm">{day}</h3>
                         <Switch 
                           checked={daySlots[day]?.enabled || false}
                           onCheckedChange={(checked) => {
@@ -803,23 +803,23 @@ const Settings = () => {
                           onClick={() => addSlot(day)}
                           size="sm"
                           variant="outline"
-                          className="flex items-center space-x-2"
+                          className="flex items-center space-x-1 h-7 px-2 text-xs"
                         >
-                          <Plus className="w-4 h-4" />
+                          <Plus className="w-3 h-3" />
                           <span>Add Slot</span>
                         </Button>
                       )}
                     </div>
 
                     {daySlots[day]?.enabled && daySlots[day].slots.length === 0 && (
-                      <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-                        <Clock className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-                        <p className="text-sm">No delivery slots configured for {day}</p>
+                      <div className="text-center py-4 text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                        <Clock className="w-5 h-5 mx-auto mb-1 text-gray-400" />
+                        <p className="text-xs">No delivery slots configured for {day}</p>
                         <Button
                           onClick={() => addSlot(day)}
                           size="sm"
                           variant="outline"
-                          className="mt-2"
+                          className="mt-1 h-6 px-2 text-xs"
                         >
                           Add First Slot
                         </Button>
@@ -827,9 +827,9 @@ const Settings = () => {
                     )}
 
                     {daySlots[day]?.enabled && daySlots[day].slots.length > 0 && (
-                      <div className="space-y-3">
+                      <div className="space-y-2">
                         {daySlots[day].slots.map((slot, index) => (
-                          <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-4 p-3 bg-gray-50 rounded-lg">
+                          <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-3 p-2 bg-gray-50 rounded-lg">
                             <div>
                               <Label className="text-xs text-gray-600">Start Time</Label>
                               <Input
@@ -846,7 +846,7 @@ const Settings = () => {
                                     }
                                   }));
                                 }}
-                                className="mt-1"
+                                className="mt-1 h-8 text-xs"
                               />
                             </div>
                             <div>
@@ -865,7 +865,7 @@ const Settings = () => {
                                     }
                                   }));
                                 }}
-                                className="mt-1"
+                                className="mt-1 h-8 text-xs"
                               />
                             </div>
                             <div>
@@ -885,7 +885,7 @@ const Settings = () => {
                                     }
                                   }));
                                 }}
-                                className="mt-1"
+                                className="mt-1 h-8 text-xs"
                                 min="1"
                               />
                             </div>
@@ -903,9 +903,9 @@ const Settings = () => {
                                     }
                                   }));
                                 }}
-                                className="text-red-600 border-red-200 hover:bg-red-50"
+                                className="text-red-600 border-red-200 hover:bg-red-50 h-7 w-7 p-0"
                               >
-                                <Trash2 className="w-4 h-4" />
+                                <Trash2 className="w-3 h-3" />
                               </Button>
                             </div>
                           </div>
