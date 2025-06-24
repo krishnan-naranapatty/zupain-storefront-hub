@@ -9,12 +9,27 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
-import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info, Clock } from 'lucide-react';
+import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info, Clock, FileText, Edit } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
+import EditPageDialog from '@/components/EditPageDialog';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('Profile');
   const { currentPalette } = useTheme();
+  
+  // Pages state
+  const [editPageDialog, setEditPageDialog] = useState({ open: false, page: null });
+  const [pages, setPages] = useState([
+    { id: '1', name: 'Help', path: 'help', enabled: true, content: '', hasWarning: false },
+    { id: '2', name: 'About Us', path: 'about-us', enabled: true, content: '', hasWarning: false },
+    { id: '3', name: 'Legals', path: 'legals', enabled: true, content: '', hasWarning: false },
+    { id: '4', name: 'Terms & Conditions', path: 'terms-conditions', enabled: true, content: '', hasWarning: true },
+    { id: '5', name: 'Explore', path: 'explore', enabled: true, content: '', hasWarning: false },
+    { id: '6', name: 'Returns and Refunds', path: 'returns-refunds', enabled: true, content: '', hasWarning: false },
+    { id: '7', name: 'Privacy Policy', path: 'privacy-policy', enabled: true, content: '', hasWarning: false },
+    { id: '8', name: 'Contact us', path: 'contact-us', enabled: true, content: '', hasWarning: false },
+    { id: '9', name: 'Contact Form', path: 'contact-form', enabled: true, content: '', hasWarning: false }
+  ]);
 
   const tabs = [
     'Profile',
@@ -35,6 +50,42 @@ const Settings = () => {
       <div className="text-xs text-red-500">Max file size: image {maxSize}</div>
     </div>
   );
+
+  const handleEditPage = (page) => {
+    setEditPageDialog({ open: true, page });
+  };
+
+  const handleAddNewPage = () => {
+    setEditPageDialog({ open: true, page: null });
+  };
+
+  const handleSavePage = (pageData) => {
+    if (editPageDialog.page) {
+      // Edit existing page
+      setPages(pages.map(p => 
+        p.id === editPageDialog.page.id 
+          ? { ...p, ...pageData }
+          : p
+      ));
+    } else {
+      // Add new page
+      const newPage = {
+        id: Date.now().toString(),
+        ...pageData,
+        enabled: true,
+        hasWarning: false
+      };
+      setPages([...pages, newPage]);
+    }
+  };
+
+  const handleTogglePage = (pageId, enabled) => {
+    setPages(pages.map(p => 
+      p.id === pageId 
+        ? { ...p, enabled }
+        : p
+    ));
+  };
 
   const ProfileContent = () => (
     <div className="space-y-6">
@@ -933,6 +984,69 @@ const Settings = () => {
     );
   };
 
+  const PagesContent = () => (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <FileText className="w-6 h-6 text-gray-600" />
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">Documentation Pages</h2>
+            <p className="text-sm text-gray-500">Manage your store's information pages</p>
+          </div>
+        </div>
+        <Button 
+          onClick={handleAddNewPage}
+          className="bg-blue-600 hover:bg-blue-700 text-white flex items-center space-x-2"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Add New Page</span>
+        </Button>
+      </div>
+
+      {/* Pages Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {pages.map((page) => (
+          <Card key={page.id} className="relative">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-medium text-gray-900 text-sm">{page.name}</h3>
+                <Switch 
+                  checked={page.enabled}
+                  onCheckedChange={(enabled) => handleTogglePage(page.id, enabled)}
+                />
+              </div>
+              
+              {page.hasWarning && (
+                <div className="flex items-center space-x-1 mb-3">
+                  <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                  <span className="text-xs text-orange-600">Will be available on the Sign Up page</span>
+                </div>
+              )}
+              
+              <Button 
+                onClick={() => handleEditPage(page)}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center space-x-2"
+                size="sm"
+              >
+                <Edit className="w-4 h-4" />
+                <span>Edit</span>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Edit Page Dialog */}
+      <EditPageDialog
+        open={editPageDialog.open}
+        onOpenChange={(open) => setEditPageDialog({ ...editPageDialog, open })}
+        page={editPageDialog.page}
+        onSave={handleSavePage}
+      />
+    </div>
+  );
+
   const TabContent = () => {
     switch (activeTab) {
       case 'Profile':
@@ -942,7 +1056,7 @@ const Settings = () => {
       case 'Delivery Slots':
         return <DeliverySlotsContent />;
       case 'Pages':
-        return <div className="text-center py-12 text-gray-500">Pages settings coming soon...</div>;
+        return <PagesContent />;
       case 'Store Feature':
         return <div className="text-center py-12 text-gray-500">Store Feature settings coming soon...</div>;
       case 'Footer Management':
