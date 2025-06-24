@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -253,6 +255,27 @@ const Settings = () => {
       setWeightRules(weightRules.filter((_, i) => i !== index));
     };
 
+    const deliveryMethods = [
+      {
+        id: 'cart-price',
+        title: 'By Cart Price',
+        description: 'Set delivery charges based on cart total amount',
+        icon: ShoppingCart
+      },
+      {
+        id: 'location',
+        title: 'By Location',
+        description: 'Set delivery charges based on customer location',
+        icon: MapPin
+      },
+      {
+        id: 'weight',
+        title: 'By Weight (in Kg)',
+        description: 'Set delivery charges based on total weight',
+        icon: Weight
+      }
+    ];
+
     return (
       <div className="space-y-6">
         {/* Info Banner */}
@@ -266,310 +289,320 @@ const Settings = () => {
           </div>
         </div>
 
-        {/* Method Selection Tabs */}
+        {/* Method Selection */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg font-semibold">Choose Delivery Charge Method</CardTitle>
           </CardHeader>
           <CardContent>
-            <Tabs value={selectedMethod} onValueChange={setSelectedMethod}>
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="cart-price" className="flex items-center space-x-2">
-                  <ShoppingCart className="w-4 h-4" />
-                  <span>By Cart Price</span>
-                </TabsTrigger>
-                <TabsTrigger value="location" className="flex items-center space-x-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>By Location</span>
-                </TabsTrigger>
-                <TabsTrigger value="weight" className="flex items-center space-x-2">
-                  <Weight className="w-4 h-4" />
-                  <span>By Weight (in Kg)</span>
-                </TabsTrigger>
-              </TabsList>
-
-              {/* By Cart Price */}
-              <TabsContent value="cart-price" className="mt-6">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-medium">Cart Price Rules</h3>
-                    <Button onClick={addCartPriceRule} size="sm" className="flex items-center space-x-2">
-                      <Plus className="w-4 h-4" />
-                      <span>Add Rule</span>
-                    </Button>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    {cartPriceRules.map((rule, index) => (
-                      <Card key={index} className="border-l-4 border-l-blue-500">
-                        <CardContent className="p-4">
-                          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-                            <div>
-                              <Label className="text-sm font-medium text-gray-700">
-                                Minimum Price
-                              </Label>
-                              <Input
-                                placeholder="1"
-                                value={rule.minPrice}
-                                onChange={(e) => {
-                                  const newRules = [...cartPriceRules];
-                                  newRules[index].minPrice = e.target.value;
-                                  setCartPriceRules(newRules);
-                                }}
-                                className="mt-1"
-                              />
-                            </div>
-                            <div>
-                              <Label className="text-sm font-medium text-gray-700">
-                                Maximum Price <span className="text-red-500">*</span>
-                              </Label>
-                              <Input
-                                placeholder="Enter max price"
-                                value={rule.maxPrice}
-                                onChange={(e) => {
-                                  const newRules = [...cartPriceRules];
-                                  newRules[index].maxPrice = e.target.value;
-                                  setCartPriceRules(newRules);
-                                }}
-                                className="mt-1"
-                              />
-                            </div>
-                            <div>
-                              <Label className="text-sm font-medium text-gray-700">
-                                Delivery Charge <span className="text-red-500">*</span>
-                              </Label>
-                              <Input
-                                placeholder="0"
-                                value={rule.deliveryCharge}
-                                onChange={(e) => {
-                                  const newRules = [...cartPriceRules];
-                                  newRules[index].deliveryCharge = e.target.value;
-                                  setCartPriceRules(newRules);
-                                }}
-                                className="mt-1"
-                              />
-                            </div>
-                            <div className="flex justify-end">
-                              {cartPriceRules.length > 1 && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => removeCartPriceRule(index)}
-                                  className="text-red-600 border-red-200 hover:bg-red-50"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </Button>
-                              )}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+            <RadioGroup value={selectedMethod} onValueChange={setSelectedMethod} className="space-y-4">
+              {deliveryMethods.map((method) => (
+                <div key={method.id} className="flex items-start space-x-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+                  <RadioGroupItem value={method.id} id={method.id} className="mt-1" />
+                  <div className="flex-1">
+                    <Label htmlFor={method.id} className="flex items-center space-x-3 cursor-pointer">
+                      <method.icon className="w-5 h-5 text-gray-600" />
+                      <div>
+                        <div className="font-medium text-gray-900">{method.title}</div>
+                        <div className="text-sm text-gray-500">{method.description}</div>
+                      </div>
+                    </Label>
                   </div>
                 </div>
-              </TabsContent>
-
-              {/* By Location */}
-              <TabsContent value="location" className="mt-6">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-medium">Location-based Rules</h3>
-                    <Button onClick={addLocationRule} size="sm" className="flex items-center space-x-2">
-                      <Plus className="w-4 h-4" />
-                      <span>Add Location</span>
-                    </Button>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    {locationRules.map((rule, index) => (
-                      <Card key={index} className="border-l-4 border-l-green-500">
-                        <CardContent className="p-4">
-                          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-                            <div>
-                              <Label className="text-sm font-medium text-gray-700">Country</Label>
-                              <Select value={rule.country} onValueChange={(value) => {
-                                const newRules = [...locationRules];
-                                newRules[index].country = value;
-                                setLocationRules(newRules);
-                              }}>
-                                <SelectTrigger className="mt-1">
-                                  <SelectValue placeholder="Select country" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="india">India</SelectItem>
-                                  <SelectItem value="usa">United States</SelectItem>
-                                  <SelectItem value="uk">United Kingdom</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <div>
-                              <Label className="text-sm font-medium text-gray-700">
-                                State <span className="text-red-500">*</span>
-                              </Label>
-                              <Select value={rule.state} onValueChange={(value) => {
-                                const newRules = [...locationRules];
-                                newRules[index].state = value;
-                                setLocationRules(newRules);
-                              }}>
-                                <SelectTrigger className="mt-1">
-                                  <SelectValue placeholder="Select state" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="maharashtra">Maharashtra</SelectItem>
-                                  <SelectItem value="delhi">Delhi</SelectItem>
-                                  <SelectItem value="karnataka">Karnataka</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <div>
-                              <Label className="text-sm font-medium text-gray-700">District</Label>
-                              <Input
-                                placeholder="Enter district"
-                                value={rule.district}
-                                onChange={(e) => {
-                                  const newRules = [...locationRules];
-                                  newRules[index].district = e.target.value;
-                                  setLocationRules(newRules);
-                                }}
-                                className="mt-1"
-                              />
-                            </div>
-                            <div>
-                              <Label className="text-sm font-medium text-gray-700">
-                                Delivery Charge (in ₹) <span className="text-red-500">*</span>
-                              </Label>
-                              <Input
-                                placeholder="Enter charge"
-                                value={rule.deliveryCharge}
-                                onChange={(e) => {
-                                  const newRules = [...locationRules];
-                                  newRules[index].deliveryCharge = e.target.value;
-                                  setLocationRules(newRules);
-                                }}
-                                className="mt-1"
-                              />
-                            </div>
-                            <div className="flex justify-end">
-                              {locationRules.length > 1 && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => removeLocationRule(index)}
-                                  className="text-red-600 border-red-200 hover:bg-red-50"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </Button>
-                              )}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              </TabsContent>
-
-              {/* By Weight */}
-              <TabsContent value="weight" className="mt-6">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-medium">Weight-based Rules</h3>
-                    <Button onClick={addWeightRule} size="sm" className="flex items-center space-x-2">
-                      <Plus className="w-4 h-4" />
-                      <span>Add Weight Rule</span>
-                    </Button>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    {weightRules.map((rule, index) => (
-                      <Card key={index} className="border-l-4 border-l-purple-500">
-                        <CardContent className="p-4">
-                          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-                            <div>
-                              <Label className="text-sm font-medium text-gray-700">Details</Label>
-                              <Input
-                                placeholder="Example: 10kg"
-                                value={rule.details}
-                                onChange={(e) => {
-                                  const newRules = [...weightRules];
-                                  newRules[index].details = e.target.value;
-                                  setWeightRules(newRules);
-                                }}
-                                className="mt-1"
-                              />
-                            </div>
-                            <div>
-                              <Label className="text-sm font-medium text-gray-700">Minimum Weight</Label>
-                              <Input
-                                placeholder="0.01"
-                                value={rule.minWeight}
-                                onChange={(e) => {
-                                  const newRules = [...weightRules];
-                                  newRules[index].minWeight = e.target.value;
-                                  setWeightRules(newRules);
-                                }}
-                                className="mt-1"
-                              />
-                            </div>
-                            <div>
-                              <Label className="text-sm font-medium text-gray-700">
-                                Maximum Weight <span className="text-red-500">*</span>
-                              </Label>
-                              <Input
-                                placeholder="Enter max weight"
-                                value={rule.maxWeight}
-                                onChange={(e) => {
-                                  const newRules = [...weightRules];
-                                  newRules[index].maxWeight = e.target.value;
-                                  setWeightRules(newRules);
-                                }}
-                                className="mt-1"
-                              />
-                            </div>
-                            <div>
-                              <Label className="text-sm font-medium text-gray-700">
-                                Delivery Charge <span className="text-red-500">*</span>
-                              </Label>
-                              <Input
-                                placeholder="Enter charge"
-                                value={rule.deliveryCharge}
-                                onChange={(e) => {
-                                  const newRules = [...weightRules];
-                                  newRules[index].deliveryCharge = e.target.value;
-                                  setWeightRules(newRules);
-                                }}
-                                className="mt-1"
-                              />
-                            </div>
-                            <div className="flex justify-end">
-                              {weightRules.length > 1 && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => removeWeightRule(index)}
-                                  className="text-red-600 border-red-200 hover:bg-red-50"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </Button>
-                              )}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
-
-            {/* Save Button */}
-            <div className="flex justify-end mt-8">
-              <Button className={`${currentPalette.primary} text-white px-8`}>
-                Save Configuration
-              </Button>
-            </div>
+              ))}
+            </RadioGroup>
           </CardContent>
         </Card>
+
+        {/* Configuration Forms */}
+        {selectedMethod === 'cart-price' && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-medium flex items-center space-x-2">
+                  <ShoppingCart className="w-5 h-5" />
+                  <span>Cart Price Rules</span>
+                </CardTitle>
+                <Button onClick={addCartPriceRule} size="sm" className="flex items-center space-x-2">
+                  <Plus className="w-4 h-4" />
+                  <span>Add Rule</span>
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {cartPriceRules.map((rule, index) => (
+                <Card key={index} className="border-l-4 border-l-blue-500">
+                  <CardContent className="p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">
+                          Minimum Price
+                        </Label>
+                        <Input
+                          placeholder="1"
+                          value={rule.minPrice}
+                          onChange={(e) => {
+                            const newRules = [...cartPriceRules];
+                            newRules[index].minPrice = e.target.value;
+                            setCartPriceRules(newRules);
+                          }}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">
+                          Maximum Price <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          placeholder="Enter max price"
+                          value={rule.maxPrice}
+                          onChange={(e) => {
+                            const newRules = [...cartPriceRules];
+                            newRules[index].maxPrice = e.target.value;
+                            setCartPriceRules(newRules);
+                          }}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">
+                          Delivery Charge <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          placeholder="0"
+                          value={rule.deliveryCharge}
+                          onChange={(e) => {
+                            const newRules = [...cartPriceRules];
+                            newRules[index].deliveryCharge = e.target.value;
+                            setCartPriceRules(newRules);
+                          }}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div className="flex justify-end">
+                        {cartPriceRules.length > 1 && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeCartPriceRule(index)}
+                            className="text-red-600 border-red-200 hover:bg-red-50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
+        {selectedMethod === 'location' && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-medium flex items-center space-x-2">
+                  <MapPin className="w-5 h-5" />
+                  <span>Location-based Rules</span>
+                </CardTitle>
+                <Button onClick={addLocationRule} size="sm" className="flex items-center space-x-2">
+                  <Plus className="w-4 h-4" />
+                  <span>Add Location</span>
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {locationRules.map((rule, index) => (
+                <Card key={index} className="border-l-4 border-l-green-500">
+                  <CardContent className="p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">Country</Label>
+                        <Select value={rule.country} onValueChange={(value) => {
+                          const newRules = [...locationRules];
+                          newRules[index].country = value;
+                          setLocationRules(newRules);
+                        }}>
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select country" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="india">India</SelectItem>
+                            <SelectItem value="usa">United States</SelectItem>
+                            <SelectItem value="uk">United Kingdom</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">
+                          State <span className="text-red-500">*</span>
+                        </Label>
+                        <Select value={rule.state} onValueChange={(value) => {
+                          const newRules = [...locationRules];
+                          newRules[index].state = value;
+                          setLocationRules(newRules);
+                        }}>
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select state" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="maharashtra">Maharashtra</SelectItem>
+                            <SelectItem value="delhi">Delhi</SelectItem>
+                            <SelectItem value="karnataka">Karnataka</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">District</Label>
+                        <Input
+                          placeholder="Enter district"
+                          value={rule.district}
+                          onChange={(e) => {
+                            const newRules = [...locationRules];
+                            newRules[index].district = e.target.value;
+                            setLocationRules(newRules);
+                          }}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">
+                          Delivery Charge (in ₹) <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          placeholder="Enter charge"
+                          value={rule.deliveryCharge}
+                          onChange={(e) => {
+                            const newRules = [...locationRules];
+                            newRules[index].deliveryCharge = e.target.value;
+                            setLocationRules(newRules);
+                          }}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div className="flex justify-end">
+                        {locationRules.length > 1 && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeLocationRule(index)}
+                            className="text-red-600 border-red-200 hover:bg-red-50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
+        {selectedMethod === 'weight' && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-lg font-medium flex items-center space-x-2">
+                  <Weight className="w-5 h-5" />
+                  <span>Weight-based Rules</span>
+                </CardTitle>
+                <Button onClick={addWeightRule} size="sm" className="flex items-center space-x-2">
+                  <Plus className="w-4 h-4" />
+                  <span>Add Weight Rule</span>
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {weightRules.map((rule, index) => (
+                <Card key={index} className="border-l-4 border-l-purple-500">
+                  <CardContent className="p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">Details</Label>
+                        <Input
+                          placeholder="Example: 10kg"
+                          value={rule.details}
+                          onChange={(e) => {
+                            const newRules = [...weightRules];
+                            newRules[index].details = e.target.value;
+                            setWeightRules(newRules);
+                          }}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">Minimum Weight</Label>
+                        <Input
+                          placeholder="0.01"
+                          value={rule.minWeight}
+                          onChange={(e) => {
+                            const newRules = [...weightRules];
+                            newRules[index].minWeight = e.target.value;
+                            setWeightRules(newRules);
+                          }}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">
+                          Maximum Weight <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          placeholder="Enter max weight"
+                          value={rule.maxWeight}
+                          onChange={(e) => {
+                            const newRules = [...weightRules];
+                            newRules[index].maxWeight = e.target.value;
+                            setWeightRules(newRules);
+                          }}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700">
+                          Delivery Charge <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          placeholder="Enter charge"
+                          value={rule.deliveryCharge}
+                          onChange={(e) => {
+                            const newRules = [...weightRules];
+                            newRules[index].deliveryCharge = e.target.value;
+                            setWeightRules(newRules);
+                          }}
+                          className="mt-1"
+                        />
+                      </div>
+                      <div className="flex justify-end">
+                        {weightRules.length > 1 && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeWeightRule(index)}
+                            className="text-red-600 border-red-200 hover:bg-red-50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Save Button */}
+        <div className="flex justify-end">
+          <Button className={`${currentPalette.primary} text-white px-8`}>
+            Save Configuration
+          </Button>
+        </div>
       </div>
     );
   };
