@@ -8,7 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info, Clock } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
 const Settings = () => {
@@ -606,6 +607,328 @@ const Settings = () => {
     );
   };
 
+  const DeliverySlotsContent = () => {
+    const [deliverySlotEnabled, setDeliverySlotEnabled] = useState(true);
+    const [showDeliveryDates, setShowDeliveryDates] = useState(true);
+    const [deliveryDays, setDeliveryDays] = useState(7);
+    const [orderProcessingTime, setOrderProcessingTime] = useState(true);
+    const [processingTime, setProcessingTime] = useState('');
+    const [maxOrdersPerSlot, setMaxOrdersPerSlot] = useState(true);
+    const [maxOrders, setMaxOrders] = useState('');
+
+    const daysOfWeek = [
+      'Sunday',
+      'Monday', 
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday'
+    ];
+
+    const [daySlots, setDaySlots] = useState(
+      daysOfWeek.reduce((acc, day) => ({
+        ...acc,
+        [day]: { enabled: true, slots: [] }
+      }), {})
+    );
+
+    const addSlot = (day) => {
+      setDaySlots(prev => ({
+        ...prev,
+        [day]: {
+          ...prev[day],
+          slots: [...prev[day].slots, { startTime: '', endTime: '', maxOrders: '' }]
+        }
+      }));
+    };
+
+    return (
+      <div className="space-y-6">
+        {/* Header Section */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <Clock className="w-6 h-6 text-gray-600" />
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900">Delivery Slot Management</h2>
+              <p className="text-sm text-gray-500">Configure delivery time slots for your customers</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Label htmlFor="delivery-slot-toggle" className="text-sm font-medium">
+              Enable Delivery Slots
+            </Label>
+            <Switch 
+              id="delivery-slot-toggle"
+              checked={deliverySlotEnabled}
+              onCheckedChange={setDeliverySlotEnabled}
+            />
+          </div>
+        </div>
+
+        {deliverySlotEnabled && (
+          <>
+            {/* Configuration Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Show Delivery Dates */}
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="font-medium text-gray-900">Show my delivery dates upto</h3>
+                      <p className="text-sm text-gray-500">Set how many days ahead customers can book</p>
+                    </div>
+                    <Switch 
+                      checked={showDeliveryDates}
+                      onCheckedChange={setShowDeliveryDates}
+                    />
+                  </div>
+                  {showDeliveryDates && (
+                    <div className="flex items-center space-x-2">
+                      <Input
+                        type="number"
+                        value={deliveryDays}
+                        onChange={(e) => setDeliveryDays(parseInt(e.target.value))}
+                        className="w-20"
+                        min="1"
+                        max="30"
+                      />
+                      <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">Days</span>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Order Processing Time */}
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="font-medium text-gray-900">Our order processing time</h3>
+                      <p className="text-sm text-gray-500">Time needed to prepare orders</p>
+                    </div>
+                    <Switch 
+                      checked={orderProcessingTime}
+                      onCheckedChange={setOrderProcessingTime}
+                    />
+                  </div>
+                  {orderProcessingTime && (
+                    <Select value={processingTime} onValueChange={setProcessingTime}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select time" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="30min">30 minutes</SelectItem>
+                        <SelectItem value="1hour">1 hour</SelectItem>
+                        <SelectItem value="2hours">2 hours</SelectItem>
+                        <SelectItem value="4hours">4 hours</SelectItem>
+                        <SelectItem value="6hours">6 hours</SelectItem>
+                        <SelectItem value="12hours">12 hours</SelectItem>
+                        <SelectItem value="24hours">24 hours</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Maximum Orders Per Slot */}
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <h3 className="font-medium text-gray-900">Maximum orders per slot</h3>
+                      <p className="text-sm text-gray-500">Limit orders per time slot</p>
+                    </div>
+                    <Switch 
+                      checked={maxOrdersPerSlot}
+                      onCheckedChange={setMaxOrdersPerSlot}
+                    />
+                  </div>
+                  {maxOrdersPerSlot && (
+                    <div className="flex items-center space-x-2">
+                      <Input
+                        type="number"
+                        value={maxOrders}
+                        onChange={(e) => setMaxOrders(e.target.value)}
+                        placeholder="Enter limit"
+                        className="w-24"
+                        min="1"
+                      />
+                      <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">Orders</span>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Weekly Schedule */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg font-semibold">Weekly Delivery Schedule</CardTitle>
+                  <Button 
+                    onClick={() => {
+                      const firstDay = daysOfWeek.find(day => daySlots[day].enabled);
+                      if (firstDay) addSlot(firstDay);
+                    }}
+                    size="sm" 
+                    className="flex items-center space-x-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Add New Slots</span>
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {daysOfWeek.map((day) => (
+                  <div key={day} className="border rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-3">
+                        <h3 className="font-medium text-gray-900">{day}</h3>
+                        <Switch 
+                          checked={daySlots[day]?.enabled || false}
+                          onCheckedChange={(checked) => {
+                            setDaySlots(prev => ({
+                              ...prev,
+                              [day]: {
+                                ...prev[day],
+                                enabled: checked
+                              }
+                            }));
+                          }}
+                        />
+                      </div>
+                      {daySlots[day]?.enabled && (
+                        <Button
+                          onClick={() => addSlot(day)}
+                          size="sm"
+                          variant="outline"
+                          className="flex items-center space-x-2"
+                        >
+                          <Plus className="w-4 h-4" />
+                          <span>Add Slot</span>
+                        </Button>
+                      )}
+                    </div>
+
+                    {daySlots[day]?.enabled && daySlots[day].slots.length === 0 && (
+                      <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
+                        <Clock className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+                        <p className="text-sm">No delivery slots configured for {day}</p>
+                        <Button
+                          onClick={() => addSlot(day)}
+                          size="sm"
+                          variant="outline"
+                          className="mt-2"
+                        >
+                          Add First Slot
+                        </Button>
+                      </div>
+                    )}
+
+                    {daySlots[day]?.enabled && daySlots[day].slots.length > 0 && (
+                      <div className="space-y-3">
+                        {daySlots[day].slots.map((slot, index) => (
+                          <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-4 p-3 bg-gray-50 rounded-lg">
+                            <div>
+                              <Label className="text-xs text-gray-600">Start Time</Label>
+                              <Input
+                                type="time"
+                                value={slot.startTime}
+                                onChange={(e) => {
+                                  const newSlots = [...daySlots[day].slots];
+                                  newSlots[index].startTime = e.target.value;
+                                  setDaySlots(prev => ({
+                                    ...prev,
+                                    [day]: {
+                                      ...prev[day],
+                                      slots: newSlots
+                                    }
+                                  }));
+                                }}
+                                className="mt-1"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs text-gray-600">End Time</Label>
+                              <Input
+                                type="time"
+                                value={slot.endTime}
+                                onChange={(e) => {
+                                  const newSlots = [...daySlots[day].slots];
+                                  newSlots[index].endTime = e.target.value;
+                                  setDaySlots(prev => ({
+                                    ...prev,
+                                    [day]: {
+                                      ...prev[day],
+                                      slots: newSlots
+                                    }
+                                  }));
+                                }}
+                                className="mt-1"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-xs text-gray-600">Max Orders</Label>
+                              <Input
+                                type="number"
+                                placeholder="Unlimited"
+                                value={slot.maxOrders}
+                                onChange={(e) => {
+                                  const newSlots = [...daySlots[day].slots];
+                                  newSlots[index].maxOrders = e.target.value;
+                                  setDaySlots(prev => ({
+                                    ...prev,
+                                    [day]: {
+                                      ...prev[day],
+                                      slots: newSlots
+                                    }
+                                  }));
+                                }}
+                                className="mt-1"
+                                min="1"
+                              />
+                            </div>
+                            <div className="flex items-end">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const newSlots = daySlots[day].slots.filter((_, i) => i !== index);
+                                  setDaySlots(prev => ({
+                                    ...prev,
+                                    [day]: {
+                                      ...prev[day],
+                                      slots: newSlots
+                                    }
+                                  }));
+                                }}
+                                className="text-red-600 border-red-200 hover:bg-red-50"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Save Button */}
+            <div className="flex justify-end">
+              <Button className={`${currentPalette.primary} text-white px-8`}>
+                Save Delivery Slots
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  };
+
   const TabContent = () => {
     switch (activeTab) {
       case 'Profile':
@@ -613,7 +936,7 @@ const Settings = () => {
       case 'Delivery Charges':
         return <DeliveryChargesContent />;
       case 'Delivery Slots':
-        return <div className="text-center py-12 text-gray-500">Delivery Slots settings coming soon...</div>;
+        return <DeliverySlotsContent />;
       case 'Pages':
         return <div className="text-center py-12 text-gray-500">Pages settings coming soon...</div>;
       case 'Store Feature':
