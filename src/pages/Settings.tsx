@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -295,7 +294,7 @@ const Settings = () => {
             <CardTitle className="text-lg font-semibold">Choose Delivery Charge Method</CardTitle>
           </CardHeader>
           <CardContent>
-            <RadioGroup value={selectedMethod} onValueChange={setSelectedMethod} className="space-y-4">
+            <RadioGroup value={selectedMethod} onValueChange={setSelectedMethod} className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {deliveryMethods.map((method) => (
                 <div key={method.id} className="flex items-start space-x-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
                   <RadioGroupItem value={method.id} id={method.id} className="mt-1" />
