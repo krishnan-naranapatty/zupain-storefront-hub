@@ -42,7 +42,9 @@ const Settings = () => {
     upi: { enabled: true, connected: true },
     phonepe: { enabled: false, connected: false },
     cashfree: { enabled: false, connected: false },
-    payu: { enabled: false, connected: false }
+    payu: { enabled: false, connected: false },
+    paypal: { enabled: false, connected: false },
+    stripepay: { enabled: false, connected: false }
   });
 
   // Shipment state
@@ -1189,63 +1191,99 @@ const Settings = () => {
   );
 
   const IntegrationContent = () => {
-    const paymentGateways = [
-      {
-        id: 'razorpay',
-        name: 'Razorpay',
-        description: 'Integrate Razorpay with your account and take online payments seamlessly into your bank account.',
-        icon: CreditCard,
-        color: 'bg-blue-600',
-        enabled: integrations.razorpay.enabled,
-        connected: integrations.razorpay.connected
-      },
-      {
-        id: 'cod',
-        name: 'Cash on delivery',
-        description: 'Take payments in cash upon delivery.',
-        icon: Banknote,
-        color: 'bg-green-600',
-        enabled: integrations.cod.enabled,
-        connected: integrations.cod.connected,
-        badge: 'CASH ON DELIVERY'
-      },
-      {
-        id: 'upi',
-        name: 'UPI Pay',
-        description: 'Orders will be accepted from customers. A Pop Up screen showing UPI QR code & Bank details will be shown. Payment made with this method has to confirmed by sellers manually.',
-        icon: QrCode,
-        color: 'bg-orange-600',
-        enabled: integrations.upi.enabled,
-        connected: integrations.upi.connected
-      },
-      {
-        id: 'phonepe',
-        name: 'PhonePe',
-        description: 'Integrate PhonePe with your account and take online payments seamlessly into your bank account.',
-        icon: Smartphone,
-        color: 'bg-purple-600',
-        enabled: integrations.phonepe.enabled,
-        connected: integrations.phonepe.connected
-      },
-      {
-        id: 'cashfree',
-        name: 'Cashfree',
-        description: 'Cashfree: Indian payment gateway for online transactions, ensuring seamless and secure payments.',
-        icon: CreditCard,
-        color: 'bg-teal-600',
-        enabled: integrations.cashfree.enabled,
-        connected: integrations.cashfree.connected
-      },
-      {
-        id: 'payu',
-        name: 'PayU',
-        description: 'PayU enables businesses in India to accept digital payments from credit cards, debit cards, net banking, BNPL, QR, UPI, Wallets and more.',
-        icon: CreditCard,
-        color: 'bg-indigo-600',
-        enabled: integrations.payu.enabled,
-        connected: integrations.payu.connected
+    const getPaymentGateways = (region: string) => {
+      if (region === 'India') {
+        return [
+          {
+            id: 'razorpay',
+            name: 'Razorpay',
+            description: 'Integrate Razorpay with your account and take online payments seamlessly into your bank account.',
+            icon: CreditCard,
+            color: 'bg-blue-600',
+            enabled: integrations.razorpay.enabled,
+            connected: integrations.razorpay.connected
+          },
+          {
+            id: 'cod',
+            name: 'Cash on delivery',
+            description: 'Take payments in cash upon delivery.',
+            icon: Banknote,
+            color: 'bg-green-600',
+            enabled: integrations.cod.enabled,
+            connected: integrations.cod.connected,
+            badge: 'CASH ON DELIVERY'
+          },
+          {
+            id: 'upi',
+            name: 'UPI Pay',
+            description: 'Orders will be accepted from customers. A Pop Up screen showing UPI QR code & Bank details will be shown. Payment made with this method has to confirmed by sellers manually.',
+            icon: QrCode,
+            color: 'bg-orange-600',
+            enabled: integrations.upi.enabled,
+            connected: integrations.upi.connected
+          },
+          {
+            id: 'phonepe',
+            name: 'PhonePe',
+            description: 'Integrate PhonePe with your account and take online payments seamlessly into your bank account.',
+            icon: Smartphone,
+            color: 'bg-purple-600',
+            enabled: integrations.phonepe.enabled,
+            connected: integrations.phonepe.connected
+          },
+          {
+            id: 'cashfree',
+            name: 'Cashfree',
+            description: 'Cashfree: Indian payment gateway for online transactions, ensuring seamless and secure payments.',
+            icon: CreditCard,
+            color: 'bg-teal-600',
+            enabled: integrations.cashfree.enabled,
+            connected: integrations.cashfree.connected
+          },
+          {
+            id: 'payu',
+            name: 'PayU',
+            description: 'PayU enables businesses in India to accept digital payments from credit cards, debit cards, net banking, BNPL, QR, UPI, Wallets and more.',
+            icon: CreditCard,
+            color: 'bg-indigo-600',
+            enabled: integrations.payu.enabled,
+            connected: integrations.payu.connected
+          }
+        ];
+      } else {
+        // US/International payment options
+        return [
+          {
+            id: 'stripepay',
+            name: 'Stripe Pay',
+            description: 'Integrate Stripe with your account and take online payments seamlessly. Accept credit cards, debit cards, and digital wallets worldwide.',
+            icon: CreditCard,
+            color: 'bg-blue-600',
+            enabled: integrations.stripepay.enabled,
+            connected: integrations.stripepay.connected
+          },
+          {
+            id: 'paypal',
+            name: 'PayPal',
+            description: 'Accept PayPal payments from customers worldwide. Secure and trusted payment method for international transactions.',
+            icon: CreditCard,
+            color: 'bg-blue-500',
+            enabled: integrations.paypal.enabled,
+            connected: integrations.paypal.connected
+          },
+          {
+            id: 'cod',
+            name: 'Cash on delivery',
+            description: 'Take payments in cash upon delivery.',
+            icon: Banknote,
+            color: 'bg-green-600',
+            enabled: integrations.cod.enabled,
+            connected: integrations.cod.connected,
+            badge: 'CASH ON DELIVERY'
+          }
+        ];
       }
-    ];
+    };
 
     const shipmentProviders = [
       {
@@ -1355,7 +1393,7 @@ const Settings = () => {
 
             {/* Payment Gateways Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {paymentGateways.map((gateway) => {
+              {getPaymentGateways(activeRegion).map((gateway) => {
                 const Icon = gateway.icon;
                 return (
                   <Card key={gateway.id} className="relative overflow-hidden">
