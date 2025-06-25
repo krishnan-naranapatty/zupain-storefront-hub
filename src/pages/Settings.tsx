@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,7 @@ import { Switch } from '@/components/ui/switch';
 import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info, Clock, FileText, Edit, AlertTriangle, Eye, EyeOff, Calendar } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import EditPageDialog from '@/components/EditPageDialog';
+import StoreFeatureContent from '@/components/StoreFeatureContent';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('Profile');
@@ -1178,7 +1180,7 @@ const Settings = () => {
       case 'Pages':
         return <PagesContent />;
       case 'Store Feature':
-        return <div className="text-center py-12 text-gray-500">Store Feature settings coming soon...</div>;
+        return <StoreFeatureContent />;
       case 'Footer Management':
         return <div className="text-center py-12 text-gray-500">Footer Management settings coming soon...</div>;
       case 'Integration':
