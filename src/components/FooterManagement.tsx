@@ -160,7 +160,7 @@ const FooterManagement = () => {
         </CardContent>
       </Card>
 
-      {/* Social Media Links - Redesigned */}
+      {/* Social Media Links - 2x2 Grid Layout */}
       <Card className="shadow-sm">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
@@ -172,11 +172,11 @@ const FooterManagement = () => {
           </div>
         </CardHeader>
         <CardContent className="pt-0 space-y-4">
-          {Object.entries(socialLinks).map(([platform, data]) => {
-            const Icon = getSocialIcon(platform);
-            return (
-              <div key={platform} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg border">
-                <div className="flex items-center gap-3 min-w-0 flex-1">
+          <div className="grid grid-cols-2 gap-3">
+            {Object.entries(socialLinks).map(([platform, data]) => {
+              const Icon = getSocialIcon(platform);
+              return (
+                <div key={platform} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border">
                   <div className={`p-2 rounded-md ${
                     platform === 'instagram' ? 'bg-pink-100' :
                     platform === 'facebook' ? 'bg-blue-100' :
@@ -194,18 +194,18 @@ const FooterManagement = () => {
                     <Input
                       value={data.url}
                       onChange={(e) => updateSocialLink(platform, 'url', e.target.value)}
-                      placeholder={`Enter ${platform} URL`}
-                      className="h-9 text-sm bg-white border-gray-200"
+                      placeholder={`${platform.charAt(0).toUpperCase() + platform.slice(1)} URL`}
+                      className="h-8 text-xs bg-white border-gray-200"
                     />
                   </div>
+                  <Switch
+                    checked={data.enabled}
+                    onCheckedChange={(enabled) => updateSocialLink(platform, 'enabled', enabled)}
+                  />
                 </div>
-                <Switch
-                  checked={data.enabled}
-                  onCheckedChange={(enabled) => updateSocialLink(platform, 'enabled', enabled)}
-                />
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
           <Button size="sm" className="w-full bg-slate-800 hover:bg-slate-900 text-white h-9 text-sm">
             <Plus className="w-4 h-4 mr-2" />
             Add New Social Media Link
