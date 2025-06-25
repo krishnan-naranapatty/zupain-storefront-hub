@@ -7,11 +7,9 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   DollarSign, 
   Globe, 
-  Calendar, 
   Star, 
   Shield, 
   Zap, 
@@ -20,7 +18,6 @@ import {
   TrendingUp,
   Users,
   Package,
-  CreditCard,
   AlertCircle,
   CheckCircle,
   Info
@@ -119,48 +116,19 @@ const StoreFeatureContent = () => {
     </Card>
   );
 
-  const QuickSetupCard = ({ 
-    icon: Icon, 
-    title, 
-    progress, 
-    children 
-  }: {
-    icon: any;
-    title: string;
-    progress: number;
-    children: React.ReactNode;
-  }) => (
-    <Card className="border-l-4 border-l-green-500">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-lg bg-green-100 text-green-600">
-              <Icon className="w-5 h-5" />
-            </div>
-            <div>
-              <CardTitle className="text-base font-semibold">{title}</CardTitle>
-              <div className="flex items-center space-x-2 mt-1">
-                <div className="w-20 h-2 bg-gray-200 rounded-full">
-                  <div 
-                    className="h-2 bg-green-500 rounded-full transition-all duration-300"
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
-                <span className="text-xs text-gray-500">{progress}% complete</span>
-              </div>
-            </div>
-          </div>
-          {progress === 100 && <CheckCircle className="w-5 h-5 text-green-500" />}
-        </div>
-      </CardHeader>
-      <CardContent className="pt-0">
-        {children}
-      </CardContent>
-    </Card>
-  );
-
   return (
     <div className="space-y-6">
+      {/* Info Banner */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-start space-x-3">
+        <Info className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+        <div>
+          <p className="text-sm text-blue-800 font-medium">Store Feature Configuration</p>
+          <p className="text-xs text-blue-600 mt-1">
+            Configure your store features and settings to enhance customer experience
+          </p>
+        </div>
+      </div>
+
       {/* Header with Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="text-center p-4">
@@ -195,275 +163,276 @@ const StoreFeatureContent = () => {
         </Card>
       </div>
 
-      <Tabs defaultValue="features" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="features">Store Features</TabsTrigger>
-          <TabsTrigger value="pricing">Pricing & Currency</TabsTrigger>
-          <TabsTrigger value="advanced">Advanced Settings</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="features" className="space-y-6">
-          {/* Quick Setup Section */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-2">
-              <Settings className="w-5 h-5" />
-              <span>Quick Setup</span>
-            </h3>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <QuickSetupCard icon={Globe} title="Basic Configuration" progress={100}>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm font-medium">Currency</Label>
-                    <Select value={storeConfig.currency} onValueChange={(value) => updateConfig('currency', value)}>
-                      <SelectTrigger className="mt-1">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="INR">INR (Indian Rupee)</SelectItem>
-                        <SelectItem value="USD">USD (US Dollar)</SelectItem>
-                        <SelectItem value="EUR">EUR (Euro)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium">Date Format</Label>
-                    <Select value={storeConfig.dateFormat} onValueChange={(value) => updateConfig('dateFormat', value)}>
-                      <SelectTrigger className="mt-1">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
-                        <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
-                        <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </QuickSetupCard>
-
-              <QuickSetupCard icon={CreditCard} title="Payment Settings" progress={75}>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm font-medium">Delivery Charge (₹)</Label>
-                    <Input 
-                      value={storeConfig.deliveryCharge}
-                      onChange={(e) => updateConfig('deliveryCharge', e.target.value)}
-                      className="mt-1"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium">COD Charge (₹)</Label>
-                    <Input 
-                      value={storeConfig.codCharge}
-                      onChange={(e) => updateConfig('codCharge', e.target.value)}
-                      className="mt-1"
-                      placeholder="0"
-                    />
-                  </div>
-                </div>
-              </QuickSetupCard>
-            </div>
-          </div>
-
-          {/* Feature Cards */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-2">
-              <Zap className="w-5 h-5" />
-              <span>Store Features</span>
-            </h3>
+      {/* Basic Configuration */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold flex items-center space-x-2">
+            <Settings className="w-5 h-5" />
+            <span>Basic Configuration</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <FeatureCard
-                icon={Star}
-                title="Customer Reviews"
-                description="Allow customers to leave reviews and ratings for products"
-                isActive={activeFeatures.customerReviews}
-                onToggle={() => toggleFeature('customerReviews')}
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-white rounded-lg border">
-                    <span className="text-sm font-medium">Show review stars on product cards</span>
-                    <Switch defaultChecked />
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-white rounded-lg border">
-                    <span className="text-sm font-medium">Require purchase to review</span>
-                    <Switch />
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-white rounded-lg border">
-                    <span className="text-sm font-medium">Moderate reviews before publishing</span>
-                    <Switch defaultChecked />
-                  </div>
+              <h4 className="font-medium text-gray-900">General Settings</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-sm font-medium">Currency</Label>
+                  <Select value={storeConfig.currency} onValueChange={(value) => updateConfig('currency', value)}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="INR">INR (Indian Rupee)</SelectItem>
+                      <SelectItem value="USD">USD (US Dollar)</SelectItem>
+                      <SelectItem value="EUR">EUR (Euro)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-              </FeatureCard>
-
-              <FeatureCard
-                icon={AlertCircle}
-                title="Low Stock Alerts"
-                description="Get notified when product inventory runs low"
-                isActive={activeFeatures.lowStockAlert}
-                onToggle={() => toggleFeature('lowStockAlert')}
-                status="setup"
-              >
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-sm font-medium">Alert Threshold</Label>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <Input 
-                        value={storeConfig.lowStockThreshold}
-                        onChange={(e) => updateConfig('lowStockThreshold', e.target.value)}
-                        className="w-20"
-                        placeholder="5"
-                      />
-                      <span className="text-sm text-gray-500">items remaining</span>
-                    </div>
-                  </div>
-                  <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Info className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm font-medium text-blue-900">Email Notifications</span>
-                    </div>
-                    <p className="text-xs text-blue-700">
-                      You'll receive email alerts when any product drops below the threshold
-                    </p>
-                  </div>
+                <div>
+                  <Label className="text-sm font-medium">Date Format</Label>
+                  <Select value={storeConfig.dateFormat} onValueChange={(value) => updateConfig('dateFormat', value)}>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
+                      <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
+                      <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-              </FeatureCard>
-
-              <FeatureCard
-                icon={Clock}
-                title="Product Reservation Timeout"
-                description="Automatically release reserved products after specified time"
-                isActive={activeFeatures.reservationTimeout}
-                onToggle={() => toggleFeature('reservationTimeout')}
-              >
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-sm font-medium">Timeout Duration</Label>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <Input 
-                        value={storeConfig.reservationTimeout}
-                        onChange={(e) => updateConfig('reservationTimeout', e.target.value)}
-                        className="w-20"
-                        placeholder="30"
-                      />
-                      <Select defaultValue="mins">
-                        <SelectTrigger className="w-24">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="mins">Minutes</SelectItem>
-                          <SelectItem value="hours">Hours</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <h4 className="font-medium text-gray-900">Payment Settings</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-sm font-medium">Delivery Charge (₹)</Label>
+                  <Input 
+                    value={storeConfig.deliveryCharge}
+                    onChange={(e) => updateConfig('deliveryCharge', e.target.value)}
+                    className="mt-1"
+                    placeholder="0"
+                  />
                 </div>
-              </FeatureCard>
-
-              <FeatureCard
-                icon={Shield}
-                title="Authorized Domain Access"
-                description="Restrict store access to specific domains for security"
-                isActive={activeFeatures.authorizedDomain}
-                onToggle={() => toggleFeature('authorizedDomain')}
-                status="warning"
-              >
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-sm font-medium">Authorized Domain</Label>
-                    <Input 
-                      value={storeConfig.authorizedDomain}
-                      onChange={(e) => updateConfig('authorizedDomain', e.target.value)}
-                      className="mt-1"
-                      placeholder="@example.com"
-                    />
-                  </div>
-                  <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <AlertCircle className="w-4 h-4 text-yellow-600" />
-                      <span className="text-sm font-medium text-yellow-900">Security Notice</span>
-                    </div>
-                    <p className="text-xs text-yellow-700">
-                      Only users with email addresses from the specified domain can access your store
-                    </p>
-                  </div>
+                <div>
+                  <Label className="text-sm font-medium">COD Charge (₹)</Label>
+                  <Input 
+                    value={storeConfig.codCharge}
+                    onChange={(e) => updateConfig('codCharge', e.target.value)}
+                    className="mt-1"
+                    placeholder="0"
+                  />
                 </div>
-              </FeatureCard>
+              </div>
             </div>
           </div>
-        </TabsContent>
+        </CardContent>
+      </Card>
 
-        <TabsContent value="pricing" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <DollarSign className="w-5 h-5" />
-                <span>Price Consistency Settings</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <h4 className="font-medium text-gray-900">Precious Metals Pricing</h4>
-                  <div className="space-y-3">
-                    <div>
-                      <Label className="text-sm font-medium">Gold (Per Gram)</Label>
-                      <div className="flex items-center space-x-2 mt-1">
-                        <span className="text-sm text-gray-500">₹</span>
-                        <Input 
-                          value={storeConfig.goldPrice}
-                          onChange={(e) => updateConfig('goldPrice', e.target.value)}
-                          placeholder="7000"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <Label className="text-sm font-medium">Silver (Per Gram)</Label>
-                      <div className="flex items-center space-x-2 mt-1">
-                        <span className="text-sm text-gray-500">₹</span>
-                        <Input 
-                          value={storeConfig.silverPrice}
-                          onChange={(e) => updateConfig('silverPrice', e.target.value)}
-                          placeholder="1000"
-                        />
-                      </div>
-                    </div>
+      {/* Store Features */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold flex items-center space-x-2">
+            <Zap className="w-5 h-5" />
+            <span>Store Features</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <FeatureCard
+            icon={Star}
+            title="Customer Reviews"
+            description="Allow customers to leave reviews and ratings for products"
+            isActive={activeFeatures.customerReviews}
+            onToggle={() => toggleFeature('customerReviews')}
+          >
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 bg-white rounded-lg border">
+                <span className="text-sm font-medium">Show review stars on product cards</span>
+                <Switch defaultChecked />
+              </div>
+              <div className="flex items-center justify-between p-3 bg-white rounded-lg border">
+                <span className="text-sm font-medium">Require purchase to review</span>
+                <Switch />
+              </div>
+              <div className="flex items-center justify-between p-3 bg-white rounded-lg border">
+                <span className="text-sm font-medium">Moderate reviews before publishing</span>
+                <Switch defaultChecked />
+              </div>
+            </div>
+          </FeatureCard>
+
+          <FeatureCard
+            icon={AlertCircle}
+            title="Low Stock Alerts"
+            description="Get notified when product inventory runs low"
+            isActive={activeFeatures.lowStockAlert}
+            onToggle={() => toggleFeature('lowStockAlert')}
+            status="setup"
+          >
+            <div className="space-y-4">
+              <div>
+                <Label className="text-sm font-medium">Alert Threshold</Label>
+                <div className="flex items-center space-x-2 mt-1">
+                  <Input 
+                    value={storeConfig.lowStockThreshold}
+                    onChange={(e) => updateConfig('lowStockThreshold', e.target.value)}
+                    className="w-20"
+                    placeholder="5"
+                  />
+                  <span className="text-sm text-gray-500">items remaining</span>
+                </div>
+              </div>
+              <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="flex items-center space-x-2 mb-2">
+                  <Info className="w-4 h-4 text-blue-600" />
+                  <span className="text-sm font-medium text-blue-900">Email Notifications</span>
+                </div>
+                <p className="text-xs text-blue-700">
+                  You'll receive email alerts when any product drops below the threshold
+                </p>
+              </div>
+            </div>
+          </FeatureCard>
+
+          <FeatureCard
+            icon={Clock}
+            title="Product Reservation Timeout"
+            description="Automatically release reserved products after specified time"
+            isActive={activeFeatures.reservationTimeout}
+            onToggle={() => toggleFeature('reservationTimeout')}
+          >
+            <div className="space-y-4">
+              <div>
+                <Label className="text-sm font-medium">Timeout Duration</Label>
+                <div className="flex items-center space-x-2 mt-1">
+                  <Input 
+                    value={storeConfig.reservationTimeout}
+                    onChange={(e) => updateConfig('reservationTimeout', e.target.value)}
+                    className="w-20"
+                    placeholder="30"
+                  />
+                  <Select defaultValue="mins">
+                    <SelectTrigger className="w-24">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="mins">Minutes</SelectItem>
+                      <SelectItem value="hours">Hours</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          </FeatureCard>
+
+          <FeatureCard
+            icon={Shield}
+            title="Authorized Domain Access"
+            description="Restrict store access to specific domains for security"
+            isActive={activeFeatures.authorizedDomain}
+            onToggle={() => toggleFeature('authorizedDomain')}
+            status="warning"
+          >
+            <div className="space-y-4">
+              <div>
+                <Label className="text-sm font-medium">Authorized Domain</Label>
+                <Input 
+                  value={storeConfig.authorizedDomain}
+                  onChange={(e) => updateConfig('authorizedDomain', e.target.value)}
+                  className="mt-1"
+                  placeholder="@example.com"
+                />
+              </div>
+              <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                <div className="flex items-center space-x-2 mb-2">
+                  <AlertCircle className="w-4 h-4 text-yellow-600" />
+                  <span className="text-sm font-medium text-yellow-900">Security Notice</span>
+                </div>
+                <p className="text-xs text-yellow-700">
+                  Only users with email addresses from the specified domain can access your store
+                </p>
+              </div>
+            </div>
+          </FeatureCard>
+        </CardContent>
+      </Card>
+
+      {/* Pricing & Currency */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold flex items-center space-x-2">
+            <DollarSign className="w-5 h-5" />
+            <span>Pricing & Currency Settings</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <h4 className="font-medium text-gray-900">Precious Metals Pricing</h4>
+              <div className="space-y-3">
+                <div>
+                  <Label className="text-sm font-medium">Gold (Per Gram)</Label>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <span className="text-sm text-gray-500">₹</span>
+                    <Input 
+                      value={storeConfig.goldPrice}
+                      onChange={(e) => updateConfig('goldPrice', e.target.value)}
+                      placeholder="7000"
+                    />
                   </div>
                 </div>
-                
-                <div className="space-y-4">
-                  <h4 className="font-medium text-gray-900">Price Calculator Preview</h4>
-                  <div className="p-4 bg-gray-50 rounded-lg border">
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Gold (10g):</span>
-                        <span className="font-medium">₹{(parseInt(storeConfig.goldPrice) * 10).toLocaleString()}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Silver (50g):</span>
-                        <span className="font-medium">₹{(parseInt(storeConfig.silverPrice) * 50).toLocaleString()}</span>
-                      </div>
-                      <div className="border-t pt-2 mt-2">
-                        <div className="flex justify-between font-medium">
-                          <span>Total:</span>
-                          <span>₹{((parseInt(storeConfig.goldPrice) * 10) + (parseInt(storeConfig.silverPrice) * 50)).toLocaleString()}</span>
-                        </div>
-                      </div>
+                <div>
+                  <Label className="text-sm font-medium">Silver (Per Gram)</Label>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <span className="text-sm text-gray-500">₹</span>
+                    <Input 
+                      value={storeConfig.silverPrice}
+                      onChange={(e) => updateConfig('silverPrice', e.target.value)}
+                      placeholder="1000"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <h4 className="font-medium text-gray-900">Price Calculator Preview</h4>
+              <div className="p-4 bg-gray-50 rounded-lg border">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Gold (10g):</span>
+                    <span className="font-medium">₹{(parseInt(storeConfig.goldPrice) * 10).toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Silver (50g):</span>
+                    <span className="font-medium">₹{(parseInt(storeConfig.silverPrice) * 50).toLocaleString()}</span>
+                  </div>
+                  <div className="border-t pt-2 mt-2">
+                    <div className="flex justify-between font-medium">
+                      <span>Total:</span>
+                      <span>₹{((parseInt(storeConfig.goldPrice) * 10) + (parseInt(storeConfig.silverPrice) * 50)).toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-        <TabsContent value="advanced" className="space-y-6">
+      {/* Advanced Settings */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold">Advanced Settings</CardTitle>
+        </CardHeader>
+        <CardContent>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Performance Optimization</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+            <div className="space-y-4">
+              <h4 className="font-medium text-gray-900">Performance Optimization</h4>
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <Label className="font-medium">Image Compression</Label>
@@ -485,14 +454,12 @@ const StoreFeatureContent = () => {
                   </div>
                   <Switch />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Security Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+            <div className="space-y-4">
+              <h4 className="font-medium text-gray-900">Security Settings</h4>
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <Label className="font-medium">Two-Factor Authentication</Label>
@@ -514,11 +481,11 @@ const StoreFeatureContent = () => {
                   </div>
                   <Switch defaultChecked />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
-        </TabsContent>
-      </Tabs>
+        </CardContent>
+      </Card>
 
       {/* Save Button */}
       <div className="flex justify-end space-x-3">
