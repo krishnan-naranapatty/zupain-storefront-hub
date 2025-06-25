@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
-import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info, Clock, FileText, Edit, AlertTriangle, Eye, EyeOff, Calendar, CreditCard, Banknote, QrCode, Smartphone, HelpCircle } from 'lucide-react';
+import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info, Clock, FileText, Edit, AlertTriangle, Eye, EyeOff, Calendar, CreditCard, Banknote, QrCode, Smartphone, HelpCircle, Truck } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import EditPageDialog from '@/components/EditPageDialog';
 import StoreFeatureContent from '@/components/StoreFeatureContent';
@@ -42,6 +42,13 @@ const Settings = () => {
     phonepe: { enabled: false, connected: false },
     cashfree: { enabled: false, connected: false },
     payu: { enabled: false, connected: false }
+  });
+
+  // Shipment state
+  const [shipmentIntegrations, setShipmentIntegrations] = useState({
+    shiprocket: { enabled: false, connected: false },
+    delhivery: { enabled: false, connected: false },
+    shippo: { enabled: false, connected: false }
   });
 
   const tabs = [
@@ -1239,12 +1246,52 @@ const Settings = () => {
       }
     ];
 
+    const shipmentProviders = [
+      {
+        id: 'shiprocket',
+        name: 'Shiprocket',
+        description: 'Smart Shipping with Shiprocket - All-in-One Shipping Solution',
+        logo: '📦',
+        buttonText: 'User Login',
+        enabled: shipmentIntegrations.shiprocket.enabled,
+        connected: shipmentIntegrations.shiprocket.connected
+      },
+      {
+        id: 'delhivery',
+        name: 'Delhivery',
+        description: 'Changing the world, one shipment at a time',
+        logo: '🚚',
+        buttonText: 'Login',
+        enabled: shipmentIntegrations.delhivery.enabled,
+        connected: shipmentIntegrations.delhivery.connected
+      },
+      {
+        id: 'shippo',
+        name: 'Shippo Shipment',
+        description: 'Simplify Shipping and Save Everything you need for scalable shipping in one place, plus the best rates from top carriers.',
+        logo: '🚢',
+        buttonText: 'Add Api Token',
+        enabled: shipmentIntegrations.shippo.enabled,
+        connected: shipmentIntegrations.shippo.connected
+      }
+    ];
+
     const toggleIntegration = (gatewayId: string, field: string) => {
       setIntegrations(prev => ({
         ...prev,
         [gatewayId]: {
           ...prev[gatewayId],
           [field]: !prev[gatewayId][field]
+        }
+      }));
+    };
+
+    const toggleShipmentIntegration = (providerId: string, field: string) => {
+      setShipmentIntegrations(prev => ({
+        ...prev,
+        [providerId]: {
+          ...prev[providerId],
+          [field]: !prev[providerId][field]
         }
       }));
     };
@@ -1260,60 +1307,136 @@ const Settings = () => {
           </div>
         </div>
 
-        {/* Payment Methods Section */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-medium text-gray-900">Payments</h3>
-            <div className="flex space-x-2">
-              <Button
-                variant={activeRegion === 'India' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setActiveRegion('India')}
-                className={activeRegion === 'India' ? 'bg-blue-600 text-white' : ''}
-              >
-                India
-              </Button>
-              <Button
-                variant={activeRegion === 'International' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setActiveRegion('International')}
-                className={activeRegion === 'International' ? 'bg-blue-600 text-white' : ''}
-              >
-                International
-              </Button>
-            </div>
-          </div>
+        {/* Integration Tabs */}
+        <Tabs defaultValue="payments" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="payments">Payments</TabsTrigger>
+            <TabsTrigger value="shipment">Shipment</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
 
-          {/* Payment Gateways Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {paymentGateways.map((gateway) => {
-              const Icon = gateway.icon;
-              return (
-                <Card key={gateway.id} className="relative overflow-hidden">
+          {/* Payments Tab */}
+          <TabsContent value="payments" className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Payment Gateways</h3>
+              <div className="flex space-x-2">
+                <Button
+                  variant={activeRegion === 'India' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setActiveRegion('India')}
+                  className={activeRegion === 'India' ? 'bg-blue-600 text-white' : ''}
+                >
+                  India
+                </Button>
+                <Button
+                  variant={activeRegion === 'US' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setActiveRegion('US')}
+                  className={activeRegion === 'US' ? 'bg-blue-600 text-white' : ''}
+                >
+                  US
+                </Button>
+              </div>
+            </div>
+
+            {/* Payment Gateways Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {paymentGateways.map((gateway) => {
+                const Icon = gateway.icon;
+                return (
+                  <Card key={gateway.id} className="relative overflow-hidden">
+                    <CardContent className="p-6">
+                      {/* Header with icon and title */}
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center space-x-3">
+                          <div className={`p-2 rounded-lg ${gateway.color}`}>
+                            <Icon className="w-5 h-5 text-white" />
+                          </div>
+                          <div>
+                            <div className="flex items-center space-x-2">
+                              <h3 className="font-semibold text-gray-900">{gateway.name}</h3>
+                              {gateway.badge && (
+                                <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full">
+                                  {gateway.badge}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <HelpCircle className="w-4 h-4 text-gray-400" />
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                        {gateway.description}
+                      </p>
+
+                      {/* Footer with connect button and toggle */}
+                      <div className="flex items-center justify-between">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex items-center space-x-2"
+                          disabled={gateway.connected && !gateway.enabled}
+                        >
+                          <span>Connect</span>
+                        </Button>
+                        <Switch
+                          checked={gateway.enabled}
+                          onCheckedChange={() => toggleIntegration(gateway.id, 'enabled')}
+                          disabled={!gateway.connected && gateway.id !== 'cod' && gateway.id !== 'upi'}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </TabsContent>
+
+          {/* Shipment Tab */}
+          <TabsContent value="shipment" className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-gray-900">Shipping Providers</h3>
+              <div className="flex space-x-2">
+                <Button
+                  variant={activeRegion === 'India' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setActiveRegion('India')}
+                  className={activeRegion === 'India' ? 'bg-blue-600 text-white' : ''}
+                >
+                  India
+                </Button>
+                <Button
+                  variant={activeRegion === 'US' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setActiveRegion('US')}
+                  className={activeRegion === 'US' ? 'bg-blue-600 text-white' : ''}
+                >
+                  US
+                </Button>
+              </div>
+            </div>
+
+            {/* Shipment Providers Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {shipmentProviders.map((provider) => (
+                <Card key={provider.id} className="relative overflow-hidden">
                   <CardContent className="p-6">
-                    {/* Header with icon and title */}
+                    {/* Header with logo and help icon */}
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-lg ${gateway.color}`}>
-                          <Icon className="w-5 h-5 text-white" />
-                        </div>
+                        <div className="text-2xl">{provider.logo}</div>
                         <div>
-                          <div className="flex items-center space-x-2">
-                            <h3 className="font-semibold text-gray-900">{gateway.name}</h3>
-                            {gateway.badge && (
-                              <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full">
-                                {gateway.badge}
-                              </span>
-                            )}
-                          </div>
+                          <h3 className="font-semibold text-gray-900 text-lg">{provider.name}</h3>
                         </div>
                       </div>
                       <HelpCircle className="w-4 h-4 text-gray-400" />
                     </div>
 
                     {/* Description */}
-                    <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                      {gateway.description}
+                    <p className="text-sm text-gray-600 mb-6 leading-relaxed">
+                      {provider.description}
                     </p>
 
                     {/* Footer with connect button and toggle */}
@@ -1322,51 +1445,35 @@ const Settings = () => {
                         variant="outline"
                         size="sm"
                         className="flex items-center space-x-2"
-                        disabled={gateway.connected && !gateway.enabled}
                       >
-                        <span>Connect</span>
+                        <span>{provider.buttonText}</span>
                       </Button>
                       <Switch
-                        checked={gateway.enabled}
-                        onCheckedChange={() => toggleIntegration(gateway.id, 'enabled')}
-                        disabled={!gateway.connected && gateway.id !== 'cod' && gateway.id !== 'upi'}
+                        checked={provider.enabled}
+                        onCheckedChange={() => toggleShipmentIntegration(provider.id, 'enabled')}
                       />
                     </div>
                   </CardContent>
                 </Card>
-              );
-            })}
-          </div>
-        </div>
+              ))}
+            </div>
+          </TabsContent>
 
-        {/* Additional Integration Sections */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Shipment Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-medium">Shipment</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-500 mb-4">Configure shipping integrations and logistics partners</p>
-              <Button variant="outline" size="sm" className="w-full">
-                Configure Shipment
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Analytics Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-medium">Analytics</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-500 mb-4">Connect analytics tools to track your store performance</p>
-              <Button variant="outline" size="sm" className="w-full">
-                Setup Analytics
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+          {/* Analytics Tab */}
+          <TabsContent value="analytics" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg font-medium">Analytics</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-500 mb-4">Connect analytics tools to track your store performance</p>
+                <Button variant="outline" size="sm" className="w-full">
+                  Setup Analytics
+                </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
 
         {/* Save Button */}
         <div className="flex justify-end">
