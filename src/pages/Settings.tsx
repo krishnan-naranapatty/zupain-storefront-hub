@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
@@ -12,8 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
-import { Plus, Settings } from 'lucide-react';
-import { ModeToggle } from '@/components/mode-toggle';
+import { Plus, Settings as SettingsIcon } from 'lucide-react';
 import ApiUserLoginModal from '@/components/ApiUserLoginModal';
 
 const Settings = () => {
@@ -90,9 +90,8 @@ const Settings = () => {
 
   return (
     <div className="container mx-auto py-10">
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8">
         <h1 className="text-2xl font-bold">Settings</h1>
-        <ModeToggle />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -231,7 +230,7 @@ const Settings = () => {
                             onCheckedChange={() => handleIntegrationToggle(provider.key)}
                           />
                           <Button variant="ghost" size="sm">
-                            <Settings className="w-4 h-4" />
+                            <SettingsIcon className="w-4 h-4" />
                           </Button>
                         </div>
                       </div>
@@ -285,7 +284,7 @@ const Settings = () => {
                           </Button>
                         )}
                         <Button variant="ghost" size="sm">
-                          <Settings className="w-4 h-4" />
+                          <SettingsIcon className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
