@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
-import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info, Clock, FileText, Edit } from 'lucide-react';
+import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info, Clock, FileText, Edit, AlertTriangle, Eye, EyeOff, Calendar } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import EditPageDialog from '@/components/EditPageDialog';
 
@@ -20,15 +20,15 @@ const Settings = () => {
   // Pages state
   const [editPageDialog, setEditPageDialog] = useState({ open: false, page: null });
   const [pages, setPages] = useState([
-    { id: '1', name: 'Help', path: 'help', enabled: true, content: '', hasWarning: false },
-    { id: '2', name: 'About Us', path: 'about-us', enabled: true, content: '', hasWarning: false },
-    { id: '3', name: 'Legals', path: 'legals', enabled: true, content: '', hasWarning: false },
-    { id: '4', name: 'Terms & Conditions', path: 'terms-conditions', enabled: true, content: '', hasWarning: true },
-    { id: '5', name: 'Explore', path: 'explore', enabled: true, content: '', hasWarning: false },
-    { id: '6', name: 'Returns and Refunds', path: 'returns-refunds', enabled: true, content: '', hasWarning: false },
-    { id: '7', name: 'Privacy Policy', path: 'privacy-policy', enabled: true, content: '', hasWarning: false },
-    { id: '8', name: 'Contact us', path: 'contact-us', enabled: true, content: '', hasWarning: false },
-    { id: '9', name: 'Contact Form', path: 'contact-form', enabled: true, content: '', hasWarning: false }
+    { id: '1', name: 'Help', path: 'help', enabled: true, content: '', hasWarning: false, type: 'support', lastUpdated: '2024-01-15', wordCount: 245 },
+    { id: '2', name: 'About Us', path: 'about-us', enabled: true, content: '', hasWarning: false, type: 'company', lastUpdated: '2024-01-10', wordCount: 180 },
+    { id: '3', name: 'Legals', path: 'legals', enabled: true, content: '', hasWarning: false, type: 'legal', lastUpdated: '2024-01-08', wordCount: 320 },
+    { id: '4', name: 'Terms & Conditions', path: 'terms-conditions', enabled: true, content: '', hasWarning: true, type: 'legal', lastUpdated: '2023-12-20', wordCount: 0 },
+    { id: '5', name: 'Explore', path: 'explore', enabled: true, content: '', hasWarning: false, type: 'content', lastUpdated: '2024-01-12', wordCount: 156 },
+    { id: '6', name: 'Returns and Refunds', path: 'returns-refunds', enabled: true, content: '', hasWarning: false, type: 'policy', lastUpdated: '2024-01-05', wordCount: 280 },
+    { id: '7', name: 'Privacy Policy', path: 'privacy-policy', enabled: true, content: '', hasWarning: false, type: 'legal', lastUpdated: '2024-01-14', wordCount: 420 },
+    { id: '8', name: 'Contact us', path: 'contact-us', enabled: true, content: '', hasWarning: false, type: 'support', lastUpdated: '2024-01-16', wordCount: 95 },
+    { id: '9', name: 'Contact Form', path: 'contact-form', enabled: true, content: '', hasWarning: false, type: 'support', lastUpdated: '2024-01-11', wordCount: 120 }
   ]);
 
   const tabs = [
@@ -73,7 +73,10 @@ const Settings = () => {
         id: Date.now().toString(),
         ...pageData,
         enabled: true,
-        hasWarning: false
+        hasWarning: false,
+        type: 'content',
+        lastUpdated: new Date().toISOString().split('T')[0],
+        wordCount: 0
       };
       setPages([...pages, newPage]);
     }
@@ -85,6 +88,26 @@ const Settings = () => {
         ? { ...p, enabled }
         : p
     ));
+  };
+
+  const getPageTypeIcon = (type) => {
+    switch (type) {
+      case 'legal': return <FileText className="w-4 h-4 text-blue-600" />;
+      case 'support': return <Info className="w-4 h-4 text-green-600" />;
+      case 'company': return <Building2 className="w-4 h-4 text-purple-600" />;
+      case 'policy': return <Globe className="w-4 h-4 text-orange-600" />;
+      default: return <FileText className="w-4 h-4 text-gray-600" />;
+    }
+  };
+
+  const getPageTypeLabel = (type) => {
+    switch (type) {
+      case 'legal': return 'Legal';
+      case 'support': return 'Support';
+      case 'company': return 'Company';
+      case 'policy': return 'Policy';
+      default: return 'Content';
+    }
   };
 
   const ProfileContent = () => (
@@ -992,7 +1015,7 @@ const Settings = () => {
           <FileText className="w-6 h-6 text-gray-600" />
           <div>
             <h2 className="text-xl font-semibold text-gray-900">Documentation Pages</h2>
-            <p className="text-sm text-gray-500">Manage your store's information pages</p>
+            <p className="text-sm text-gray-500">Manage your store's information and policy pages</p>
           </div>
         </div>
         <Button 
@@ -1004,33 +1027,130 @@ const Settings = () => {
         </Button>
       </div>
 
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <Card>
+          <CardContent className="p-4 text-center">
+            <div className="text-2xl font-bold text-blue-600">{pages.length}</div>
+            <div className="text-sm text-gray-500">Total Pages</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <div className="text-2xl font-bold text-green-600">{pages.filter(p => p.enabled).length}</div>
+            <div className="text-sm text-gray-500">Active Pages</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <div className="text-2xl font-bold text-orange-600">{pages.filter(p => p.hasWarning).length}</div>
+            <div className="text-sm text-gray-500">Needs Attention</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <div className="text-2xl font-bold text-gray-600">{pages.filter(p => p.wordCount === 0).length}</div>
+            <div className="text-sm text-gray-500">Empty Pages</div>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Pages Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {pages.map((page) => (
-          <Card key={page.id} className="relative">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-medium text-gray-900 text-sm">{page.name}</h3>
-                <Switch 
-                  checked={page.enabled}
-                  onCheckedChange={(enabled) => handleTogglePage(page.id, enabled)}
-                />
+          <Card key={page.id} className={`relative transition-all duration-200 hover:shadow-lg border-l-4 ${
+            page.hasWarning ? 'border-l-orange-400 bg-orange-50/30' : 
+            page.enabled ? 'border-l-green-400' : 'border-l-gray-300'
+          }`}>
+            <CardContent className="p-5">
+              {/* Header with icon and status */}
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center space-x-3">
+                  {getPageTypeIcon(page.type)}
+                  <div>
+                    <h3 className="font-semibold text-gray-900 text-sm leading-tight">{page.name}</h3>
+                    <div className="flex items-center space-x-2 mt-1">
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        page.type === 'legal' ? 'bg-blue-100 text-blue-700' :
+                        page.type === 'support' ? 'bg-green-100 text-green-700' :
+                        page.type === 'company' ? 'bg-purple-100 text-purple-700' :
+                        page.type === 'policy' ? 'bg-orange-100 text-orange-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
+                        {getPageTypeLabel(page.type)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  {page.enabled ? (
+                    <Eye className="w-4 h-4 text-green-600" />
+                  ) : (
+                    <EyeOff className="w-4 h-4 text-gray-400" />
+                  )}
+                  <Switch 
+                    checked={page.enabled}
+                    onCheckedChange={(enabled) => handleTogglePage(page.id, enabled)}
+                    className="data-[state=checked]:bg-green-500"
+                  />
+                </div>
               </div>
-              
+
+              {/* URL Preview */}
+              <div className="mb-3">
+                <div className="text-xs text-gray-500 mb-1">Page URL</div>
+                <div className="text-sm font-mono bg-gray-100 px-2 py-1 rounded text-gray-700 truncate">
+                  /{page.path}
+                </div>
+              </div>
+
+              {/* Content Stats */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="text-center p-2 bg-gray-50 rounded">
+                  <div className={`text-lg font-semibold ${page.wordCount > 0 ? 'text-blue-600' : 'text-gray-400'}`}>
+                    {page.wordCount}
+                  </div>
+                  <div className="text-xs text-gray-500">Words</div>
+                </div>
+                <div className="text-center p-2 bg-gray-50 rounded">
+                  <div className="flex items-center justify-center space-x-1">
+                    <Calendar className="w-3 h-3 text-gray-500" />
+                    <span className="text-xs text-gray-600">{page.lastUpdated}</span>
+                  </div>
+                  <div className="text-xs text-gray-500">Last Updated</div>
+                </div>
+              </div>
+
+              {/* Warning Banner */}
               {page.hasWarning && (
-                <div className="flex items-center space-x-1 mb-3">
-                  <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
-                  <span className="text-xs text-orange-600">Will be available on the Sign Up page</span>
+                <div className="mb-4 p-2 bg-orange-100 border border-orange-200 rounded-lg">
+                  <div className="flex items-center space-x-2">
+                    <AlertTriangle className="w-4 h-4 text-orange-600" />
+                    <span className="text-xs text-orange-700 font-medium">
+                      Will be available on the Sign Up page
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Empty Content Warning */}
+              {page.wordCount === 0 && (
+                <div className="mb-4 p-2 bg-yellow-100 border border-yellow-200 rounded-lg">
+                  <div className="flex items-center space-x-2">
+                    <Info className="w-4 h-4 text-yellow-600" />
+                    <span className="text-xs text-yellow-700">Page content is empty</span>
+                  </div>
                 </div>
               )}
               
+              {/* Action Button */}
               <Button 
                 onClick={() => handleEditPage(page)}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center space-x-2"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center space-x-2 transition-colors"
                 size="sm"
               >
                 <Edit className="w-4 h-4" />
-                <span>Edit</span>
+                <span>Edit Page</span>
               </Button>
             </CardContent>
           </Card>
