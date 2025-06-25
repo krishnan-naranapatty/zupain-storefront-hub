@@ -9,10 +9,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
-import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info, Clock, FileText, Edit, AlertTriangle, Eye, EyeOff, Calendar, Instagram, Facebook, Youtube, Linkedin } from 'lucide-react';
+import { Upload, User, Globe, Building2, ShoppingCart, MapPin, Weight, Plus, Trash2, Info, Clock, FileText, Edit, AlertTriangle, Eye, EyeOff, Calendar } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import EditPageDialog from '@/components/EditPageDialog';
 import StoreFeatureContent from '@/components/StoreFeatureContent';
+import FooterManagement from '@/components/FooterManagement';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('Profile');
@@ -30,49 +31,6 @@ const Settings = () => {
     { id: '7', name: 'Privacy Policy', path: 'privacy-policy', enabled: true, content: '', hasWarning: false, type: 'legal', lastUpdated: '2024-01-14', wordCount: 420 },
     { id: '8', name: 'Contact us', path: 'contact-us', enabled: true, content: '', hasWarning: false, type: 'support', lastUpdated: '2024-01-16', wordCount: 95 },
     { id: '9', name: 'Contact Form', path: 'contact-form', enabled: true, content: '', hasWarning: false, type: 'support', lastUpdated: '2024-01-11', wordCount: 120 }
-  ]);
-
-  // Footer Management state
-  const [footerDescription, setFooterDescription] = useState('');
-  const [socialMediaEnabled, setSocialMediaEnabled] = useState(true);
-  const [socialLinks, setSocialLinks] = useState({
-    instagram: { enabled: true, url: 'https://www.instagram.com/lokhal/news-centre-xNiYSL4vqJ9yWJJFGhRXPXfVqJw' },
-    facebook: { enabled: true, url: 'https://www.facebook.com/lokhal/NEWS' },
-    youtube: { enabled: true, url: 'https://www.youtube.com/lokhal/news-centro' },
-    linkedin: { enabled: true, url: '' }
-  });
-
-  const [footerColumns, setFooterColumns] = useState([
-    {
-      id: 1,
-      title: '',
-      links: [
-        { id: 1, enabled: true, type: 'pages', value: '' },
-        { id: 2, enabled: true, type: 'pages', value: '' },
-        { id: 3, enabled: true, type: 'url', value: '' },
-        { id: 4, enabled: true, type: 'url', value: '' }
-      ]
-    },
-    {
-      id: 2,
-      title: '',
-      links: [
-        { id: 1, enabled: true, type: 'pages', value: '' },
-        { id: 2, enabled: true, type: 'pages', value: '' },
-        { id: 3, enabled: true, type: 'url', value: '' },
-        { id: 4, enabled: true, type: 'url', value: '' }
-      ]
-    },
-    {
-      id: 3,
-      title: '',
-      links: [
-        { id: 1, enabled: true, type: 'pages', value: '' },
-        { id: 2, enabled: true, type: 'pages', value: '' },
-        { id: 3, enabled: true, type: 'url', value: '' },
-        { id: 4, enabled: true, type: 'url', value: '' }
-      ]
-    }
   ]);
 
   const tabs = [
@@ -153,243 +111,6 @@ const Settings = () => {
       default: return 'Content';
     }
   };
-
-  const updateSocialLink = (platform: string, field: string, value: string | boolean) => {
-    setSocialLinks(prev => ({
-      ...prev,
-      [platform]: {
-        ...prev[platform],
-        [field]: value
-      }
-    }));
-  };
-
-  const updateColumnTitle = (columnId: number, title: string) => {
-    setFooterColumns(prev => prev.map(col => 
-      col.id === columnId ? { ...col, title } : col
-    ));
-  };
-
-  const updateColumnLink = (columnId: number, linkId: number, field: string, value: string | boolean) => {
-    setFooterColumns(prev => prev.map(col => 
-      col.id === columnId 
-        ? {
-            ...col,
-            links: col.links.map(link =>
-              link.id === linkId ? { ...link, [field]: value } : link
-            )
-          }
-        : col
-    ));
-  };
-
-  const addFooterLink = (columnId: number) => {
-    setFooterColumns(prev => prev.map(col =>
-      col.id === columnId
-        ? {
-            ...col,
-            links: [
-              ...col.links,
-              {
-                id: Math.max(...col.links.map(l => l.id)) + 1,
-                enabled: true,
-                type: 'pages',
-                value: ''
-              }
-            ]
-          }
-        : col
-    ));
-  };
-
-  const getSocialIcon = (platform: string) => {
-    switch (platform) {
-      case 'instagram': return Instagram;
-      case 'facebook': return Facebook;
-      case 'youtube': return Youtube;
-      case 'linkedin': return Linkedin;
-      default: return Globe;
-    }
-  };
-
-  const FooterManagementContent = () => (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center space-x-3">
-        <Globe className="w-6 h-6 text-gray-600" />
-        <div>
-          <h2 className="text-xl font-semibold text-gray-900">Footer Management</h2>
-          <p className="text-sm text-gray-500">Configure your website footer sections and links</p>
-        </div>
-      </div>
-
-      {/* Logo Description */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold">Logo Description</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Textarea
-            placeholder="Enter footer description..."
-            value={footerDescription}
-            onChange={(e) => setFooterDescription(e.target.value)}
-            className="min-h-[100px]"
-          />
-        </CardContent>
-      </Card>
-
-      {/* Social Media Links */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-semibold">Social Media Links</CardTitle>
-            <Switch 
-              checked={socialMediaEnabled}
-              onCheckedChange={setSocialMediaEnabled}
-            />
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {Object.entries(socialLinks).map(([platform, data]) => {
-            const Icon = getSocialIcon(platform);
-            return (
-              <div key={platform} className="flex items-center space-x-4 p-4 border rounded-lg">
-                <div className="flex items-center space-x-3 min-w-0 flex-1">
-                  <Icon className={`w-6 h-6 ${
-                    platform === 'instagram' ? 'text-pink-600' :
-                    platform === 'facebook' ? 'text-blue-600' :
-                    platform === 'youtube' ? 'text-red-600' :
-                    platform === 'linkedin' ? 'text-blue-700' : 'text-gray-600'
-                  }`} />
-                  <div className="flex-1 min-w-0">
-                    <Label className="text-sm font-medium capitalize">{platform}</Label>
-                    <Input
-                      value={data.url}
-                      onChange={(e) => updateSocialLink(platform, 'url', e.target.value)}
-                      placeholder={`Enter ${platform} URL`}
-                      className="mt-1"
-                    />
-                  </div>
-                </div>
-                <Switch
-                  checked={data.enabled}
-                  onCheckedChange={(enabled) => updateSocialLink(platform, 'enabled', enabled)}
-                />
-              </div>
-            );
-          })}
-          <Button className="bg-slate-800 hover:bg-slate-900 text-white">
-            Add New Social Media Link
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Footer Columns */}
-      {footerColumns.map((column, columnIndex) => (
-        <Card key={column.id}>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-lg font-semibold">Column {columnIndex + 1}</CardTitle>
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-500">{column.links.filter(l => l.enabled).length} active links</span>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label className="text-sm font-medium text-gray-700">Column Title</Label>
-              <Input
-                value={column.title}
-                onChange={(e) => updateColumnTitle(column.id, e.target.value)}
-                placeholder="Enter column title"
-                className="mt-1"
-              />
-            </div>
-
-            <div className="space-y-3">
-              <Label className="text-sm font-medium text-gray-700">Footer Links</Label>
-              {column.links.map((link, linkIndex) => (
-                <div key={link.id} className="grid grid-cols-12 gap-3 items-end">
-                  <div className="col-span-3">
-                    <Label className="text-sm text-gray-600">Link {linkIndex + 1}</Label>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <Switch
-                        checked={link.enabled}
-                        onCheckedChange={(enabled) => updateColumnLink(column.id, link.id, 'enabled', enabled)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-span-3">
-                    <Select
-                      value={link.type}
-                      onValueChange={(value) => updateColumnLink(column.id, link.id, 'type', value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="pages">Pages</SelectItem>
-                        <SelectItem value="url">URL</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="col-span-5">
-                    {link.type === 'pages' ? (
-                      <Select
-                        value={link.value}
-                        onValueChange={(value) => updateColumnLink(column.id, link.id, 'value', value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select page" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {pages.map(page => (
-                            <SelectItem key={page.id} value={page.path}>
-                              {page.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    ) : (
-                      <Input
-                        value={link.value}
-                        onChange={(e) => updateColumnLink(column.id, link.id, 'value', e.target.value)}
-                        placeholder="Enter URL"
-                      />
-                    )}
-                  </div>
-                  <div className="col-span-1 flex justify-center">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-red-600 border-red-200 hover:bg-red-50 h-8 w-8 p-0"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-              <Button
-                onClick={() => addFooterLink(column.id)}
-                variant="outline"
-                className="w-full bg-slate-800 hover:bg-slate-900 text-white border-slate-800"
-              >
-                Add Another Label
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-
-      {/* Save Button */}
-      <div className="flex justify-end space-x-3">
-        <Button variant="outline">Cancel</Button>
-        <Button className={`${currentPalette.primary} text-white px-8`}>
-          Save Footer Settings
-        </Button>
-      </div>
-    </div>
-  );
 
   const ProfileContent = () => (
     <div className="space-y-6">
@@ -1461,7 +1182,7 @@ const Settings = () => {
       case 'Store Feature':
         return <StoreFeatureContent />;
       case 'Footer Management':
-        return <FooterManagementContent />;
+        return <FooterManagement />;
       case 'Integration':
         return <div className="text-center py-12 text-gray-500">Integration settings coming soon...</div>;
       default:
