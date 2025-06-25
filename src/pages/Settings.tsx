@@ -35,6 +35,7 @@ const Settings = () => {
 
   // Integration state
   const [activeRegion, setActiveRegion] = useState('India');
+  const [activeIntegrationTab, setActiveIntegrationTab] = useState('payments');
   const [integrations, setIntegrations] = useState({
     razorpay: { enabled: false, connected: false },
     cod: { enabled: true, connected: true },
@@ -1307,16 +1308,29 @@ const Settings = () => {
           </div>
         </div>
 
-        {/* Integration Tabs */}
-        <Tabs defaultValue="payments" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="payments">Payments</TabsTrigger>
-            <TabsTrigger value="shipment">Shipment</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          </TabsList>
+        {/* Radio Button Selection */}
+        <Card>
+          <CardContent className="p-6">
+            <RadioGroup value={activeIntegrationTab} onValueChange={setActiveIntegrationTab} className="flex space-x-8">
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="payments" id="payments" />
+                <Label htmlFor="payments" className="text-base cursor-pointer">Payments</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="shipment" id="shipment" />
+                <Label htmlFor="shipment" className="text-base cursor-pointer">Shipment</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="analytics" id="analytics" />
+                <Label htmlFor="analytics" className="text-base cursor-pointer">Analytics</Label>
+              </div>
+            </RadioGroup>
+          </CardContent>
+        </Card>
 
-          {/* Payments Tab */}
-          <TabsContent value="payments" className="space-y-4">
+        {/* Payments Content */}
+        {activeIntegrationTab === 'payments' && (
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-medium text-gray-900">Payment Gateways</h3>
               <div className="flex space-x-2">
@@ -1392,10 +1406,12 @@ const Settings = () => {
                 );
               })}
             </div>
-          </TabsContent>
+          </div>
+        )}
 
-          {/* Shipment Tab */}
-          <TabsContent value="shipment" className="space-y-4">
+        {/* Shipment Content */}
+        {activeIntegrationTab === 'shipment' && (
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-medium text-gray-900">Shipping Providers</h3>
               <div className="flex space-x-2">
@@ -1457,10 +1473,12 @@ const Settings = () => {
                 </Card>
               ))}
             </div>
-          </TabsContent>
+          </div>
+        )}
 
-          {/* Analytics Tab */}
-          <TabsContent value="analytics" className="space-y-4">
+        {/* Analytics Content */}
+        {activeIntegrationTab === 'analytics' && (
+          <div className="space-y-4">
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg font-medium">Analytics</CardTitle>
@@ -1472,8 +1490,8 @@ const Settings = () => {
                 </Button>
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+          </div>
+        )}
 
         {/* Save Button */}
         <div className="flex justify-end">
