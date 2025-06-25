@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -161,9 +160,9 @@ const FooterManagement = () => {
         </CardContent>
       </Card>
 
-      {/* Social Media Links - More Compact */}
+      {/* Social Media Links - Redesigned */}
       <Card className="shadow-sm">
-        <CardHeader className="pb-2">
+        <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm font-medium">Social Media Links</CardTitle>
             <Switch 
@@ -172,24 +171,33 @@ const FooterManagement = () => {
             />
           </div>
         </CardHeader>
-        <CardContent className="pt-0 space-y-2">
+        <CardContent className="pt-0 space-y-4">
           {Object.entries(socialLinks).map(([platform, data]) => {
             const Icon = getSocialIcon(platform);
             return (
-              <div key={platform} className="flex items-center space-x-3 p-2 border rounded-md">
-                <Icon className={`w-4 h-4 flex-shrink-0 ${
-                  platform === 'instagram' ? 'text-pink-600' :
-                  platform === 'facebook' ? 'text-blue-600' :
-                  platform === 'youtube' ? 'text-red-600' :
-                  platform === 'linkedin' ? 'text-blue-700' : 'text-gray-600'
-                }`} />
-                <div className="flex-1 min-w-0">
-                  <Input
-                    value={data.url}
-                    onChange={(e) => updateSocialLink(platform, 'url', e.target.value)}
-                    placeholder={`Enter ${platform} URL`}
-                    className="h-8 text-xs"
-                  />
+              <div key={platform} className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg border">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <div className={`p-2 rounded-md ${
+                    platform === 'instagram' ? 'bg-pink-100' :
+                    platform === 'facebook' ? 'bg-blue-100' :
+                    platform === 'youtube' ? 'bg-red-100' :
+                    platform === 'linkedin' ? 'bg-blue-100' : 'bg-gray-100'
+                  }`}>
+                    <Icon className={`w-4 h-4 ${
+                      platform === 'instagram' ? 'text-pink-600' :
+                      platform === 'facebook' ? 'text-blue-600' :
+                      platform === 'youtube' ? 'text-red-600' :
+                      platform === 'linkedin' ? 'text-blue-700' : 'text-gray-600'
+                    }`} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <Input
+                      value={data.url}
+                      onChange={(e) => updateSocialLink(platform, 'url', e.target.value)}
+                      placeholder={`Enter ${platform} URL`}
+                      className="h-9 text-sm bg-white border-gray-200"
+                    />
+                  </div>
                 </div>
                 <Switch
                   checked={data.enabled}
@@ -198,7 +206,8 @@ const FooterManagement = () => {
               </div>
             );
           })}
-          <Button size="sm" className="w-full bg-slate-800 hover:bg-slate-900 text-white h-8 text-xs">
+          <Button size="sm" className="w-full bg-slate-800 hover:bg-slate-900 text-white h-9 text-sm">
+            <Plus className="w-4 h-4 mr-2" />
             Add New Social Media Link
           </Button>
         </CardContent>
