@@ -200,9 +200,18 @@ const Profile = () => {
 
         <Tabs defaultValue="personal" className="space-y-6">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="personal">Personal Information</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            <TabsTrigger value="personal" className="flex items-center gap-2">
+              <User className="h-4 w-4" />
+              Personal Information
+            </TabsTrigger>
+            <TabsTrigger value="security" className="flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              Security
+            </TabsTrigger>
+            <TabsTrigger value="notifications" className="flex items-center gap-2">
+              <Bell className="h-4 w-4" />
+              Notifications
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="personal" className="space-y-6">
