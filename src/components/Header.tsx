@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Menu, Bell, Search, User, Globe, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +11,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
+  const navigate = useNavigate();
   return (
     <header className="bg-white border-b border-gray-200 px-3 md:px-6 py-3 md:py-4 sticky top-0 z-30">
       <div className="flex items-center justify-between">
@@ -54,7 +56,12 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
             <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
           </Button>
 
-          <Button variant="ghost" size="sm" className="p-2">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="p-2"
+            onClick={() => navigate('/profile')}
+          >
             <User className="w-4 h-4 sm:w-5 sm:h-5" />
           </Button>
         </div>
