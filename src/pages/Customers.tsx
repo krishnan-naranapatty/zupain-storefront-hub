@@ -6,12 +6,13 @@ import CustomersSummaryCards from '@/components/CustomersSummaryCards';
 import TopCustomersStats from '@/components/TopCustomersStats';
 import CustomersFiltersControls from '@/components/CustomersFiltersControls';
 import CustomersContent from '@/components/CustomersContent';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const Customers = () => {
-  const [showDetailedView, setShowDetailedView] = useState(true);
+  const [showCustomerListModal, setShowCustomerListModal] = useState(false);
 
   const handleTotalCustomersClick = () => {
-    setShowDetailedView(!showDetailedView);
+    setShowCustomerListModal(true);
   };
 
   return (
@@ -19,14 +20,20 @@ const Customers = () => {
       <div className="space-y-6">
         <CustomersHeader />
         <CustomersSummaryCards onTotalCustomersClick={handleTotalCustomersClick} />
-        {showDetailedView && (
-          <>
-            <TopCustomersStats />
+        <TopCustomersStats />
+      </div>
+
+      <Dialog open={showCustomerListModal} onOpenChange={setShowCustomerListModal}>
+        <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold">Customer Details</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-6 animate-fade-in">
             <CustomersFiltersControls />
             <CustomersContent />
-          </>
-        )}
-      </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Layout>
   );
 };
