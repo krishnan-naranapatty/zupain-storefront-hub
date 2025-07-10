@@ -8,7 +8,7 @@ import CustomersFiltersControls from '@/components/CustomersFiltersControls';
 import CustomersContent from '@/components/CustomersContent';
 
 const Customers = () => {
-  const [showDetailedView, setShowDetailedView] = useState(false);
+  const [showDetailedView, setShowDetailedView] = useState(true);
 
   const handleTotalCustomersClick = () => {
     setShowDetailedView(!showDetailedView);
