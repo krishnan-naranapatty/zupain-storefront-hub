@@ -2,7 +2,11 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Users, RotateCcw, ShoppingCart, UserPlus } from 'lucide-react';
 
-const CustomersSummaryCards = () => {
+interface CustomersSummaryCardsProps {
+  onTotalCustomersClick?: () => void;
+}
+
+const CustomersSummaryCards = ({ onTotalCustomersClick }: CustomersSummaryCardsProps) => {
   const summaryStats = [
     {
       title: 'Total Customers',
@@ -40,21 +44,30 @@ const CustomersSummaryCards = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {summaryStats.map((stat, index) => (
-        <Card key={index} className="border-0 shadow-sm hover:shadow-md transition-all duration-200">
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-4">
-              <div className={`p-3 rounded-lg ${stat.bgColor}`}>
-                <stat.icon className={`w-6 h-6 ${stat.textColor}`} />
+      {summaryStats.map((stat, index) => {
+        const isClickable = stat.title === 'Total Customers' && onTotalCustomersClick;
+        return (
+          <Card 
+            key={index} 
+            className={`border-0 shadow-sm hover:shadow-md transition-all duration-200 ${
+              isClickable ? 'cursor-pointer hover:scale-[1.02]' : ''
+            }`}
+            onClick={isClickable ? onTotalCustomersClick : undefined}
+          >
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-4">
+                <div className={`p-3 rounded-lg ${stat.bgColor}`}>
+                  <stat.icon className={`w-6 h-6 ${stat.textColor}`} />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-600">{stat.title}</p>
+                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        );
+      })}
     </div>
   );
 };
