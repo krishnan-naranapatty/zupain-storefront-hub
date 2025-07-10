@@ -4,9 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const CustomersFiltersControls = () => {
+interface CustomersFiltersControlsProps {
+  viewMode: 'table' | 'cards';
+  setViewMode: (mode: 'table' | 'cards') => void;
+}
+
+const CustomersFiltersControls = ({ viewMode, setViewMode }: CustomersFiltersControlsProps) => {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
 
   const filterOptions = [
     { id: 'all', label: 'All Customers', count: 25 },

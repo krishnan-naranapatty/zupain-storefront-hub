@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CustomersTable from '@/components/CustomersTable';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Phone, ShoppingCart, TrendingUp } from 'lucide-react';
 
-const CustomersContent = () => {
-  const [viewMode, setViewMode] = useState<'table' | 'cards'>('table');
+interface CustomersContentProps {
+  viewMode: 'table' | 'cards';
+}
+
+const CustomersContent = ({ viewMode }: CustomersContentProps) => {
 
   const customersData = [
     {
@@ -153,10 +156,9 @@ const CustomersContent = () => {
     </div>
   );
 
-  // For now, default to table view. This could be controlled by props or context
   return (
     <div>
-      <CustomersTable />
+      {viewMode === 'cards' ? renderCardsView() : <CustomersTable />}
     </div>
   );
 };
