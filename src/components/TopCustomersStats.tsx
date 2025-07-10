@@ -117,258 +117,159 @@ const TopCustomersStats = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Overview Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div className="space-y-4">
+      {/* Compact Overview Stats */}
+      <div className="grid grid-cols-2 gap-3">
         <Card>
-          <CardContent className="p-4 text-center">
-            <div className="flex items-center justify-center mb-2">
-              <Users className="h-5 w-5 text-blue-500" />
+          <CardContent className="p-3 text-center">
+            <div className="flex items-center justify-center mb-1">
+              <Users className="h-4 w-4 text-blue-500" />
             </div>
-            <div className="text-2xl font-bold text-gray-900">{totalCustomers}</div>
-            <div className="text-sm text-gray-500">Total Customers</div>
+            <div className="text-lg font-bold text-gray-900">{totalCustomers}</div>
+            <div className="text-xs text-gray-500">Total</div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-4 text-center">
-            <div className="flex items-center justify-center mb-2">
-              <DollarSign className="h-5 w-5 text-green-500" />
+          <CardContent className="p-3 text-center">
+            <div className="flex items-center justify-center mb-1">
+              <DollarSign className="h-4 w-4 text-green-500" />
             </div>
-            <div className="text-2xl font-bold text-green-600">₹{(totalSpent / 1000).toFixed(0)}K</div>
-            <div className="text-sm text-gray-500">Top 5 Revenue</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="flex items-center justify-center mb-2">
-              <TrendingUp className="h-5 w-5 text-purple-500" />
-            </div>
-            <div className="text-2xl font-bold text-purple-600">₹{(avgCustomerValue / 1000).toFixed(0)}K</div>
-            <div className="text-sm text-gray-500">Avg. Customer Value</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="flex items-center justify-center mb-2">
-              <ShoppingBag className="h-5 w-5 text-orange-500" />
-            </div>
-            <div className="text-2xl font-bold text-orange-600">{totalOrders}</div>
-            <div className="text-sm text-gray-500">Total Orders</div>
+            <div className="text-lg font-bold text-green-600">₹{(totalSpent / 1000).toFixed(0)}K</div>
+            <div className="text-xs text-gray-500">Revenue</div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Top Customers List */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Award className="h-5 w-5" />
-              Top Customers by Revenue
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {topCustomers.map((customer, index) => (
-                <div key={customer.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-semibold text-sm">
-                    #{index + 1}
+      {/* Top Customers - Compact List */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center gap-2 text-sm">
+            <Award className="h-4 w-4" />
+            Top Customers
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <div className="space-y-2">
+            {topCustomers.slice(0, 3).map((customer, index) => (
+              <div key={customer.id} className="flex items-center space-x-2 p-2 rounded-md hover:bg-gray-50 transition-colors">
+                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 font-semibold text-xs">
+                  #{index + 1}
+                </div>
+                
+                <div className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center">
+                  <Users className="h-3 w-3 text-gray-400" />
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1">
+                    <h4 className="font-medium text-gray-900 truncate text-sm">{customer.name}</h4>
+                    <Badge className={`text-xs px-1 py-0 ${getStatusColor(customer.status)}`}>
+                      {getStatusIcon(customer.status)}
+                    </Badge>
                   </div>
-                  
-                  <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                    <Users className="h-5 w-5 text-gray-400" />
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-medium text-gray-900 truncate">{customer.name}</h4>
-                      <Badge className={`text-xs ${getStatusColor(customer.status)}`}>
-                        {getStatusIcon(customer.status)}
-                        <span className="ml-1">{customer.status}</span>
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-gray-500 truncate">{customer.email}</p>
-                    <div className="flex items-center gap-3 text-xs text-gray-400">
-                      <span>{customer.orders} orders</span>
-                      <span>•</span>
-                      <span>Avg: ₹{(customer.avgOrderValue / 1000).toFixed(1)}K</span>
-                    </div>
-                  </div>
-                  
-                  <div className="text-right">
-                    <div className="font-semibold text-gray-900">₹{(customer.totalSpent / 1000).toFixed(0)}K</div>
-                    <div className="text-sm text-green-600">{customer.growth}</div>
+                  <div className="text-xs text-gray-400">
+                    {customer.orders} orders • ₹{(customer.avgOrderValue / 1000).toFixed(1)}K avg
                   </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                
+                <div className="text-right">
+                  <div className="font-semibold text-gray-900 text-sm">₹{(customer.totalSpent / 1000).toFixed(0)}K</div>
+                  <div className="text-xs text-green-600">{customer.growth}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* Customer Segments Chart */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              Customer Segments
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={customerSegments}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    paddingAngle={5}
-                    dataKey="value"
-                  >
-                    {customerSegments.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    content={({ active, payload }) => {
-                      if (active && payload && payload.length) {
-                        const data = payload[0].payload;
-                        return (
-                          <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-                            <p className="font-medium text-gray-900">{data.name}</p>
-                            <p className="text-sm text-gray-600">{data.value} customers</p>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+      {/* Customer Segments - Compact Chart */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center gap-2 text-sm">
+            <Users className="h-4 w-4" />
+            Segments
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <div className="h-32">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={customerSegments}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={25}
+                  outerRadius={45}
+                  paddingAngle={2}
+                  dataKey="value"
+                >
+                  {customerSegments.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      const data = payload[0].payload;
+                      return (
+                        <div className="bg-white p-2 border border-gray-200 rounded-md shadow-lg">
+                          <p className="font-medium text-gray-900 text-xs">{data.name}</p>
+                          <p className="text-xs text-gray-600">{data.value} customers</p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          
+          {/* Compact Legend */}
+          <div className="grid grid-cols-2 gap-1 mt-2">
+            {customerSegments.map((segment) => (
+              <div key={segment.name} className="flex items-center text-xs">
+                <div 
+                  className="w-2 h-2 rounded-full mr-1" 
+                  style={{ backgroundColor: segment.color }}
+                ></div>
+                <span className="text-gray-600">{segment.name}: {segment.value}</span>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Quick Insights */}
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm">Quick Insights</CardTitle>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <div className="space-y-2">
+            <div className="p-2 bg-purple-50 rounded-md">
+              <h4 className="font-medium text-purple-900 text-xs flex items-center gap-1">
+                <Crown className="h-3 w-3" />
+                Top Spender
+              </h4>
+              <p className="text-xs text-purple-700">
+                {topCustomers[0].name} - ₹{(topCustomers[0].totalSpent / 1000).toFixed(0)}K
+              </p>
             </div>
             
-            {/* Legend */}
-            <div className="grid grid-cols-2 gap-2 mt-4">
-              {customerSegments.map((segment) => (
-                <div key={segment.name} className="flex items-center text-sm">
-                  <div 
-                    className="w-3 h-3 rounded-full mr-2" 
-                    style={{ backgroundColor: segment.color }}
-                  ></div>
-                  <span className="text-gray-600">{segment.name}: {segment.value}</span>
-                </div>
-              ))}
+            <div className="p-2 bg-green-50 rounded-md">
+              <h4 className="font-medium text-green-900 text-xs flex items-center gap-1">
+                <TrendingUp className="h-3 w-3" />
+                Growth Leader
+              </h4>
+              <p className="text-xs text-green-700">
+                {topCustomers[0].name} - {topCustomers[0].growth}
+              </p>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Customer Acquisition Trend */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5" />
-              Customer Acquisition Trend
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={acquisitionData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis 
-                    dataKey="month" 
-                    stroke="#666"
-                    fontSize={12}
-                  />
-                  <YAxis 
-                    stroke="#666"
-                    fontSize={12}
-                  />
-                  <Tooltip 
-                    content={({ active, payload, label }) => {
-                      if (active && payload && payload.length) {
-                        return (
-                          <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-                            <p className="font-medium text-gray-900">{label}</p>
-                            <p className="text-blue-600">
-                              New Customers: {payload[0]?.value}
-                            </p>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="customers" 
-                    stroke="#3b82f6" 
-                    strokeWidth={3}
-                    dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4 }}
-                    activeDot={{ r: 6, stroke: '#3b82f6', strokeWidth: 2 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Customer Insights */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Customer Insights</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="p-4 bg-purple-50 rounded-lg">
-                <h4 className="font-medium text-purple-900 mb-2 flex items-center gap-2">
-                  <Crown className="h-4 w-4" />
-                  Top Spender
-                </h4>
-                <p className="text-sm text-purple-700">
-                  <strong>{topCustomers[0].name}</strong> has spent ₹{(topCustomers[0].totalSpent / 1000).toFixed(0)}K across {topCustomers[0].orders} orders
-                </p>
-              </div>
-              
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium text-blue-900 mb-2 flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4" />
-                  Fastest Growing
-                </h4>
-                <p className="text-sm text-blue-700">
-                  <strong>{topCustomers[0].name}</strong> shows {topCustomers[0].growth} growth this month
-                </p>
-              </div>
-              
-              <div className="p-4 bg-green-50 rounded-lg">
-                <h4 className="font-medium text-green-900 mb-2 flex items-center gap-2">
-                  <Star className="h-4 w-4" />
-                  Highest AOV
-                </h4>
-                <p className="text-sm text-green-700">
-                  <strong>{topCustomers[1].name}</strong> has the highest average order value of ₹{(topCustomers[1].avgOrderValue / 1000).toFixed(1)}K
-                </p>
-              </div>
-              
-              <div className="p-4 bg-orange-50 rounded-lg">
-                <h4 className="font-medium text-orange-900 mb-2 flex items-center gap-2">
-                  <Users className="h-4 w-4" />
-                  Acquisition Rate
-                </h4>
-                <p className="text-sm text-orange-700">
-                  Acquiring an average of <strong>36 new customers</strong> per month
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

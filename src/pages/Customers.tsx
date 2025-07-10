@@ -11,9 +11,20 @@ const Customers = () => {
     <Layout>
       <div className="space-y-4">
         <CustomersHeader />
-        <TopCustomersStats />
-        <CustomersFiltersControls />
-        <CustomersContent />
+        
+        {/* Main horizontal layout to minimize scroll */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+          {/* Left section - Customer data and stats */}
+          <div className="xl:col-span-2 space-y-4">
+            <CustomersFiltersControls />
+            <CustomersContent />
+          </div>
+          
+          {/* Right section - Top customers and stats sidebar */}
+          <div className="xl:col-span-1">
+            <TopCustomersStats />
+          </div>
+        </div>
       </div>
     </Layout>
   );
