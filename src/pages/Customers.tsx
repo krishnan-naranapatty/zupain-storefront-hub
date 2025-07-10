@@ -9,7 +9,7 @@ import CustomersContent from '@/components/CustomersContent';
 const Customers = () => {
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-4">
         <CustomersHeader />
         <TopCustomersStats />
         <CustomersFiltersControls />
