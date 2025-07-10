@@ -1,11 +1,13 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { TrendingUp, TrendingDown, Users, ShoppingCart, DollarSign, Eye, ShoppingBag } from 'lucide-react';
 import AbandonedCartModal from './AbandonedCartModal';
 
 const DashboardStats = () => {
+  const navigate = useNavigate();
   const [isAbandonedCartModalOpen, setIsAbandonedCartModalOpen] = useState(false);
   const statsCards = [
     {
@@ -44,11 +46,33 @@ const DashboardStats = () => {
   ];
 
   const quickStats = [
-    { label: 'Categories', value: '2' },
-    { label: 'Sub Categories', value: '0' },
-    { label: 'Total Products', value: '4' },
-    { label: 'All Customers', value: '18' },
-    { label: 'Avg. Order Value', value: '0', suffix: '.00%' }
+    { 
+      label: 'Categories', 
+      value: '2', 
+      clickable: true, 
+      onClick: () => navigate('/categories') 
+    },
+    { 
+      label: 'Sub Categories', 
+      value: '0' 
+    },
+    { 
+      label: 'Total Products', 
+      value: '4', 
+      clickable: true, 
+      onClick: () => navigate('/products') 
+    },
+    { 
+      label: 'All Customers', 
+      value: '18', 
+      clickable: true, 
+      onClick: () => navigate('/customers') 
+    },
+    { 
+      label: 'Avg. Order Value', 
+      value: '0', 
+      suffix: '.00%' 
+    }
   ];
 
   return (
@@ -107,13 +131,24 @@ const DashboardStats = () => {
         {/* Quick Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {quickStats.map((stat, index) => (
-            <Card key={index} className="border border-gray-200">
+            <Card 
+              key={index} 
+              className={`border border-gray-200 ${
+                stat.clickable ? 'cursor-pointer hover:shadow-lg hover:border-blue-300 transition-all' : ''
+              }`}
+              onClick={stat.onClick}
+            >
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-gray-900">
                   {stat.value}{stat.suffix}
                 </div>
-                <div className="text-sm text-gray-600 mt-1">
+                <div className="text-sm text-gray-600 mt-1 flex items-center justify-center gap-1">
                   {stat.label}
+                  {stat.clickable && (
+                    <Badge variant="secondary" className="text-xs">
+                      View
+                    </Badge>
+                  )}
                 </div>
               </CardContent>
             </Card>
