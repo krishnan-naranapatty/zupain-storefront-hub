@@ -5,7 +5,7 @@ import ProductsHeader from '@/components/ProductsHeader';
 import ProductsFilters from '@/components/ProductsFilters';
 import ProductsTable from '@/components/ProductsTable';
 import ProductsGrid from '@/components/ProductsGrid';
-import TopSellingProductsStats from '@/components/TopSellingProductsStats';
+import ProductsSidebar from '@/components/ProductsSidebar';
 
 const Products = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -28,7 +28,7 @@ const Products = () => {
           
           {/* Right section - Top selling products stats sidebar */}
           <div className="xl:col-span-1">
-            <TopSellingProductsStats />
+            <ProductsSidebar />
           </div>
         </div>
       </div>
