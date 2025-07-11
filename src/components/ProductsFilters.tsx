@@ -32,7 +32,7 @@ const ProductsFilters = ({ viewMode, onViewModeChange }: ProductsFiltersProps) =
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white border shadow-lg z-50">
                 <SelectItem value="all-categories">All Categories</SelectItem>
                 <SelectItem value="skincare">Skincare</SelectItem>
                 <SelectItem value="beauty">Beauty</SelectItem>
@@ -45,7 +45,7 @@ const ProductsFilters = ({ viewMode, onViewModeChange }: ProductsFiltersProps) =
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="Brand" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white border shadow-lg z-50">
                 <SelectItem value="all-brands">All Brands</SelectItem>
                 <SelectItem value="blameless">Blameless</SelectItem>
                 <SelectItem value="vitanix">Vitanix</SelectItem>
