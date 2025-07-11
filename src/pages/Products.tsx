@@ -16,11 +16,21 @@ const Products = () => {
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-4">
         <ProductsHeader />
-        <TopSellingProductsStats />
-        <ProductsFilters viewMode={viewMode} onViewModeChange={handleViewModeChange} />
-        {viewMode === 'list' ? <ProductsTable /> : <ProductsGrid />}
+        
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+          {/* Left section - Product filters and data */}
+          <div className="xl:col-span-2 space-y-4">
+            <ProductsFilters viewMode={viewMode} onViewModeChange={handleViewModeChange} />
+            {viewMode === 'list' ? <ProductsTable /> : <ProductsGrid />}
+          </div>
+          
+          {/* Right section - Top selling products stats sidebar */}
+          <div className="xl:col-span-1">
+            <TopSellingProductsStats />
+          </div>
+        </div>
       </div>
     </Layout>
   );
