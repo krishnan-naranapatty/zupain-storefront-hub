@@ -8,9 +8,10 @@ import { Separator } from '@/components/ui/separator';
 interface OrderDetailsProps {
   orderId: string;
   onBack: () => void;
+  onViewCustomer?: (customerId: string) => void;
 }
 
-const OrderDetails = ({ orderId, onBack }: OrderDetailsProps) => {
+const OrderDetails = ({ orderId, onBack, onViewCustomer }: OrderDetailsProps) => {
   // Mock data - in real app this would come from API
   const orderData = {
     id: 'ORID0059',
@@ -187,7 +188,11 @@ const OrderDetails = ({ orderId, onBack }: OrderDetailsProps) => {
               <Separator />
               
               <div className="flex justify-start">
-                <Button variant="outline" className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10">
+                <Button 
+                  variant="outline" 
+                  className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10"
+                  onClick={() => onViewCustomer?.(orderData.customer.name)}
+                >
                   View Order History
                 </Button>
               </div>
