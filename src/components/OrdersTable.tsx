@@ -10,9 +10,10 @@ import OrdersTimeline from './OrdersTimeline';
 
 interface OrdersTableProps {
   activeFilter: string;
+  onOrderClick?: (orderId: string) => void;
 }
 
-const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
+const OrdersTable = ({ activeFilter, onOrderClick }: OrdersTableProps) => {
   const [viewMode, setViewMode] = useState<'kanban' | 'timeline' | 'cards' | 'list'>('cards');
   const [expandedOrders, setExpandedOrders] = useState<Set<string>>(new Set());
 
@@ -401,7 +402,12 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
 
                     {/* Actions */}
                     <div className="flex justify-between space-x-2">
-                      <Button variant="outline" size="sm" className="flex-1 text-xs">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex-1 text-xs"
+                        onClick={() => onOrderClick?.(order.id)}
+                      >
                         <Eye className="w-3 h-3 mr-1" />
                         View
                       </Button>
@@ -498,7 +504,11 @@ const OrdersTable = ({ activeFilter }: OrdersTableProps) => {
                         <div>
                           <h4 className="font-semibold text-gray-700 mb-2">Actions</h4>
                           <div className="flex flex-wrap gap-2">
-                            <Button variant="outline" size="sm">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => onOrderClick?.(order.id)}
+                            >
                               <Eye className="w-3 h-3 mr-1" />
                               View
                             </Button>
