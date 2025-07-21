@@ -11,9 +11,10 @@ import OrdersTimeline from './OrdersTimeline';
 interface OrdersTableProps {
   activeFilter: string;
   onOrderClick?: (orderId: string) => void;
+  onOrderEdit?: (orderId: string) => void;
 }
 
-const OrdersTable = ({ activeFilter, onOrderClick }: OrdersTableProps) => {
+const OrdersTable = ({ activeFilter, onOrderClick, onOrderEdit }: OrdersTableProps) => {
   const [viewMode, setViewMode] = useState<'kanban' | 'timeline' | 'cards' | 'list'>('cards');
   const [expandedOrders, setExpandedOrders] = useState<Set<string>>(new Set());
 
@@ -411,7 +412,12 @@ const OrdersTable = ({ activeFilter, onOrderClick }: OrdersTableProps) => {
                         <Eye className="w-3 h-3 mr-1" />
                         View
                       </Button>
-                      <Button variant="outline" size="sm" className="flex-1 text-xs">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex-1 text-xs"
+                        onClick={() => onOrderEdit?.(order.id)}
+                      >
                         <Edit3 className="w-3 h-3 mr-1" />
                         Edit
                       </Button>
@@ -512,7 +518,11 @@ const OrdersTable = ({ activeFilter, onOrderClick }: OrdersTableProps) => {
                               <Eye className="w-3 h-3 mr-1" />
                               View
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => onOrderEdit?.(order.id)}
+                            >
                               <Edit3 className="w-3 h-3 mr-1" />
                               Edit
                             </Button>

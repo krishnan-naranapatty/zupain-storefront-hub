@@ -7,6 +7,7 @@ import OrdersFilter from '@/components/OrdersFilter';
 import OrdersTable from '@/components/OrdersTable';
 import OrderDetails from '@/components/OrderDetails';
 import CustomerDetails from '@/components/CustomerDetails';
+import EditOrderForm from '@/components/EditOrderForm';
 import ShiprocketOrdersView from '@/components/ShiprocketOrdersView';
 import { useTheme } from '@/contexts/ThemeContext';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,7 @@ const Orders = () => {
   const [showShiprocketOrders, setShowShiprocketOrders] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
+  const [editingOrderId, setEditingOrderId] = useState<string | null>(null);
   const { currentPalette } = useTheme();
 
   const toggleSidebar = () => {
@@ -36,9 +38,14 @@ const Orders = () => {
     setSelectedOrderId(orderId);
   };
 
+  const handleOrderEdit = (orderId: string) => {
+    setEditingOrderId(orderId);
+  };
+
   const handleBackToOrders = () => {
     setSelectedOrderId(null);
     setSelectedCustomerId(null);
+    setEditingOrderId(null);
   };
 
   const handleViewCustomer = (customerId: string) => {
@@ -47,6 +54,16 @@ const Orders = () => {
 
   const handleBackToOrderDetails = () => {
     setSelectedCustomerId(null);
+  };
+
+  const handleBackFromEdit = () => {
+    setEditingOrderId(null);
+  };
+
+  const handleSaveOrder = (orderData: any) => {
+    // Handle save logic here
+    console.log('Saving order:', orderData);
+    setEditingOrderId(null);
   };
 
   return (
@@ -61,6 +78,12 @@ const Orders = () => {
             <CustomerDetails 
               customerId={selectedCustomerId} 
               onBack={handleBackToOrderDetails} 
+            />
+          ) : editingOrderId ? (
+            <EditOrderForm 
+              orderId={editingOrderId} 
+              onBack={handleBackFromEdit}
+              onSave={handleSaveOrder}
             />
           ) : selectedOrderId ? (
             <OrderDetails 
@@ -80,7 +103,11 @@ const Orders = () => {
               ) : (
                 <>
                   <OrdersFilter activeFilter={activeFilter} onFilterChange={handleFilterChange} />
-                  <OrdersTable activeFilter={activeFilter} onOrderClick={handleOrderClick} />
+                  <OrdersTable 
+                    activeFilter={activeFilter} 
+                    onOrderClick={handleOrderClick}
+                    onOrderEdit={handleOrderEdit}
+                  />
                 </>
               )}
             </>
